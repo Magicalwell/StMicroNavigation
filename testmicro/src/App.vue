@@ -1,7 +1,7 @@
 <template>
-  <div id="nav">
+  <div id="nav1">
     <router-link to="/">Home</router-link> |
-    <router-link to="/app-vue3">About</router-link>
+    <router-link to="/test">About</router-link>
   </div>
   <router-view/>
 </template>

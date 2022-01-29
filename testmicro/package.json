@@ -1,5 +1,5 @@
 {
-  "name": "stonenavigation",
+  "name": "testmicro",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,6 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@micro-zoe/micro-app": "^0.8.4",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",
@@ -33,10 +32,8 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0",
-    "naive-ui": "^2.24.7",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
-    "typescript": "~4.1.5",
-    "vfonts": "0.0.3"
+    "typescript": "~4.1.5"
   }
 }
