@@ -1,11 +1,22 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
+import layout from '../views/layout/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'layout',
+    redirect: '/home',
+    component: layout,
+    meta: { title: '首页' },
+    children: [
+      {
+        path: '/home',
+        name: 'home',
+        component: Home,
+        meta: { title: '主控台', fixed: true, canDelete: false, showTag: true }
+      }
+    ]
   },
   {
     path: '/app-vue3/:*',

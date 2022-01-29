@@ -1,9 +1,9 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/app-vue3">About</router-link>
+  <div id="main-nav">
+    <!-- <router-link to="/">Home</router-link>
+    <router-link to="/app-vue3">About</router-link> -->
+    <router-view />
   </div>
-  <router-view/>
 </template>
 
 <style lang="scss">
