@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h2>111111</h2>
     <micro-app
       name="app1-vue3"
       :url="url"
