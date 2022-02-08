@@ -117,6 +117,11 @@ const menuOptions = [
         ]
       },
       {
+        label: '笔记或手账?随你',
+        key: 'Eshouzhang',
+        disabled: true
+      },
+      {
         label: '一些游戏',
         disabled: true,
         key: 'the-past-increases-the-future-recedes'
