@@ -1,4 +1,4 @@
-import './public-path'
+import "./public-path";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -14,8 +14,13 @@ Vue.use(mavonEditor);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 Vue.mixin(mixin);
-new Vue({
+const app = new Vue({
   router,
   store,
   render: (h) => h(App),
 }).$mount("#app");
+console.log('微应用child-vue2渲染了')
+window.addEventListener("unmount", function () {
+  app.$destroy();
+  console.log("微应用child-vue2卸载了");
+});

@@ -191,12 +191,10 @@ export const asyncRoutes = [
 const createRouter = () =>
   new VueRouter({
     routes,
-    base: window.__MICRO_APP_BASE_ROUTE__ || process.env.BASE_URL,
   });
 
 const router = createRouter();
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter();
   router.matcher = newRouter.matcher; // reset router

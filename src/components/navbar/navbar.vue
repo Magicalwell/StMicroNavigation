@@ -3,7 +3,8 @@
     v-model:value="activeId"
     mode="horizontal"
     :options="menuOptions"
-    dropdown-placement="top-start"
+    dropdown-placement="top"
+    class="top-nav-main"
   />
 </template>
 
@@ -81,7 +82,7 @@ const menuOptions = [
             RouterLink,
             {
               to: {
-                path: '/blog-control'
+                path: '/blogcontrol'
               }
             },
             { default: () => '博客后台管理系统' }
@@ -90,8 +91,24 @@ const menuOptions = [
         icon: renderIcon(WineIcon)
       },
       {
-        label: '食物',
+        label: '组件库',
+        disabled: true,
+        key: 'stoneUi'
+      },
+      {
+        label: '弹幕学习室',
+        disabled: true,
+        key: 'danmuStudy'
+      },
+      {
+        label: '加点three.js?',
+        disabled: true,
+        key: 'danmuStudy'
+      },
+      {
+        label: '低代码',
         key: 'food',
+        disabled: true,
         children: [
           {
             label: '三明治',
@@ -100,7 +117,8 @@ const menuOptions = [
         ]
       },
       {
-        label: '过去增多，未来减少',
+        label: '一些游戏',
+        disabled: true,
         key: 'the-past-increases-the-future-recedes'
       }
     ]

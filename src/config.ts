@@ -7,7 +7,7 @@ const config: Record<string, string> = {
   react17: 'http://localhost:4005',
   sidebar: 'http://localhost:4006',
   vite: 'http://localhost:4007',
-  blogControl: 'http://localhost:8082',
+  blogControl: 'http://localhost:8081',
   vue3: 'http://localhost:3001'
 }
 

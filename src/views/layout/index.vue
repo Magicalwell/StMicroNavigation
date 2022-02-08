@@ -41,6 +41,7 @@ export default {
   transform: translateY(-100%);
   transition: all 0.3s ease-in-out;
   background-color: #fff;
+  text-align: center;
   &.show {
     transform: translateY(0);
   }

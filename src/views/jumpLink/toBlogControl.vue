@@ -3,7 +3,7 @@
     <micro-app
       name="blog-control"
       :url="url"
-      baseroute="/blog-control"
+      baseroute="/blogcontrol"
       @created="handleCreate"
       @beforemount="handleBeforeMount"
       @mounted="handleMount"
