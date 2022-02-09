@@ -110,16 +110,35 @@ const menuOptions = [
         key: 'food',
         disabled: true,
         children: [
-          {
-            label: '三明治',
-            key: 'sandwich'
-          }
+          // {
+          //   label: () =>
+          //     h(
+          //       RouterLink,
+          //       {
+          //         to: {
+          //           path: '/plannergeneration'
+          //         }
+          //       },
+          //       { default: () => '手账' }
+          //     ),
+          //   key: '/plannergeneration',
+          //   icon: renderIcon(WineIcon)
+          // }
         ]
       },
       {
-        label: '笔记或手账?随你',
-        key: 'Eshouzhang',
-        disabled: true
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/plannergeneration'
+              }
+            },
+            { default: () => '笔记或手账?随你' }
+          ),
+        key: '/plannergeneration',
+        icon: renderIcon(WineIcon)
       },
       {
         label: '一些游戏',
