@@ -1,19 +1,10 @@
 <script lang="ts">
 import { defineComponent, h } from 'vue'
-
+import { useStore } from 'vuex'
 export default defineComponent({
-  //   setup() {},
-  //   render() {
-  //     if (this.items.length) {
-  //       return h(
-  //         'ul',
-  //         this.items.map((item) => {
-  //           return h('li', item.name)
-  //         })
-  //       )
-  //     } else {
-  //       return h('p', 'No items found.')
-  //     }
-  //   }
+  setup () {
+    const store = useStore()
+    const elementList = store.state.textContainer
+  }
 })
 </script>
