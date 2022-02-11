@@ -1,5 +1,5 @@
 <template>
-  <div class="appMain">
+  <div class="appMain" @drop="drogitem" @dragover="dragOveritem($event)">
     <!-- <component :is=""></component> -->
     <app-Editor></app-Editor>
   </div>
@@ -11,6 +11,14 @@ import appEditor from '../../../editor/index.vue'
 export default defineComponent({
   components: {
     appEditor
+  },
+  methods: {
+    dragOveritem (e:any) {
+      console.log(1232131)
+    },
+    drogitem () {
+      console.log(9931231)
+    }
   }
 })
 </script>

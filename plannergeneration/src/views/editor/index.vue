@@ -1,12 +1,6 @@
 <template>
-  <div id="editor-container" @click.self="generationNewInput">
+  <div id="editor-container" @click.self="generationNewInput" @drop="drogitem">
     暂时先做表单生成部分，手账生成换到下期计划
-    <a-textarea
-      v-model:value="value"
-      placeholder="Autosize height based on content lines"
-      auto-size
-      class="input-item"
-    />
     <!-- <template v-for="item in valueList"> </template> -->
     <!-- <component
       v-for="item in valueList"
@@ -17,8 +11,11 @@
       v-model:value="item.value"
       @mouseenter="insertControlBtn(item, $event)"
       @mouseleave="deleteControlBtn(item)" 可能hover错了对象，导致鼠标无法挪到操作按钮上面
+      ------------------------
+      ------------------------
+      暂时把按钮放在组件的item中去，因为无法解决节流，按钮跟随拖动移动
     /> -->
-    <component
+    <!-- <component
       :ref="divs"
       v-for="item in valueList"
       :key="item.id"
@@ -27,60 +24,69 @@
       auto-size
       v-model:value="item.value"
       :placeholder="item.label"
-    />
-    <div class="control-label" id="controllabel">
+      @mouseenter="insertControlBtn(item, $event)"
+    />-->
+    <div class="control-label" id="controllabel" @dragstart="dragStartItem($event)" :draggable="true">
       <transition-group name="fade-btn-label">
         <div
           style="position: absolute; left: 20px"
           v-for="item in hoverContainer"
           :key="item.id"
           :style="{ top: item.positionY + 'px' }"
+
         >
           <plus-outlined class="add-new-element" />
-          <bars-outlined class="move-new-element" />
+          <bars-outlined class="move-new-element" :draggable="true"/>
         </div>
       </transition-group>
     </div>
+    <editor draggable=".item-drag">
+      <template #item="{ element: outElement }">
+        <div class="list-group-item">
+          <component
+          :ref="divs"
+      :key="outElement.id"
+      :is="outElement.component"
+      class="input-item"
+      auto-size
+      v-model:value="outElement.value"
+      :placeholder="outElement.label"
+      @mouseenter="insertControlBtn(outElement, $event)"
+    />
+        </div>
+      </template>
+    </editor>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, nextTick } from 'vue'
+import { defineComponent, ref, nextTick, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { PlusOutlined, BarsOutlined } from '@ant-design/icons-vue'
-import draggable from 'vuedraggable'
-
+import editor from './elementBox/elementBox.vue'
+// import { throttle } from 'throttle-debounce-ts'
 export default defineComponent({
   setup () {
     const hoverContainer = ref([])
-    const value = ref<string>('')
     const mainRef = ref([])
     const store = useStore()
     const divs = (el: HTMLElement) => {
       (mainRef.value as Array<HTMLElement>).push(el)
     }
+    const lastElement = store.state.textContainer
     function generationNewInput () {
       // 检测最后一个元素是否为空，是则focus该元素。否则新增一个空的input放在后面并focus
       console.log(store.state.textContainer)
-      if (store.state.textContainer.length === 0 || checkLastElement) {
+      if (store.state.textContainer.length === 0 || checkLastElement()) {
+        console.log(checkLastElement())
         store.commit('ADD_NEW_DEFAULT_INPUT')
-      } else {
-        console.log(mainRef.value.length)
       }
+      // nextTick(() => {
+      //   (mainRef.value[mainRef.value.length - 1] as any).focus()
+      // })
     }
-    // const throttle = function (func, delay) {
-    //   var prev = Date.now()
-    //   return function () {
-    //     var context = this
-    //     var args = arguments
-    //     var now = Date.now()
-    //     if (now - prev >= delay) {
-    //       func.apply(context, args)
-    //       prev = Date.now()
-    //     }
-    //   }
-    // }
     function checkLastElement () {
-      if (mainRef.value[mainRef.value.length - 1] !== '') { // 还是要换成检测数据的方式，用dom的话不能检测很多复杂组件的value
+      if (lastElement[lastElement.length - 1].value !== '') {
+        // 还是要换成检测数据的方式，用dom的话不能检测很多复杂组件的value
         return true
       } else {
         return false
@@ -91,7 +97,7 @@ export default defineComponent({
       if (hoverContainer.value.some((val: any) => val.id === item.id)) return
       hoverContainer.value.push({
         ...item,
-        positionY: e.target.offsetTop + 4
+        positionY: reactive(e.target.offsetTop) + 3
       } as never)
     }
     function deleteControlBtn (item: any) {
@@ -105,23 +111,37 @@ export default defineComponent({
     function testMouseMove () {
       console.log(99999999)
     }
+    function dragStartItem (e:any) {
+      e.preventDefault()
+      console.log(e)
+    }
+    function dragOveritem (e:any) {
+      e.preventDefault()
+      console.log('在拖拽中')
+      console.log(e.target)
+    }
+    function drogitem () {
+      console.log('拖拽结束')
+    }
     return {
       mainRef,
       divs,
-      value,
       generationNewInput,
       insertControlBtn,
       deleteControlBtn,
       testMouseMove,
       checkLastElement,
       hoverContainer,
+      dragStartItem,
+      dragOveritem,
+      drogitem,
       valueList: ref(store.state.textContainer)
     }
   },
   components: {
+    editor,
     PlusOutlined,
-    BarsOutlined,
-    draggable
+    BarsOutlined
   },
   directives: {}
 })
@@ -144,13 +164,18 @@ export default defineComponent({
   position: relative;
   height: 100%;
   padding-left: 3%;
+  padding-right: 3%;
   overflow-y: auto;
-  padding-bottom: 40px;
+  padding-bottom: 80px;
 }
 .input-item {
   border-color: transparent !important;
   margin-top: 1px;
   margin-bottom: 1px;
+  line-height: 28px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  min-height: 28px;
 }
 .control-label {
   position: absolute;

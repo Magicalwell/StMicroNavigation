@@ -44,7 +44,7 @@ export default createStore({
     ADD_NEW_DEFAULT_INPUT (state) {
       state.textContainer.push({
         ...state.defaultComponents['a-textarea'],
-        id: state.textContainer.length
+        id: state.textContainer.length + 1
       })
     }
   },
