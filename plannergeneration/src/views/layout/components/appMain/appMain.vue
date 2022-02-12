@@ -1,5 +1,5 @@
 <template>
-  <div class="appMain" @drop="drogitem" @dragover="dragOveritem($event)">
+  <div class="appMain">
     <!-- <component :is=""></component> -->
     <app-Editor></app-Editor>
   </div>
@@ -13,12 +13,6 @@ export default defineComponent({
     appEditor
   },
   methods: {
-    dragOveritem (e:any) {
-      console.log(1232131)
-    },
-    drogitem () {
-      console.log(9931231)
-    }
   }
 })
 </script>

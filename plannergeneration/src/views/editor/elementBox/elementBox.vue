@@ -6,10 +6,13 @@
     @start="isDrag = true"
     @end="test"
     :sort="true"
-    dragable="true" :move="getdata" @update="updateDatadragEnd" animation="300"
+    dragable="true"
+    :move="getdata"
+    @update="updateDatadragEnd"
+    animation="300"
   >
     <template #item="item">
-      <div :class="{ 'item-drag': true }" :data-el="item.element.draggable">
+      <div :class="{ 'item-drag': true }" :data-componentid="item.element.id">
         <slot name="item" v-bind="item"> </slot>
       </div>
     </template>
@@ -38,7 +41,7 @@ export default defineComponent({
   components: {
     draggable
   },
-  setup () {
+  setup() {
     const store = useStore()
     const list = reactive(store.state.textContainer)
     const textContainer = reactive([
@@ -61,14 +64,14 @@ export default defineComponent({
         id: 3
       }
     ])
-    function test () {
+    function test() {
       console.log('ceshi')
       console.log(list)
     }
-    function getdata () {
+    function getdata() {
       console.log('跑了')
     }
-    function updateDatadragEnd () {
+    function updateDatadragEnd() {
       console.log(textContainer)
     }
     return { textContainer, test, getdata, updateDatadragEnd, list }
@@ -80,4 +83,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.item-drag {
+  position: relative;
+  padding-left: 4%;
+  padding-right: 3%;
+}
 </style>
