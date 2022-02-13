@@ -23,7 +23,7 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations(['ADD_DARGACTIVEITEM']),
-    saveDragType(item) {
+    saveDragType(item: any) {
       this.ADD_DARGACTIVEITEM({ type: item.component })
     }
   }
