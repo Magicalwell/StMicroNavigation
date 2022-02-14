@@ -1,4 +1,5 @@
 <template>
+  <slot name="popmain" > </slot>
   <draggable
     :list="list"
     :group="group"
@@ -10,7 +11,9 @@
     :move="getdata"
     @update="updateDatadragEnd"
     animation="300"
+    element="div"
   >
+  <h2>222321321</h2>
     <template #item="item">
       <div :class="{ 'item-drag': true }" :data-componentid="item.element.id">
         <slot name="item" v-bind="item"> </slot>
@@ -44,26 +47,6 @@ export default defineComponent({
   setup() {
     const store = useStore()
     const list = reactive(store.state.textContainer)
-    const textContainer = reactive([
-      {
-        component: 'a-textarea',
-        label: '请输入内容',
-        value: '这是一段测试的文本',
-        id: 1
-      },
-      {
-        component: 'a-textarea',
-        label: '请输入内容',
-        value: '这是一段测试的文本2',
-        id: 2
-      },
-      {
-        component: 'a-textarea',
-        label: '请输入内容',
-        value: '这是一段测试的文本3',
-        id: 3
-      }
-    ])
     function test() {
       console.log('ceshi')
       console.log(list)
@@ -72,9 +55,9 @@ export default defineComponent({
       console.log('跑了')
     }
     function updateDatadragEnd() {
-      console.log(textContainer)
+      console.log(111)
     }
-    return { textContainer, test, getdata, updateDatadragEnd, list }
+    return { test, getdata, updateDatadragEnd, list }
   }
   // computed: {
   //   ...mapState(['textContainer'])

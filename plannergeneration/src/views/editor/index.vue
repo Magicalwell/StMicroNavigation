@@ -5,7 +5,7 @@
     @drop="drogitem"
     @dragover="dragOveritem($event)"
   >
-    暂时先做表单生成部分，手账生成换到下期计划
+    暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件
     <!-- <template v-for="item in valueList"> </template> -->
     <!-- <component
       v-for="item in valueList"
@@ -34,11 +34,20 @@
         </div>
       </transition-group>
     </div> -->
-    <a-popover title="组件列表" trigger="click" placement="topLeft" :overlayStyle="{width:'300px'}">
+    <a-popover
+      title="组件列表"
+      trigger="click"
+      placement="topLeft"
+      :overlayStyle="{ width: '300px' }"
+    >
       <template #content>
-        <a-list size="small" :data-source="componentsList" style="max-height:200px;overflow-y:auto;">
+        <a-list
+          size="small"
+          :data-source="componentsList"
+          style="max-height: 200px; overflow-y: auto"
+        >
           <template #renderItem="{ item }">
-            <a-list-item class="pop-inner-list-item">{{ item}}</a-list-item>
+            <a-list-item class="pop-inner-list-item">{{ item }}</a-list-item>
           </template>
         </a-list>
       </template>
@@ -55,7 +64,7 @@
             :placeholder="outElement.label"
             @mouseenter="insertControlBtn(outElement, $event)"
           /> -->
-            <component
+            <!-- <component
               :ref="divs"
               :key="outElement.id"
               :is="outElement.component"
@@ -64,10 +73,19 @@
               v-model:value="outElement.value"
               :placeholder="outElement.placeholder"
             >
-            <template v-if="outElement.children" >
-              <component :is='item.component' v-for="(item,index) in outElement.children" :key="index"></component>
-            </template>
+              <template v-if="outElement.children">
+                <component
+                  :is="item.component"
+                  v-for="(item, index) in outElement.children"
+                  :key="index"
+                ></component>
+              </template>
             </component>
+            <div class="control-label">
+              <plus-outlined class="add-new-element" @click="showAddPanel" />
+              <select-outlined class="move-new-element" />
+            </div> -->
+            <components-Item :outElement="outElement" v-model:changeValue="outElement.value"></components-Item>
             <div class="control-label">
               <plus-outlined class="add-new-element" @click="showAddPanel" />
               <select-outlined class="move-new-element" />
@@ -79,10 +97,11 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, nextTick, reactive, computed } from 'vue'
+import { defineComponent, ref, nextTick, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { PlusOutlined, SelectOutlined } from '@ant-design/icons-vue'
 import editor from './elementBox/elementBox.vue'
+import componentsItem from '../layout/components/componentItem/componentsItem.vue'
 // import { throttle } from 'throttle-debounce-ts'
 export default defineComponent({
   setup() {
@@ -175,7 +194,8 @@ export default defineComponent({
   components: {
     editor,
     PlusOutlined,
-    SelectOutlined
+    SelectOutlined,
+    componentsItem
   },
   directives: {}
 })
@@ -237,10 +257,10 @@ export default defineComponent({
   top: 4px;
   position: absolute;
 }
-.pop-inner-list-item{
+.pop-inner-list-item {
   cursor: pointer;
   transition: all 0.2s ease;
-  &:hover{
+  &:hover {
     background-color: rgba(55, 53, 47, 0.08);
   }
 }

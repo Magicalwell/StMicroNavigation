@@ -36,14 +36,62 @@ export default createStore({
       'a-collapse': {
         component: 'a-collapse',
         placeholder: '请输入内容',
-        propValue: { bordered: 'false' },
+        propValue: { bordered: false },
         value: '',
         title: '折叠面板',
         children: [
           {
             component: 'a-collapse-panel',
             placeholder: '请输入内容',
-            propValue: { bordered: 'false' },
+            propValue: { bordered: false },
+            value: '',
+            title: '折叠面板',
+            children: [
+              {
+                component: 'a-textarea',
+                placeholder: '请输入内容',
+                propValue: { 'auto-size': true },
+                value: '',
+                title: '输入框'
+              },
+              {
+                component: 'a-textarea',
+                placeholder: '请输入内容',
+                propValue: { 'auto-size': true },
+                value: '',
+                title: '输入框'
+              },
+              {
+                component: 'a-collapse',
+                placeholder: '请输入内容',
+                propValue: { bordered: false },
+                value: '',
+                title: '折叠面板',
+                children: [
+                  {
+                    component: 'a-collapse-panel',
+                    placeholder: '请输入内容',
+                    propValue: { 'auto-size': true },
+                    value: '',
+                    title: '输入框',
+                    children: [
+                      {
+                        component: 'a-textarea',
+                        placeholder: '请输入内容',
+                        propValue: { 'auto-size': true },
+                        value: '',
+                        title: '输入框'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            component: 'a-collapse-panel',
+            placeholder: '请输入内容',
+            propValue: { bordered: false },
             value: '',
             title: '折叠面板'
           }
