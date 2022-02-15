@@ -54,38 +54,10 @@
       <editor draggable=".item-drag" handle=".move-new-element">
         <template #item="{ element: outElement }">
           <div class="list-group-item">
-            <!-- <component
-            :ref="divs"
-            :key="outElement.id"
-            :is="outElement.component"
-            class="input-item"
-            auto-size
-            v-model:value="outElement.value"
-            :placeholder="outElement.label"
-            @mouseenter="insertControlBtn(outElement, $event)"
-          /> -->
-            <!-- <component
-              :ref="divs"
-              :key="outElement.id"
-              :is="outElement.component"
-              class="input-item"
-              v-bind="outElement.propValue"
-              v-model:value="outElement.value"
-              :placeholder="outElement.placeholder"
-            >
-              <template v-if="outElement.children">
-                <component
-                  :is="item.component"
-                  v-for="(item, index) in outElement.children"
-                  :key="index"
-                ></component>
-              </template>
-            </component>
-            <div class="control-label">
-              <plus-outlined class="add-new-element" @click="showAddPanel" />
-              <select-outlined class="move-new-element" />
-            </div> -->
-            <components-Item :outElement="outElement" v-model:changeValue="outElement.value"></components-Item>
+            <components-Item
+              :outElement="outElement"
+              v-model:changeValue="outElement.value"
+            ></components-Item>
             <div class="control-label">
               <plus-outlined class="add-new-element" @click="showAddPanel" />
               <select-outlined class="move-new-element" />
@@ -164,8 +136,11 @@ export default defineComponent({
         // console.log(defaultData[type.type])
         // console.log(defaultData)
         // console.log(type)
+        const objString = JSON.stringify(defaultData[type.type])
+        const obj2 = JSON.parse(objString)
+        console.log(store.state.textContainer.length + 1)
         store.state.textContainer.push({
-          ...defaultData[type.type],
+          ...obj2,
           id: store.state.textContainer.length + 1
         })
       }

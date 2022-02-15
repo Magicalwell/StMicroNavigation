@@ -26,7 +26,8 @@ export default defineComponent({
     outElement: {
       type: Object,
       default: null
-    }
+    },
+    index: { type: Number, default: null }
   },
   computed: {
     innerValue: {
