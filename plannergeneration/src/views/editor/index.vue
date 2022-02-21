@@ -37,7 +37,6 @@
     <a-popover
       title="组件列表"
       trigger="click"
-      placement="topLeft"
       :overlayStyle="{ width: '300px' }"
     >
       <template #content>

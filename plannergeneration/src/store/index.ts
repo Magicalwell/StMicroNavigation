@@ -36,6 +36,14 @@ export default createStore({
       'a-collapse': {
         component: 'a-collapse',
         placeholder: '请输入内容',
+        slot: {
+          type: 'header',
+          component: 'a-textarea',
+          placeholder: '请输入内容',
+          propValue: { 'auto-size': true },
+          value: '',
+          title: '输入框'
+        },
         propValue: { ghost: true },
         value: '',
         title: '折叠面板',
