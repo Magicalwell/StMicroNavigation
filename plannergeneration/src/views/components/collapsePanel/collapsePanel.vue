@@ -1,8 +1,8 @@
 <template>
   <a-collapse-panel>
-    <template #header v-if="outElement.slot">
-      <div>666666</div>
-    </template>
+      <template #header v-if="true">
+          <a-textarea auto-size class="input-item"></a-textarea>
+      </template>
     <slot></slot>
   </a-collapse-panel>
 </template>

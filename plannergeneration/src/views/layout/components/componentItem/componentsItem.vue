@@ -7,18 +7,21 @@
     v-model:value="innerValue"
     :placeholder="outElement.placeholder"
   >
+
+    <template v-if="outElement.children">
+      <template v-for="(item, index) in outElement.children" :key="index">
+        <components-Item
+          :outElement="item"
+          v-model:changeValue="item.value"
+        ></components-Item>
+      </template>
+    </template>
   </component>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import stCollapse from '@/views/components/Collapse/collapse.vue'
-import stCollapsePanel from '@/views/components/collapsePanel/collapsePanel.vue'
 export default defineComponent({
   name: 'componentsItem',
-  components: {
-    stCollapse,
-    stCollapsePanel
-  },
   props: {
     outElement: {
       type: Object,
@@ -40,7 +43,8 @@ export default defineComponent({
     showAddPanel() {
       console.log('我出来啦')
     }
-  }
+  },
+  components: {}
   // setup(props, { emit }) {
 
   // },
@@ -48,15 +52,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.input-item {
-  border-color: transparent !important;
-  margin-top: 1px;
-  margin-bottom: 1px;
-  line-height: 28px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  min-height: 28px;
-}
 .control-label {
   position: absolute;
   top: 0;

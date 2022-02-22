@@ -194,15 +194,6 @@ export default defineComponent({
   overflow-y: auto;
   padding-bottom: 80px;
 }
-.input-item {
-  border-color: transparent !important;
-  margin-top: 1px;
-  margin-bottom: 1px;
-  line-height: 28px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-  min-height: 28px;
-}
 .control-label {
   position: absolute;
   top: 0;
