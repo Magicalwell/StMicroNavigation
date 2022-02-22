@@ -7,25 +7,6 @@
     v-model:value="innerValue"
     :placeholder="outElement.placeholder"
   >
-    <!-- <template #header v-if="outElement.slot"> -->
-    <!-- <components-Item
-        :outElement="outElement.slot"
-      ></components-Item> -->
-    <!-- <components-Item
-      v-for="(item,index) in outElement.slot" :key="index"
-        :outElement="outElement.slot"
-        v-model:changeValue="item.value"
-      ></components-Item> -->
-    <!-- </template> -->
-    <template v-if="outElement.children">
-      <template v-for="(item, index) in outElement.children" :key="index">
-        <!-- <components-Item v-for="(item,index) in outElement.children" :key="index" :outElement="item" v-model:changeValue="innerValue"></components-Item> -->
-        <components-Item
-          :outElement="item"
-          v-model:changeValue="item.value"
-        ></components-Item>
-      </template>
-    </template>
   </component>
 </template>
 <script lang="ts">
