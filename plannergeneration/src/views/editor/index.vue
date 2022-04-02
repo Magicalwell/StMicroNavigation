@@ -6,50 +6,6 @@
     @dragover="dragOveritem($event)"
   >
     暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件
-    <!-- <template v-for="item in valueList"> </template> -->
-    <!-- <component
-      v-for="item in valueList"
-      :key="item.id"
-      :is="item.component"
-      class="input-item"
-      auto-size
-      v-model:value="item.value"
-      @mouseenter="insertControlBtn(item, $event)"
-      @mouseleave="deleteControlBtn(item)" 可能hover错了对象，导致鼠标无法挪到操作按钮上面
-      ------------------------
-      ------------------------
-      暂时把按钮放在组件的item中去，因为无法解决节流，按钮跟随拖动移动
-    /> -->
-    <!-- <div class="control-label" id="controllabel" @dragstart="dragStartItem($event)" :draggable="true">
-      <transition-group name="fade-btn-label">
-        <div
-          style="position: absolute; left: 20px"
-          v-for="item in hoverContainer"
-          :key="item.id"
-          :style="{ top: item.positionY + 'px' }"
-
-        >
-          <plus-outlined class="add-new-element" />
-          <bars-outlined class="move-new-element" :draggable="true"/>
-        </div>
-      </transition-group>
-    </div> -->
-    <a-popover
-      title="组件列表"
-      trigger="click"
-      :overlayStyle="{ width: '300px' }"
-    >
-      <template #content>
-        <a-list
-          size="small"
-          :data-source="componentsList"
-          style="max-height: 200px; overflow-y: auto"
-        >
-          <template #renderItem="{ item }">
-            <a-list-item class="pop-inner-list-item">{{ item }}</a-list-item>
-          </template>
-        </a-list>
-      </template>
       <editor draggable=".item-drag" handle=".move-new-element">
         <template #item="{ element: outElement }">
           <div class="list-group-item">
@@ -64,7 +20,6 @@
           </div>
         </template>
       </editor>
-    </a-popover>
   </div>
 </template>
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <slot name="popmain" > </slot>
+  <slot name="popmain"> </slot>
   <draggable
     :list="list"
     :group="group"
@@ -13,7 +13,6 @@
     animation="300"
     element="div"
   >
-  <h2>222321321</h2>
     <template #item="item">
       <div :class="{ 'item-drag': true }" :data-componentid="item.element.id">
         <slot name="item" v-bind="item"> </slot>
@@ -23,9 +22,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue'
+import { defineComponent, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
+import * as generateBlock from '../../../utils/generateBlock'
 export default defineComponent({
   props: {
     drag: {
@@ -45,6 +45,9 @@ export default defineComponent({
     draggable
   },
   setup() {
+    onMounted(() => {
+      console.log(generateBlock.default.generateBlockType())
+    })
     const store = useStore()
     const list = reactive(store.state.textContainer)
     function test() {
