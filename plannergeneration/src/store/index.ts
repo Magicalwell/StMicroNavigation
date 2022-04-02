@@ -33,25 +33,25 @@ export default createStore({
         value: '',
         title: '输入框'
       },
-      'a-collapse': {
-        component: 'a-collapse',
+      'st-collapse': {
+        component: 'st-collapse',
         placeholder: '请输入内容',
-        slot: {
-          type: 'header',
-          component: 'a-textarea',
-          placeholder: '请输入内容',
-          propValue: { 'auto-size': true },
-          value: '',
-          title: '输入框'
-        },
         propValue: { ghost: true },
         value: '',
         title: '折叠面板',
         children: [
           {
-            component: 'a-collapse-panel',
-            propValue: { header: 'This is panel header 3' },
+            component: 'st-collapse-panel',
+            propValue: {},
             value: '',
+            slot: {
+              type: 'header',
+              component: 'a-textarea',
+              placeholder: '请输入内容',
+              propValue: { 'auto-size': true },
+              value: '',
+              title: '输入框'
+            },
             title: '折叠面板',
             children: [
               {
@@ -69,14 +69,14 @@ export default createStore({
                 title: '输入框'
               },
               {
-                component: 'a-collapse',
+                component: 'st-collapse',
                 propValue: { ghost: true },
                 value: '',
                 title: '折叠面板',
                 children: [
                   {
-                    component: 'a-collapse-panel',
-                    propValue: { header: 'This is panel header 3' },
+                    component: 'st-collapse-panel',
+                    propValue: { },
                     value: '',
                     title: '输入框',
                     children: [
@@ -94,7 +94,7 @@ export default createStore({
             ]
           },
           {
-            component: 'a-collapse-panel',
+            component: 'st-collapse-panel',
             placeholder: '请输入内容',
             propValue: {},
             value: '',
