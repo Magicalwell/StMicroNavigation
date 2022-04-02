@@ -1,8 +1,11 @@
 <template>
   <a-collapse-panel>
-      <template #header v-if="true">
-          <a-textarea auto-size class="input-item"></a-textarea>
-      </template>
+    <template
+      #header
+      v-if="true"
+    >
+      <a-textarea auto-size class="input-item"></a-textarea>
+    </template>
     <slot></slot>
   </a-collapse-panel>
 </template>
@@ -16,6 +19,9 @@ export default defineComponent({
     outElement: {
       type: Object
     }
+  },
+  mounted() {
+    console.log(this.$parent)
   }
 })
 </script>
