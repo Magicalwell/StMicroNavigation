@@ -1,48 +1,32 @@
 <template>
-  <slot name="popmain"> </slot>
-  <draggable
-    :list="list"
-    :group="group"
-    :item-key="itemKey"
-    @start="isDrag = true"
-    @end="test"
-    :sort="true"
-    dragable="true"
-    :move="getdata"
-    @update="updateDatadragEnd"
-    animation="300"
-    element="div"
-  >
-    <template #item="item">
-      <div :class="{ 'item-drag': true }" :data-componentid="item.element.id">
-        <slot name="item" v-bind="item"> </slot>
-      </div>
+  <draggable :list="childComponentList" v-bind="dragOptions" item-key="id">
+    <template #item="{ element }">
+      <components-Item
+        :form-data="formData"
+        :drag-options="dragOptions"
+        :editor-item="element"
+      ></components-Item>
     </template>
   </draggable>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from 'vue'
+import { defineComponent, reactive, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 import * as generateBlock from '../../../utils/generateBlock'
+import componentsItem from '../../layout/components/componentItem/componentsItem.vue'
 export default defineComponent({
+  name: 'elementBox',
   props: {
-    drag: {
-      type: Boolean,
-      default: false
-    },
-    itemKey: {
-      type: String,
-      default: '_vid'
-    },
-    group: {
-      type: Object,
-      default: () => ({ name: 'components' })
+    childComponentList: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
-    draggable
+    draggable,
+    componentsItem
   },
   setup() {
     onMounted(() => {
@@ -54,13 +38,26 @@ export default defineComponent({
       console.log('ceshi')
       console.log(list)
     }
+    const dragOptions = computed(() => {
+      return {
+        animation: 300,
+        group: 'listComponentsGroup',
+        disabled: false,
+        ghostClass: 'ghostItem',
+        draggable: '.draggableItem',
+        tag: 'div',
+        swapThreshold: 0.3
+        // forceFallback: true
+        // fallbackTolerance: 0
+      }
+    })
     function getdata() {
       console.log('跑了')
     }
     function updateDatadragEnd() {
       console.log(111)
     }
-    return { test, getdata, updateDatadragEnd, list }
+    return { test, getdata, updateDatadragEnd, list, dragOptions }
   }
   // computed: {
   //   ...mapState(['textContainer'])
@@ -73,5 +70,9 @@ export default defineComponent({
   position: relative;
   padding-left: 4%;
   padding-right: 3%;
+}
+.ghostItem {
+  opacity: 0.6;
+  background-color: aquamarine;
 }
 </style>

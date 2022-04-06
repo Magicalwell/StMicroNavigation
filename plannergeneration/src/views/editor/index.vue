@@ -6,28 +6,16 @@
     @dragover="dragOveritem($event)"
   >
     暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件
-      <editor draggable=".item-drag" handle=".move-new-element">
-        <template #item="{ element: outElement }">
-          <div class="list-group-item">
-            <components-Item
-              :outElement="outElement"
-              v-model:changeValue="outElement.value"
-            ></components-Item>
-            <div class="control-label">
-              <plus-outlined class="add-new-element" @click="showAddPanel" />
-              <select-outlined class="move-new-element" />
-            </div>
-          </div>
-        </template>
-      </editor>
+    <element-Box :child-component-list="valueList">
+    </element-Box>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, nextTick, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { PlusOutlined, SelectOutlined } from '@ant-design/icons-vue'
-import editor from './elementBox/elementBox.vue'
-import componentsItem from '../layout/components/componentItem/componentsItem.vue'
+// import { PlusOutlined, SelectOutlined } from '@ant-design/icons-vue'
+import elementBox from './elementBox/elementBox.vue'
+// import componentsItem from '../layout/components/componentItem/componentsItem.vue'
 // import { throttle } from 'throttle-debounce-ts'
 export default defineComponent({
   setup() {
@@ -121,10 +109,10 @@ export default defineComponent({
     }
   },
   components: {
-    editor,
-    PlusOutlined,
-    SelectOutlined,
-    componentsItem
+    elementBox
+    // PlusOutlined,
+    // SelectOutlined,
+    // componentsItem
   },
   directives: {}
 })

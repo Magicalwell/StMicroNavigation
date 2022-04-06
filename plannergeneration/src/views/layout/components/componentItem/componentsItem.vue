@@ -1,41 +1,43 @@
 <template>
-  <component
-    :key="outElement.id"
-    :is="outElement.component"
-    class="input-item"
-    v-bind="outElement.propValue"
-    v-model:value="innerValue"
-    :placeholder="outElement.placeholder"
+  <!-- <SchemaField v-bind="attrs"> </SchemaField> -->
+  <h1>1111</h1>
+  <element-box
+    v-if="true"
+    :child-component-list="editorItem.children"
+    :drag-options="dragOptions"
+    :form-data="formData"
   >
-
-    <template v-if="outElement.children">
-      <template v-for="(item, index) in outElement.children" :key="index">
-        <components-Item
-          :outElement="item"
-          v-model:changeValue="item.value"
-        ></components-Item>
-      </template>
-    </template>
-  </component>
+  </element-box>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import elementBox from '../../../editor/elementBox/elementBox.vue'
 export default defineComponent({
   name: 'componentsItem',
   props: {
-    outElement: {
+    editorItem: {
       type: Object,
-      default: null
+      default: () => ({})
     },
-    index: { type: Number, default: null }
+    dragOptions: {
+      type: Object,
+      default: () => ({})
+    },
+    formData: {
+      type: Object,
+      default: () => ({})
+    },
+    formProps: {
+      type: null,
+      default: null
+    }
   },
   computed: {
-    innerValue: {
-      get() {
-        return this.outElement.value
-      },
-      set(newValue: any) {
-        this.$emit('update:changeValue', newValue) // 修改值会互相影响的问题出在这里，应该是emit了同一个changeValue
+    attrs() {
+      return {
+        formProps: this.formProps
+        // globalOptions,
+        // ...editorItem2SchemaFieldProps(this.editorItem, this.formData)
       }
     }
   },
@@ -44,7 +46,9 @@ export default defineComponent({
       console.log('我出来啦')
     }
   },
-  components: {}
+  components: {
+    elementBox
+  }
   // setup(props, { emit }) {
 
   // },
