@@ -2,9 +2,9 @@
   <draggable :list="childComponentList" v-bind="dragOptions" item-key="id">
     <template #item="{ element }">
       <components-Item
-        :form-data="formData"
         :drag-options="dragOptions"
         :editor-item="element"
+        :show-nested-editor="false"
       ></components-Item>
     </template>
   </draggable>
@@ -15,9 +15,8 @@ import { defineComponent, reactive, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 import * as generateBlock from '../../../utils/generateBlock'
-import componentsItem from '../../layout/components/componentItem/componentsItem.vue'
+import componentsItem from './componentsItem.vue'
 export default defineComponent({
-  name: 'elementBox',
   props: {
     childComponentList: {
       type: Array,

@@ -1,19 +1,23 @@
 <template>
-  <!-- <SchemaField v-bind="attrs"> </SchemaField> -->
-  <h1>1111</h1>
-  <element-box
-    v-if="true"
+  <SchemaField v-bind="attrs"></SchemaField>
+  <stoneDragBox
+    v-if="editorItem.children && editorItem.children.length > 0"
     :child-component-list="editorItem.children"
     :drag-options="dragOptions"
     :form-data="formData"
   >
-  </element-box>
+  </stoneDragBox>
 </template>
 <script lang="ts">
-import { defineComponent } from 'vue'
-import elementBox from '../../../editor/elementBox/elementBox.vue'
+import { defineComponent, computed, toRefs } from 'vue'
+import stoneDragBox from './elementBox.vue'
+import SchemaField from '../components/SchemaField.js'
 export default defineComponent({
   name: 'componentsItem',
+  components: {
+    SchemaField,
+    stoneDragBox
+  },
   props: {
     editorItem: {
       type: Object,
@@ -32,26 +36,19 @@ export default defineComponent({
       default: null
     }
   },
-  computed: {
-    attrs() {
-      return {
-        formProps: this.formProps
-        // globalOptions,
-        // ...editorItem2SchemaFieldProps(this.editorItem, this.formData)
-      }
-    }
-  },
-  methods: {
-    showAddPanel() {
-      console.log('我出来啦')
-    }
-  },
-  components: {
-    elementBox
-  }
-  // setup(props, { emit }) {
+  setup(props) {
+    const { editorItem } = toRefs(props)
+    console.log(editorItem)
 
-  // },
+    const attrs = computed(() => {
+      return {
+        editorItem: props.editorItem
+      }
+    })
+    return {
+      attrs
+    }
+  }
 })
 </script>
 

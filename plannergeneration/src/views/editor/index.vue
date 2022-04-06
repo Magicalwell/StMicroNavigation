@@ -6,15 +6,14 @@
     @dragover="dragOveritem($event)"
   >
     暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件
-    <element-Box :child-component-list="valueList">
-    </element-Box>
+    <stoneDragBox :child-component-list="valueList"> </stoneDragBox>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, nextTick, reactive } from 'vue'
 import { useStore } from 'vuex'
 // import { PlusOutlined, SelectOutlined } from '@ant-design/icons-vue'
-import elementBox from './elementBox/elementBox.vue'
+import stoneDragBox from './elementBox/elementBox.vue'
 // import componentsItem from '../layout/components/componentItem/componentsItem.vue'
 // import { throttle } from 'throttle-debounce-ts'
 export default defineComponent({
@@ -31,6 +30,8 @@ export default defineComponent({
     const lastElement = store.state.textContainer
     function generationNewInput() {
       // 检测最后一个元素是否为空，是则focus该元素。否则新增一个空的input放在后面并focus
+      console.log(store.state.textContainer)
+
       console.log(store.state.textContainer)
       if (store.state.textContainer.length === 0 || checkLastElement()) {
         console.log(checkLastElement())
@@ -109,7 +110,7 @@ export default defineComponent({
     }
   },
   components: {
-    elementBox
+    stoneDragBox
     // PlusOutlined,
     // SelectOutlined,
     // componentsItem
