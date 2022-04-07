@@ -43,6 +43,7 @@ export default defineComponent({
     const attrs = computed(() => {
       return {
         editorItem: props.editorItem
+        // 这里考虑自己实现一下，可以看一下参考vue3的代码，editordata是对于vue2进行封装的
       }
     })
     return {
