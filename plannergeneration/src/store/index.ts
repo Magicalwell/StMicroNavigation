@@ -76,7 +76,7 @@ export default createStore({
                 children: [
                   {
                     component: 'st-collapse-panel',
-                    propValue: { },
+                    propValue: {},
                     value: '',
                     title: '输入框',
                     children: [
@@ -103,29 +103,69 @@ export default createStore({
         ]
       }
     },
-    dargActiveItem: { type: '' }
+    dargActiveItem: { type: '' },
+    blockItem: {
+      object: 'block',
+      id: '9bc30ad4-9373-46a5-84ab-0a7845ee52e6',
+      created_time: '2021-03-16T16:31:00.000Z',
+      created_by: {
+        object: 'user',
+        id: 'cb38e95d-00cf-4e7e-adce-974f4a44a547'
+      },
+      last_edited_time: '2021-03-16T16:32:00.000Z',
+      last_edited_by: {
+        object: 'user',
+        id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6'
+      },
+      has_children: false,
+      type: 'to_do',
+      archived: false,
+      to_do: {
+        rich_text: [
+          {
+            type: 'text',
+            text: {
+              content: 'Lacinato kale',
+              link: null
+            },
+            annotations: {
+              bold: false,
+              italic: false,
+              strikethrough: false,
+              underline: false,
+              code: false,
+              color: 'default'
+            },
+            plain_text: 'Lacinato kale',
+            href: null
+          }
+        ],
+        checked: false,
+        color: 'default'
+      }
+    }
   },
   mutations: {
-    ADD_NEW_DEFAULT_INPUT(state) {
+    ADD_NEW_DEFAULT_INPUT(state: any) {
       state.textContainer.push({
         ...state.defaultComponents['a-textarea'],
         id: state.textContainer.length + 1
       })
     },
-    ADD_DARGACTIVEITEM(state, val) {
+    ADD_DARGACTIVEITEM(state: any, val: any) {
       console.log(val)
       state.dargActiveItem.type = val.type
       console.log(state.dargActiveItem)
     }
   },
   getters: {
-    returnComponentType: (state) => {
+    returnComponentType: (state: any) => {
       return state.dargActiveItem
     },
-    addComponentInfo: (state) => {
+    addComponentInfo: (state: any) => {
       return state.defaultComponents
     },
-    componentsValueList: (state) => {
+    componentsValueList: (state: any) => {
       return Object.values(state.defaultComponents)
     }
   },

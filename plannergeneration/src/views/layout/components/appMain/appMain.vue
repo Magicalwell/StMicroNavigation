@@ -12,8 +12,7 @@ export default defineComponent({
   components: {
     appEditor
   },
-  methods: {
-  }
+  methods: {}
 })
 </script>
 
