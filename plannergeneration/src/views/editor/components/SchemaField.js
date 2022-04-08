@@ -18,9 +18,9 @@ export default {
       console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>', fieldComponent)
       return h(resolveComponent(fieldComponent), {
         // 这个地方需要捋一下component_map和resolveComponent方法的关系
-        modelValue: editorItem.value,
+        modelValue: editorItem.created_time,
         'onUpdate:modelValue': function updateFileList(val) {
-          editorItem.value = val
+          editorItem.created_time = val
         }
       })
     }

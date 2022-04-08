@@ -41,11 +41,11 @@ export default defineComponent({
       return {
         animation: 300,
         group: 'listComponentsGroup',
-        disabled: false,
         ghostClass: 'ghostItem',
         draggable: '.draggableItem',
         tag: 'div',
-        swapThreshold: 0.3
+        swapThreshold: 0.3,
+        handle: '.mover'
         // forceFallback: true
         // fallbackTolerance: 0
       }
@@ -71,7 +71,7 @@ export default defineComponent({
   padding-right: 3%;
 }
 .ghostItem {
-  opacity: 0.6;
-  background-color: aquamarine;
+  opacity: 0.6 !important;
+  background-color: aquamarine !important;
 }
 </style>

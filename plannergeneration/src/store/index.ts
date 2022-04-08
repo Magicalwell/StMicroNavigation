@@ -4,25 +4,84 @@ export default createStore({
   state: {
     textContainer: [
       {
-        component: 'a-textarea',
-        placeholder: '请输入内容',
-        value: '这是一段测试的文本',
-        propValue: { 'auto-size': true },
-        id: 1
+        object: 'block',
+        id: '9bc30ad4-9373-46a5-84ab-0a7845ee52e6',
+        created_time: '111',
+        created_by: {
+          object: 'user',
+          id: 'cb38e95d-00cf-4e7e-adce-974f4a44a547'
+        },
+        last_edited_time: '2021-03-16T16:32:00.000Z',
+        last_edited_by: {
+          object: 'user',
+          id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6'
+        },
+        has_children: false,
+        type: 'a-textarea',
+        archived: false,
+        to_do: {
+          rich_text: [
+            {
+              type: 'text',
+              text: {
+                content: 'Lacinato kale',
+                link: null
+              },
+              annotations: {
+                bold: false,
+                italic: false,
+                strikethrough: false,
+                underline: false,
+                code: false,
+                color: 'default'
+              },
+              plain_text: 'Lacinato kale',
+              href: null
+            }
+          ],
+          checked: false,
+          color: 'default'
+        }
       },
       {
-        component: 'a-textarea',
-        placeholder: '请输入内容',
-        value: '这是一段测试的文本2',
-        propValue: { 'auto-size': true },
-        id: 2
-      },
-      {
-        component: 'a-textarea',
-        placeholder: '请输入内容',
-        value: '这是一段测试的文本3',
-        propValue: { 'auto-size': true },
-        id: 3
+        object: 'block',
+        id: '9bc30ad4-9373-46a5-84ab-0a7845ee52e6',
+        created_time: '2021-03-16T16:31:00.000Z',
+        created_by: {
+          object: 'user',
+          id: 'cb38e95d-00cf-4e7e-adce-974f4a44a547'
+        },
+        last_edited_time: '2021-03-16T16:32:00.000Z',
+        last_edited_by: {
+          object: 'user',
+          id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6'
+        },
+        has_children: false,
+        type: 'a-textarea',
+        archived: false,
+        to_do: {
+          rich_text: [
+            {
+              type: 'text',
+              text: {
+                content: 'Lacinato kale',
+                link: null
+              },
+              annotations: {
+                bold: false,
+                italic: false,
+                strikethrough: false,
+                underline: false,
+                code: false,
+                color: 'default'
+              },
+              plain_text: 'Lacinato kale',
+              href: null
+            }
+          ],
+          checked: false,
+          color: 'default'
+        }
       }
     ],
     defaultComponents: {

@@ -40,14 +40,14 @@ export function getUiField(FIELDS_MAP, { editorItem = {}, uiSchema = {} }) {
   //     }
   //   }
   // 类型默认 field
-  const fieldCtor = FIELDS_MAP[editorItem.component]
+  const fieldCtor = FIELDS_MAP[editorItem.type]
   if (fieldCtor) {
     return {
       field: fieldCtor
     }
   } else {
     return {
-      field: editorItem.component
+      field: editorItem.type
     }
   }
   //   // 如果包含 oneOf anyOf 返回空不异常
