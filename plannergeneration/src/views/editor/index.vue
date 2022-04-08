@@ -14,10 +14,11 @@ import { defineComponent, ref, nextTick, reactive } from 'vue'
 import { useStore } from 'vuex'
 // import { PlusOutlined, SelectOutlined } from '@ant-design/icons-vue'
 import stoneDragBox from './elementBox/elementBox.vue'
-// import componentsItem from '../layout/components/componentItem/componentsItem.vue'
-// import { throttle } from 'throttle-debounce-ts'
+import { generatePage } from '../../utils/generateBlock'
 export default defineComponent({
   setup() {
+    const pageContainer = generatePage()
+
     const hoverContainer = ref([])
     const mainRef = ref([])
     const store = useStore()
@@ -37,9 +38,6 @@ export default defineComponent({
         console.log(checkLastElement())
         store.commit('ADD_NEW_DEFAULT_INPUT')
       }
-      // nextTick(() => {
-      //   (mainRef.value[mainRef.value.length - 1] as any).focus()
-      // })
     }
     function checkLastElement() {
       if (lastElement[lastElement.length - 1].value !== '') {
@@ -105,6 +103,7 @@ export default defineComponent({
       dragOveritem, // h5拖拽事件，没用到
       drogitem, // h5拖拽事件，没用到
       showAddPanel,
+      pageContainer,
       valueList: ref(store.state.textContainer),
       componentsList: reactive(store.getters.componentsValueList)
     }

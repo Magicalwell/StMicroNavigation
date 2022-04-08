@@ -8,14 +8,21 @@ export default {
   functional: true,
   setup(props) {
     return () => {
-      console.log(props)
+      console.log(props, '-------======================')
+      const { editorItem } = { ...props }
       const curProps = { ...props }
       const { field: fieldComponent, fieldProps } = getUiField(
         FIELDS_MAP,
         curProps
       )
-      console.log(111111, fieldComponent)
-      return h(resolveComponent(fieldComponent), {})
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>', fieldComponent)
+      return h(resolveComponent(fieldComponent), {
+        // 这个地方需要捋一下component_map和resolveComponent方法的关系
+        modelValue: editorItem.value,
+        'onUpdate:modelValue': function updateFileList(val) {
+          editorItem.value = val
+        }
+      })
     }
   }
 }

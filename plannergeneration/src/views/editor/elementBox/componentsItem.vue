@@ -37,9 +37,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { editorItem } = toRefs(props)
-    console.log(editorItem)
-
     const attrs = computed(() => {
       return {
         editorItem: props.editorItem

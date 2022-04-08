@@ -14,7 +14,7 @@
 import { defineComponent, reactive, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
-import * as generateBlock from '../../../utils/generateBlock'
+import { generateBlockType } from '../../../utils/generateBlock'
 import componentsItem from './componentsItem.vue'
 export default defineComponent({
   props: {
@@ -29,7 +29,7 @@ export default defineComponent({
   },
   setup() {
     onMounted(() => {
-      console.log(generateBlock.default.generateBlockType())
+      console.log(generateBlockType())
     })
     const store = useStore()
     const list = reactive(store.state.textContainer)
