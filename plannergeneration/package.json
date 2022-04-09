@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
-    "ant-design-vue": "^2.2.8",
+    "ant-design-vue": "^3.1.1",
     "core-js": "^3.6.5",
     "throttle-debounce-ts": "^1.1.1",
     "vue": "^3.0.0",

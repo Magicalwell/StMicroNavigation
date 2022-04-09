@@ -5,6 +5,7 @@
         :drag-options="dragOptions"
         :editor-item="element"
         :show-nested-editor="false"
+        :globalOptions="globalOptions"
       ></components-Item>
     </template>
   </draggable>
@@ -21,6 +22,10 @@ export default defineComponent({
     childComponentList: {
       type: Array,
       default: () => []
+    },
+    globalOptions: {
+      type: Object,
+      default: () => ({})
     }
   },
   components: {

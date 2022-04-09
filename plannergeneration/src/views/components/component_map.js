@@ -38,7 +38,11 @@ const widgetComponents = {
   //     }
   //   },
   //   TextAreaWidget: modelValueComponent('a-textarea')
-  'a-textarea': modelValueComponent('a-textarea')
+  paragraph: modelValueComponent('a-textarea', {
+    // 原版输入框是可以支持富文本的，这个需要自己封装组件，计划后期完善
+    'auto-size': true,
+    bordered: false
+  })
   //   SwitchWidget: modelValueComponent('a-switch', {
   //     model: 'checked'
   //   })

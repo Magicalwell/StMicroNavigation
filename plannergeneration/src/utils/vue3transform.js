@@ -26,7 +26,9 @@ export function resolveComponent(component) {
   return component
 }
 export function getUiField(FIELDS_MAP, { editorItem = {}, uiSchema = {} }) {
-  console.log(editorItem)
+  // 要做的事情：1.根据传入的type，解析block的结构返回里面的text
+  const { type } = editorItem
+
   //   const field = schema['ui:field'] || uiSchema['ui:field']
   // vue 组件，或者已注册的组件名
   //   if (
@@ -43,7 +45,13 @@ export function getUiField(FIELDS_MAP, { editorItem = {}, uiSchema = {} }) {
   const fieldCtor = FIELDS_MAP[editorItem.type]
   if (fieldCtor) {
     return {
-      field: fieldCtor
+      field: fieldCtor,
+      fieldProps: {
+        modelValue: editorItem[type].rich_text,
+        'onUpdate:modelValue': function updateFileList(val) {
+          editorItem[type].rich_text = val
+        }
+      }
     }
   } else {
     return {
@@ -61,7 +69,10 @@ export function getUiField(FIELDS_MAP, { editorItem = {}, uiSchema = {} }) {
   //   throw new Error(`不支持的field类型 ${schema.type}`)
 }
 // 转换antdv、naive等非moduleValue的v-model组件
-export const modelValueComponent = (component, { model = 'value' } = {}) =>
+export const modelValueComponent = (
+  component,
+  { model = 'value', ...defaultUiOptions } = {}
+) =>
   defineComponent({
     inheritAttrs: false,
     setup(props, { attrs, slots }) {
@@ -79,6 +90,7 @@ export const modelValueComponent = (component, { model = 'value' } = {}) =>
           {
             [model]: value,
             [`onUpdate:${model}`]: onUpdateValue,
+            ...defaultUiOptions,
             ...otherAttrs
           },
           slots

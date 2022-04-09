@@ -6,7 +6,8 @@
     @dragover="dragOveritem($event)"
   >
     暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件
-    <stoneDragBox :child-component-list="valueList"> </stoneDragBox>
+    <stoneDragBox :child-component-list="valueList" :globalOptions="userGlobalOptions">
+    </stoneDragBox>
   </div>
 </template>
 <script lang="ts">
@@ -105,6 +106,7 @@ export default defineComponent({
       showAddPanel,
       pageContainer,
       valueList: ref(store.state.textContainer),
+      userGlobalOptions: ref(store.state.userGlobalOptions),
       componentsList: reactive(store.getters.componentsValueList)
     }
   },

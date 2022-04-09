@@ -17,28 +17,10 @@ export default createStore({
           id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6'
         },
         has_children: false,
-        type: 'a-textarea',
+        type: 'paragraph',
         archived: false,
-        to_do: {
-          rich_text: [
-            {
-              type: 'text',
-              text: {
-                content: 'Lacinato kale',
-                link: null
-              },
-              annotations: {
-                bold: false,
-                italic: false,
-                strikethrough: false,
-                underline: false,
-                code: false,
-                color: 'default'
-              },
-              plain_text: 'Lacinato kale',
-              href: null
-            }
-          ],
+        paragraph: {
+          rich_text: 'Lacinato kale',
           checked: false,
           color: 'default'
         }
@@ -57,28 +39,29 @@ export default createStore({
           id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6'
         },
         has_children: false,
-        type: 'a-textarea',
+        type: 'paragraph',
         archived: false,
-        to_do: {
-          rich_text: [
-            {
-              type: 'text',
-              text: {
-                content: 'Lacinato kale',
-                link: null
-              },
-              annotations: {
-                bold: false,
-                italic: false,
-                strikethrough: false,
-                underline: false,
-                code: false,
-                color: 'default'
-              },
-              plain_text: 'Lacinato kale',
-              href: null
-            }
-          ],
+        paragraph: {
+          // rich_text: [
+          //   {
+          //     type: 'text',
+          //     text: {
+          //       content: 'Lacinato kale',
+          //       link: null
+          //     },
+          //     annotations: {
+          //       bold: false,
+          //       italic: false,
+          //       strikethrough: false,
+          //       underline: false,
+          //       code: false,
+          //       color: 'default'
+          //     },
+          //     plain_text: 'Lacinato kale',
+          //     href: null
+          //   }
+          // ],
+          rich_text: 'Lacinato kale',
           checked: false,
           color: 'default'
         }
@@ -202,6 +185,9 @@ export default createStore({
         checked: false,
         color: 'default'
       }
+    },
+    userGlobalOptions: {
+      paragraph: {}
     }
   },
   mutations: {
