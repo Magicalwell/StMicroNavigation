@@ -1,19 +1,17 @@
 .ant-collapse.input-item {
   background-color: #fff;
 }
-.input-item {
-  border-color: transparent !important;
-  margin: 2px !important;
-  line-height: 28px !important;
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-  min-height: 28px !important;
-}
 .ant-collapse-content > .ant-collapse-content-box {
   padding: 0px !important;
 }
 .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 16px 0 40px !important;
 }
-
+.ant-input.ant-input-borderless{
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 30px;
+  font-size: 14px;
+  min-height: 30px;
+}
 // 上面样式为覆盖ant-design的默认样式

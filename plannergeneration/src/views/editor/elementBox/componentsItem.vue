@@ -1,22 +1,23 @@
 <template>
   <div class="draggableItem">
     <span class="operation-btn">
-      <plus-outlined />
-      <bars-outlined class="mover" />
+      <plus-outlined class="btn-item" />
+      <bars-outlined class="mover btn-item" />
     </span>
     <SchemaField v-bind="attrs"></SchemaField>
-    <stoneDragBox
+    <!-- 暂时隐藏，目前只有toggle会有children -->
+    <!-- <stone-Dragbox
       v-if="editorItem.children && editorItem.children.length > 0"
       :child-component-list="editorItem.children"
       :drag-options="dragOptions"
       :form-data="formData"
     >
-    </stoneDragBox>
+    </stone-Dragbox> -->
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed, toRefs } from 'vue'
-import stoneDragBox from './elementBox.vue'
+import { defineComponent, computed } from 'vue'
+// import stoneDragbox from './elementBox.vue'
 import SchemaField from '../components/SchemaField.js'
 import { editorItem2SchemaFieldProps } from '../../../utils/editorData'
 import { PlusOutlined, BarsOutlined } from '@ant-design/icons-vue'
@@ -24,7 +25,7 @@ export default defineComponent({
   name: 'componentsItem',
   components: {
     SchemaField,
-    stoneDragBox,
+    // stoneDragbox,
     PlusOutlined,
     BarsOutlined
   },
@@ -69,12 +70,26 @@ export default defineComponent({
 <style lang="scss" scoped>
 .draggableItem {
   position: relative;
-  padding-left: 50px;
+  padding-left: 40px;
+  &:hover {
+    .operation-btn {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
 }
 .operation-btn {
+  visibility: hidden;
+  opacity: 0;
   position: absolute;
-  top: 0;
+  top: 4px;
   left: 0;
+  display: flex;
   z-index: 99;
+  transition: all 0.3s ease;
+  .btn-item {
+    padding: 4px;
+    cursor: pointer;
+  }
 }
 </style>

@@ -2,9 +2,11 @@ const blockItemMap = new Map([
   [1, 'head1'],
   [2, 'head2'],
   [3, 'head3'],
-  [4, 'head4']
+  [4, 'head4'],
+  [5, 'paragraph'],
+  [6, 'toggle']
 ])
-export function guid(): string {
+export function guid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0
     const v = c === 'x' ? r : (r & 0x3) | 0x8
@@ -12,6 +14,7 @@ export function guid(): string {
   })
 }
 
-export function getBlockMap(blockId: any): any {
+export function getBlockMap(blockId) {
   return blockItemMap.get(blockId)
 }
+export default blockItemMap

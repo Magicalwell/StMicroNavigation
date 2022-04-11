@@ -1,9 +1,9 @@
 import { guid, getBlockMap } from './index'
 
-export function generateBlockType(blockId = 1): any {
+export function generateBlockType(blockId = 1) {
   const blockItem = {
     object: 'block',
-    id: guid(),
+    id: () => guid(),
     created_time: new Date().valueOf(),
     created_by: {
       object: 'user'
@@ -16,46 +16,28 @@ export function generateBlockType(blockId = 1): any {
     },
     has_children: false,
     type: getBlockMap(blockId),
-    archived: false,
-    to_do: {
-      rich_text: [
-        {
-          type: 'text',
-          text: {
-            content: 'Lacinato kale',
-            link: null
-          },
-          annotations: {
-            bold: false,
-            italic: false,
-            strikethrough: false,
-            underline: false,
-            code: false,
-            color: 'default'
-          },
-          plain_text: 'Lacinato kale',
-          href: null
-        }
-      ],
-      checked: false,
-      color: 'default'
-    }
+    archived: false
+  }
+  blockItem[getBlockMap(blockId)] = {
+    rich_text: '',
+    checked: false,
+    color: 'default'
   }
   return blockItem
 }
-export function generatePage(): any {
+export function generatePage() {
   const pageItem = {
     object: 'page', // 固定为page，里面的子组件为children数组
-    id: 'b55c9c91-384d-452b-81db-d1ef79372b75',
+    id: guid(),
     created_time: '2020-03-17T19:10:04.968Z',
     last_edited_time: '2020-03-17T21:49:37.913Z',
     created_by: {
       object: 'user',
-      id: 'ee5f0f84-409a-440f-983a-a5315961c6e4' // 暂时不做改动
+      id: guid() // 暂时不做改动
     },
     last_edited_by: {
       object: 'user',
-      id: 'ee5f0f84-409a-440f-983a-a5315961c6e4' // 暂时不做改动
+      id: guid() // 暂时不做改动
     },
     // parent: {
     //   // 暂时不清楚该字段的用处，推测是区分page的归属
@@ -211,16 +193,26 @@ export function generatePage(): any {
     },
     children: [
       {
-        component: 'a-input'
-      },
-      {
-        component: 'a-input'
-      },
-      {
-        component: 'a-input'
-      },
-      {
-        component: 'a-textarea'
+        object: 'block',
+        id: () => guid(),
+        created_time: '12321312312',
+        created_by: {
+          object: 'user'
+          // id: 'cb38e95d-00cf-4e7e-adce-974f4a44a547' 暂时不做多人编辑 只显示谁编辑了
+        },
+        last_edited_time: '12321312312',
+        last_edited_by: {
+          object: 'user'
+          // id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6' 暂时不做多人编辑 只显示谁编辑了
+        },
+        has_children: false,
+        type: 'paragraph',
+        archived: false,
+        paragraph: {
+          rich_text: 'Lacinato kal2312321312e',
+          checked: false,
+          color: 'default'
+        }
       }
     ]
   }

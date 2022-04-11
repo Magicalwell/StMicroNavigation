@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
-
+import { generatePage, generateBlockType } from '../utils/generateBlock'
+import { guid } from '../utils'
 export default createStore({
   state: {
     textContainer: [
@@ -145,7 +146,7 @@ export default createStore({
         ]
       }
     },
-    dargActiveItem: { type: '' },
+    dargActiveItem: {},
     blockItem: {
       object: 'block',
       id: '9bc30ad4-9373-46a5-84ab-0a7845ee52e6',
@@ -188,19 +189,43 @@ export default createStore({
     },
     userGlobalOptions: {
       paragraph: {}
-    }
+    },
+    pageBox: {}
   },
   mutations: {
-    ADD_NEW_DEFAULT_INPUT(state: any) {
-      state.textContainer.push({
-        ...state.defaultComponents['a-textarea'],
-        id: state.textContainer.length + 1
-      })
+    ADD_NEW_DEFAULT_INPUT(state: any, data) {
+      if (!data) {
+        state.pageBox.children.push({
+          object: 'block',
+          id: guid(),
+          created_time: new Date().valueOf(),
+          created_by: {
+            object: 'user',
+            id: 'cb38e95d-00cf-4e7e-adce-974f4a44a547'
+          },
+          last_edited_time: new Date().valueOf(),
+          last_edited_by: {
+            object: 'user',
+            id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6'
+          },
+          has_children: false,
+          type: 'paragraph',
+          archived: false,
+          paragraph: {
+            rich_text: '',
+            checked: false,
+            color: 'default'
+          }
+        })
+      } else {
+        state.pageBox.children.push(generateBlockType(data))
+      }
     },
     ADD_DARGACTIVEITEM(state: any, val: any) {
-      console.log(val)
-      state.dargActiveItem.type = val.type
-      console.log(state.dargActiveItem)
+      state.dargActiveItem = val
+    },
+    SET_DEFAULT_PAGE(state) {
+      state.pageBox = generatePage()
     }
   },
   getters: {

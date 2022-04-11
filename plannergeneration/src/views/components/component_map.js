@@ -1,4 +1,5 @@
 import { modelValueComponent } from '../../utils/vue3transform'
+import ToggleWidget from '../components/Collapse/index'
 const widgetComponents = {
   //   CheckboxesWidget,
   //   RadioWidget,
@@ -42,7 +43,8 @@ const widgetComponents = {
     // 原版输入框是可以支持富文本的，这个需要自己封装组件，计划后期完善
     'auto-size': true,
     bordered: false
-  })
+  }),
+  toggle: ToggleWidget
   //   SwitchWidget: modelValueComponent('a-switch', {
   //     model: 'checked'
   //   })

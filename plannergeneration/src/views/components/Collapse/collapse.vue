@@ -1,9 +1,20 @@
 <template>
-  <a-collapse>
+  <a-collapse ghost>
     <!-- <template #expandIcon="{ isActive }">
       <caret-right-outlined :rotate="isActive ? 90 : 0" />
     </template> -->
-    <slot></slot>
+    <a-collapse-panel>
+      <template #header>
+        <a-textarea auto-size :bordered="false"></a-textarea>
+      </template>
+      <!-- <stone-Dragbox
+        v-if="editorItem.children && editorItem.children.length > 0"
+        :child-component-list="editorItem.children"
+        :drag-options="dragOptions"
+        :form-data="formData"
+      >
+      </stone-Dragbox> -->
+    </a-collapse-panel>
   </a-collapse>
 </template>
 
@@ -12,10 +23,13 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'st-collapse',
   props: {
-    outElement: {
+    editorItem: {
       type: Object,
-      default: null
+      default: () => ({})
     }
+  },
+  setup(props) {
+    console.log(props.editorItem)
   }
 })
 </script>

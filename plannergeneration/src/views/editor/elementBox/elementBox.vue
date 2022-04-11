@@ -15,9 +15,10 @@
 import { defineComponent, reactive, onMounted, computed } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
-import { generateBlockType } from '../../../utils/generateBlock'
+import { generateBlockType } from '../../../utils/generateBlock.js'
 import componentsItem from './componentsItem.vue'
 export default defineComponent({
+  name: 'stoneDragbox',
   props: {
     childComponentList: {
       type: Array,
@@ -50,8 +51,9 @@ export default defineComponent({
         draggable: '.draggableItem',
         tag: 'div',
         swapThreshold: 0.3,
-        handle: '.mover'
-        // forceFallback: true
+        handle: '.mover',
+        forceFallback: true,
+        dragClass: 'dragClass'
         // fallbackTolerance: 0
       }
     })
@@ -78,5 +80,8 @@ export default defineComponent({
 .ghostItem {
   opacity: 0.6 !important;
   background-color: aquamarine !important;
+}
+.dragClass {
+  background-color: cadetblue !important;
 }
 </style>

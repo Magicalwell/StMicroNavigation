@@ -3,28 +3,41 @@
     <div style="padding: 10px">
       <div
         class="tool-item"
-        v-for="(item, index) in defaultComponents"
-        :key="index"
+        v-for="item in defaultComponents"
+        :key="item.id"
         :draggable="true"
         @dragstart="saveDragType(item)"
       >
-        <p>{{ item.title }}</p>
+        <p>{{ item.value }}</p>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue'
-import { mapState, mapMutations } from 'vuex'
+import { useStore } from 'vuex'
+import blockItemMap from '../../../../utils/index'
 export default defineComponent({
-  computed: {
-    ...mapState(['defaultComponents'])
-  },
-  methods: {
-    ...mapMutations(['ADD_DARGACTIVEITEM']),
-    saveDragType(item: any) {
-      this.ADD_DARGACTIVEITEM({ type: item.component })
+  setup() {
+    const store = useStore()
+    console.log([...blockItemMap.entries()])
+    const defaultComponents = [...blockItemMap.entries()].map(
+      ([key, value]) => {
+        return {
+          id: key,
+          value: value
+        }
+      }
+    )
+    function saveDragType(item) {
+      store.commit('ADD_DARGACTIVEITEM', item)
+      console.log(item)
+    }
+    console.log(defaultComponents)
+    return {
+      defaultComponents,
+      saveDragType
     }
   }
 })
