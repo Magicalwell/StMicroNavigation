@@ -23,6 +23,33 @@ export function generateBlockType(blockId = 1) {
     checked: false,
     color: 'default'
   }
+  if (blockId === 6) {
+    blockItem.children = [
+      {
+        object: 'block',
+        id: () => guid(),
+        created_time: '12321312312',
+        created_by: {
+          object: 'user'
+          // id: 'cb38e95d-00cf-4e7e-adce-974f4a44a547' 暂时不做多人编辑 只显示谁编辑了
+        },
+        last_edited_time: '12321312312',
+        last_edited_by: {
+          object: 'user'
+          // id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6' 暂时不做多人编辑 只显示谁编辑了
+        },
+        has_children: false,
+        type: 'paragraph',
+        archived: false,
+        paragraph: {
+          rich_text: 'tada!',
+          checked: false,
+          color: 'default'
+        }
+      }
+    ]
+  }
+  console.log(blockItem, 'testtesttesttesttesttesttesttest')
   return blockItem
 }
 export function generatePage() {

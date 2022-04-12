@@ -43,6 +43,7 @@ export function getUiField(FIELDS_MAP, { editorItem = {}, uiSchema = {} }) {
   //   }
   // 类型默认 field
   const fieldCtor = FIELDS_MAP[editorItem.type]
+  console.log(fieldCtor, 'fieldCtorfieldCtorfieldCtorfieldCtorfieldCtor')
   if (fieldCtor) {
     return {
       field: fieldCtor,
