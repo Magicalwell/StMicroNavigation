@@ -3,7 +3,7 @@ import { guid, getBlockMap } from './index'
 export function generateBlockType(blockId = 1) {
   const blockItem = {
     object: 'block',
-    id: () => guid(),
+    id: guid(),
     created_time: new Date().valueOf(),
     created_by: {
       object: 'user'
@@ -27,7 +27,7 @@ export function generateBlockType(blockId = 1) {
     blockItem.children = [
       {
         object: 'block',
-        id: () => guid(),
+        id: guid(),
         created_time: '12321312312',
         created_by: {
           object: 'user'

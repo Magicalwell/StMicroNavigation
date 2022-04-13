@@ -1,13 +1,12 @@
 <template>
-  <a-collapse ghost :key="selfData.id">
+  <a-collapse ghost @change="changeActivekey" v-model:activeKey="activeKey">
     <!-- <template #expandIcon="{ isActive }">
       <caret-right-outlined :rotate="isActive ? 90 : 0" />
     </template> -->
     <template #expandIcon="{ isActive }">
-      {{ isActive }}
       <caret-right-outlined :rotate="isActive ? 90 : 0" />
     </template>
-    <a-collapse-panel>
+    <a-collapse-panel :key="selfData.id">
       <template #header>
         <a-textarea
           auto-size
@@ -43,18 +42,25 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const activeKey = ref(false)
     onMounted(() => {
       console.log('我重新渲染了')
     })
+    const activeKey = ref([])
     console.log(
       props.editorItem.children,
       'editorItemeditorItemeditorItemeditorItem'
     )
     const { editorItem: selfData } = toRefs(props)
+    console.log(props.editorItem, 'selfDataselfDataselfDataselfData')
+
+    // const activeKey = selfData.id
+    const changeActivekey = (key: string) => {
+      console.log(key, 'keykeykeykeykeykey')
+    }
     return {
       activeKey,
-      selfData
+      selfData,
+      changeActivekey
     }
   },
   components: {

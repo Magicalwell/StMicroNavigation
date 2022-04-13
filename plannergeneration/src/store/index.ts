@@ -223,7 +223,7 @@ export default createStore({
       children: [
         {
           object: 'block',
-          id: () => guid(),
+          id: guid(),
           created_time: '12321312312',
           created_by: {
             object: 'user'
