@@ -1,28 +1,39 @@
 <template>
-  <a-collapse ghost>
+  <a-collapse ghost :key="selfData.id">
     <!-- <template #expandIcon="{ isActive }">
       <caret-right-outlined :rotate="isActive ? 90 : 0" />
     </template> -->
     <template #expandIcon="{ isActive }">
+      {{ isActive }}
       <caret-right-outlined :rotate="isActive ? 90 : 0" />
     </template>
     <a-collapse-panel>
       <template #header>
-        <a-textarea auto-size :bordered="false"></a-textarea>
+        <a-textarea
+          auto-size
+          :bordered="false"
+          v-model:value="selfData.toggle.rich_text"
+        ></a-textarea>
       </template>
-      <stone-Dragbox
-        v-if="editorItem.children && editorItem.children.length > 0"
-        :child-component-list="editorItem.children"
+      <NestedEditor
+        v-if="selfData.children && selfData.children.length > 0"
+        :child-component-list="selfData.children"
       >
-      </stone-Dragbox>
+      </NestedEditor>
     </a-collapse-panel>
   </a-collapse>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import {
+  defineComponent,
+  ref,
+  toRefs,
+  defineAsyncComponent,
+  onMounted
+} from 'vue'
 import { CaretRightOutlined } from '@ant-design/icons-vue'
-import stoneDragbox from '../../editor/elementBox/elementBox.vue'
+// import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
 export default defineComponent({
   name: 'st-collapse',
   props: {
@@ -33,17 +44,24 @@ export default defineComponent({
   },
   setup(props) {
     const activeKey = ref(false)
+    onMounted(() => {
+      console.log('我重新渲染了')
+    })
     console.log(
       props.editorItem.children,
       'editorItemeditorItemeditorItemeditorItem'
     )
+    const { editorItem: selfData } = toRefs(props)
     return {
-      activeKey
+      activeKey,
+      selfData
     }
   },
   components: {
     CaretRightOutlined,
-    stoneDragbox
+    NestedEditor: defineAsyncComponent(
+      () => import('../../editor/elementBox/NestedEditor.vue')
+    )
   }
 })
 </script>

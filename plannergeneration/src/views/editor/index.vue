@@ -6,18 +6,18 @@
     @dragover="dragOveritem($event)"
   >
     暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件;待办：1.回车会另外新加入一行，并接在输入行之后，自动focus。
-    2.优化组件的点击、拖拽生成逻辑;3.左侧的工具栏计划也用vuedraggable组件;4.修改绑定字段，不一定每一个都是rich_text 5.优化hover的方法 6.从toggle内部移出会重置状态和输入的值
-    <stone-Dragbox
+    2.优化组件的点击、拖拽生成逻辑;3.左侧的工具栏计划也用vuedraggable组件;4.修改绑定字段，不一定每一个都是rich_text 5.优化hover的方法 6.从toggle内部移出会重置状态和输入的值(已解决) 7.当两个group
+    拖拽时，会重新渲染组件的状态
+    <NestedEditor
       :child-component-list="valueList.children"
-      :globalOptions="userGlobalOptions"
     >
-    </stone-Dragbox>
+    </NestedEditor>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import stoneDragbox from './elementBox/elementBox.vue'
+import NestedEditor from './elementBox/NestedEditor.vue'
 export default defineComponent({
   setup() {
     const hoverContainer = ref([])
@@ -72,13 +72,13 @@ export default defineComponent({
       dragOveritem, // h5拖拽事件，没用到
       drogitem, // h5拖拽事件，没用到
       showAddPanel,
-      valueList: ref(store.state.pageBox),
+      valueList: reactive(store.state.pageBox),
       userGlobalOptions: ref(store.state.userGlobalOptions),
       componentsList: reactive(store.getters.componentsValueList)
     }
   },
   components: {
-    stoneDragbox
+    NestedEditor
   },
   directives: {}
 })

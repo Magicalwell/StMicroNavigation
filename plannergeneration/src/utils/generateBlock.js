@@ -19,7 +19,7 @@ export function generateBlockType(blockId = 1) {
     archived: false
   }
   blockItem[getBlockMap(blockId)] = {
-    rich_text: '',
+    rich_text: 'tada!',
     checked: false,
     color: 'default'
   }

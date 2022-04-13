@@ -12,7 +12,7 @@
     "ant-design-vue": "^3.1.1",
     "core-js": "^3.6.5",
     "throttle-debounce-ts": "^1.1.1",
-    "vue": "^3.0.0",
+    "vue": "^3.2.31",
     "vue-router": "^4.0.0-0",
     "vuedraggable": "^4.1.0",
     "vuex": "^4.0.0-0"
@@ -26,7 +26,7 @@
     "@vue/cli-plugin-typescript": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/compiler-sfc": "^3.2.32",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^7.0.0",
     "eslint": "^6.7.2",

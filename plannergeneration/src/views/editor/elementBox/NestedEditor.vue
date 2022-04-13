@@ -33,15 +33,13 @@ export default defineComponent({
     draggable,
     componentsItem
   },
-  setup() {
+  setup(props) {
     onMounted(() => {
       console.log(generateBlockType())
     })
-    const store = useStore()
-    const list = reactive(store.state.textContainer)
+
     function test() {
       console.log('ceshi')
-      console.log(list)
     }
     const dragOptions = computed(() => {
       return {
@@ -63,7 +61,9 @@ export default defineComponent({
     function updateDatadragEnd() {
       console.log(111)
     }
-    return { test, getdata, updateDatadragEnd, list, dragOptions }
+    console.log(props.childComponentList, 'propspropspropspropspropspropsprops')
+
+    return { test, getdata, updateDatadragEnd, dragOptions }
   }
   // computed: {
   //   ...mapState(['textContainer'])

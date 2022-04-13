@@ -190,7 +190,61 @@ export default createStore({
     userGlobalOptions: {
       paragraph: {}
     },
-    pageBox: {}
+    pageBox: {
+      object: 'page', // 固定为page，里面的子组件为children数组
+      id: guid(),
+      created_time: '2020-03-17T19:10:04.968Z',
+      last_edited_time: '2020-03-17T21:49:37.913Z',
+      created_by: {
+        object: 'user',
+        id: guid() // 暂时不做改动
+      },
+      last_edited_by: {
+        object: 'user',
+        id: guid() // 暂时不做改动
+      },
+      // parent: {
+      //   // 暂时不清楚该字段的用处，推测是区分page的归属
+      //   type: 'database_id',
+      //   database_id: '48f8fee9-cd79-4180-bc2f-ec0398253067'
+      // },
+      archived: false, // 页面是否在编辑
+      url: 'https://www.notion.so/Avocado-b55c9c91384d452b81dbd1ef79372b75', // 页面的url
+      icon: {
+        type: 'emoji',
+        emoji: '🎉'
+      },
+      cover: {
+        type: 'external',
+        external: {
+          url: 'https://website.domain/images/image.png'
+        }
+      },
+      children: [
+        {
+          object: 'block',
+          id: () => guid(),
+          created_time: '12321312312',
+          created_by: {
+            object: 'user'
+            // id: 'cb38e95d-00cf-4e7e-adce-974f4a44a547' 暂时不做多人编辑 只显示谁编辑了
+          },
+          last_edited_time: '12321312312',
+          last_edited_by: {
+            object: 'user'
+            // id: 'e79a0b74-3aba-4149-9f74-0bb5791a6ee6' 暂时不做多人编辑 只显示谁编辑了
+          },
+          has_children: false,
+          type: 'paragraph',
+          archived: false,
+          paragraph: {
+            rich_text: 'Lacinato kal2312321312e',
+            checked: false,
+            color: 'default'
+          }
+        }
+      ]
+    }
   },
   mutations: {
     ADD_NEW_DEFAULT_INPUT(state: any, data) {

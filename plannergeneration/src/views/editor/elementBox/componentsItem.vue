@@ -6,18 +6,10 @@
     </span>
     <SchemaField v-bind="attrs"></SchemaField>
     <!-- 暂时隐藏，目前只有toggle会有children -->
-    <!-- <stone-Dragbox
-      v-if="editorItem.children && editorItem.children.length > 0"
-      :child-component-list="editorItem.children"
-      :drag-options="dragOptions"
-      :form-data="formData"
-    >
-    </stone-Dragbox> -->
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-// import stoneDragbox from './elementBox.vue'
 import SchemaField from '../components/SchemaField.js'
 import { editorItem2SchemaFieldProps } from '../../../utils/editorData'
 import { PlusOutlined, BarsOutlined } from '@ant-design/icons-vue'
@@ -25,7 +17,6 @@ export default defineComponent({
   name: 'componentsItem',
   components: {
     SchemaField,
-    // stoneDragbox,
     PlusOutlined,
     BarsOutlined
   },
