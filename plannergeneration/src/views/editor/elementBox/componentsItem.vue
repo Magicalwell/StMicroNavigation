@@ -62,11 +62,10 @@ export default defineComponent({
 .draggableItem {
   position: relative;
   padding-left: 40px;
-  &:hover {
-    .operation-btn {
-      visibility: visible;
-      opacity: 1;
-    }
+  min-height: 30px;
+  &:hover > .operation-btn {
+    visibility: visible;
+    opacity: 1;
   }
 }
 .operation-btn {

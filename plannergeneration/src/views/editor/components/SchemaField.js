@@ -14,7 +14,7 @@ export default {
         FIELDS_MAP,
         curProps
       )
-      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>', fieldProps)
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>', fieldProps, fieldComponent)
       return h(resolveComponent(fieldComponent), {
         // 这个地方需要捋一下component_map和resolveComponent方法的关系
         ...fieldProps,

@@ -1,12 +1,18 @@
 <template>
-  <draggable :list="childComponentList" v-bind="dragOptions" item-key="id">
+  <draggable
+    :list="childComponentList"
+    v-bind="dragOptions"
+    item-key="id"
+
+  >
     <template #item="{ element }">
       <components-Item
         :drag-options="dragOptions"
         :editor-item="element"
         :show-nested-editor="false"
         :globalOptions="globalOptions"
-      ></components-Item>
+      >
+      </components-Item>
     </template>
   </draggable>
 </template>
@@ -51,8 +57,8 @@ export default defineComponent({
         swapThreshold: 0.3,
         handle: '.mover',
         forceFallback: true,
-        dragClass: 'dragClass'
-        // fallbackTolerance: 0
+        dragClass: 'dragClass',
+        fallbackTolerance: 0
       }
     })
     function getdata() {

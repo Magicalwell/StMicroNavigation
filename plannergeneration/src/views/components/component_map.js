@@ -44,7 +44,26 @@ const widgetComponents = {
     'auto-size': true,
     bordered: false
   }),
-  toggle: ToggleWidget
+  toggle: ToggleWidget,
+  head1: modelValueComponent('a-typography-title', {
+    model: 'content',
+    editable: { triggerType: 'text' }
+  }),
+  head2: modelValueComponent('a-typography-title', {
+    model: 'content',
+    level: 2,
+    editable: { triggerType: 'text' }
+  }),
+  head3: modelValueComponent('a-typography-title', {
+    model: 'content',
+    level: 3,
+    editable: { triggerType: 'text' }
+  }),
+  head4: modelValueComponent('a-typography-title', {
+    model: 'content',
+    level: 4,
+    editable: { triggerType: 'text' }
+  })
   //   SwitchWidget: modelValueComponent('a-switch', {
   //     model: 'checked'
   //   })

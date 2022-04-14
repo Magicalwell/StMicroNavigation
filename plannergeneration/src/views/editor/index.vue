@@ -5,13 +5,30 @@
     @drop="drogitem"
     @dragover="dragOveritem($event)"
   >
-    暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件;待办：1.回车会另外新加入一行，并接在输入行之后，自动focus。
-    2.优化组件的点击、拖拽生成逻辑;3.左侧的工具栏计划也用vuedraggable组件;4.修改绑定字段，不一定每一个都是rich_text 5.优化hover的方法 6.从toggle内部移出会重置状态和输入的值(已解决) 7.当两个group
-    拖拽时，会重新渲染组件的状态(暂时的解决方法是在数据中加一个标志位，推测notion也是这样做的，永久保留打开或关闭的状态)
-    <NestedEditor
-      :child-component-list="valueList.children"
-    >
-    </NestedEditor>
+    <p>
+      暂时先做表单生成部分，手账生成换到下期计划/已完成多层组件渲染，但组件中嵌套的插槽部分无法实现，需要重新封装组件;待办：
+    </p>
+    <ul>
+      <li>
+        1.回车会另外新加入一行(2022/4/14补充：
+        不是单纯的新加入一行，而是判断当前类型然后复制一个空的)，并接在输入行之后，自动focus。
+      </li>
+      <li>2.优化组件的点击、拖拽生成逻辑;</li>
+      <li>3.左侧的工具栏计划也用vuedraggable组件</li>
+      <li>4.修改绑定字段，不一定每一个都是rich_text</li>
+      <li>5.优化hover的方法(暂时通过css解决，后续该为js控制)</li>
+      <li>6.从toggle内部移出会重置状态和输入的值(已解决)</li>
+      <li>
+        7.当两个group
+        拖拽时，会重新渲染组件的状态(暂时的解决方法是在数据中加一个标志位，推测notion也是这样做的，永久保留打开或关闭的状态,暂时已解决)
+      </li>
+      <li>8.拖拽会发生抖动</li>
+      <li>9.优化，让v-bind的属性不显示在dom上面</li>
+      <li>
+        后期修改和编辑都通过单个block为单位，后台检索id对应的block然后只替换这个block
+      </li>
+    </ul>
+    <NestedEditor :child-component-list="valueList.children"> </NestedEditor>
   </div>
 </template>
 <script lang="ts">
@@ -25,8 +42,6 @@ export default defineComponent({
     const store = useStore()
     // const Modelvisible = ref<boolean>(false)
     if (!store.state.pageBox.children) {
-      console.log(77777)
-
       store.commit('SET_DEFAULT_PAGE')
     }
     function generationNewInput() {
@@ -49,7 +64,6 @@ export default defineComponent({
     }
     function dragStartItem(e: any) {
       e.preventDefault()
-      console.log(e)
     }
     function dragOveritem(e: any) {
       e.preventDefault()
@@ -102,6 +116,7 @@ export default defineComponent({
   height: 100%;
   overflow-y: auto;
   padding-bottom: 80px;
+  width: 100%;
 }
 .control-label {
   position: absolute;

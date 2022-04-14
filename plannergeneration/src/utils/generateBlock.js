@@ -24,6 +24,7 @@ export function generateBlockType(blockId = 1) {
     color: 'default'
   }
   if (blockId === 6) {
+    blockItem.collapse = []
     blockItem.children = [
       {
         object: 'block',
@@ -49,7 +50,7 @@ export function generateBlockType(blockId = 1) {
       }
     ]
   }
-  console.log(blockItem, 'testtesttesttesttesttesttesttest')
+  console.log(blockItem, '00blockItemblockItemblockItemblockItem')
   return blockItem
 }
 export function generatePage() {
