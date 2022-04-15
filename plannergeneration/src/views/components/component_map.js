@@ -1,5 +1,6 @@
 import { modelValueComponent } from '../../utils/vue3transform'
 import ToggleWidget from '../components/Collapse/index'
+import CheckboxWidget from '../components/Checkbox/index'
 const widgetComponents = {
   //   CheckboxesWidget,
   //   RadioWidget,
@@ -63,7 +64,8 @@ const widgetComponents = {
     model: 'content',
     level: 4,
     editable: { triggerType: 'text' }
-  })
+  }),
+  checkbox: CheckboxWidget
   //   SwitchWidget: modelValueComponent('a-switch', {
   //     model: 'checked'
   //   })

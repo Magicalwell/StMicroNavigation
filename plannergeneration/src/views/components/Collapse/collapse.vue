@@ -22,9 +22,9 @@
       <p
         v-if="!selfData.children || !selfData.children.length > 0"
         @click="addChildrenTo(selfData.children)"
-        style="margin-bottom:0px;padding:0 11px"
+        style="margin-bottom:0px;padding:0 11px;color:#ccc"
       >
-        点击新增
+        暂时没有子模块哦，请点击新增或拖拽一个模块~
       </p>
       <NestedEditor
         v-if="selfData.children"
