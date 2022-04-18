@@ -89,6 +89,7 @@ export const modelValueComponent = (
         return h(
           resolveComponent(component),
           {
+            inheritAttrs: false,
             [model]: value,
             [`onUpdate:${model}`]: onUpdateValue,
             ...defaultUiOptions,

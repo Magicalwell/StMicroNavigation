@@ -16,6 +16,7 @@
 import { defineComponent, ref, toRefs, onMounted } from 'vue'
 // import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
 export default defineComponent({
+  inheritAttrs: false,
   name: 'st-checkbox',
   props: {
     editorItem: {

@@ -22,7 +22,7 @@
       <p
         v-if="!selfData.children || !selfData.children.length > 0"
         @click="addChildrenTo(selfData.children)"
-        style="margin-bottom:0px;padding:0 11px;color:#ccc"
+        style="margin-bottom: 0px; padding: 0 11px; color: #ccc"
       >
         暂时没有子模块哦，请点击新增或拖拽一个模块~
       </p>
@@ -46,6 +46,7 @@ import {
 import { CaretRightOutlined } from '@ant-design/icons-vue'
 // import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
 export default defineComponent({
+  inheritAttrs: false,
   name: 'st-collapse',
   props: {
     editorItem: {
@@ -111,11 +112,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .reset-padding {
-  ::v-deep .ant-collapse-header {
+  ::v-deep(.ant-collapse-header) {
     padding: 0 16px 0 11px !important;
   }
 }
-::v-deep .ant-collapse-header {
+::v-deep(.ant-collapse-header) {
   align-items: center !important;
 }
 </style>
