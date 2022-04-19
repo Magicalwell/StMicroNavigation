@@ -6,7 +6,8 @@ const blockItemMap = new Map([
   [5, 'paragraph'],
   [6, 'toggle'],
   [7, 'checkbox'],
-  [8, 'code']
+  [8, 'code'],
+  [9, 'table']
 ])
 export function guid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {

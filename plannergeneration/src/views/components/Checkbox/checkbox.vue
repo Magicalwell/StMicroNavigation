@@ -53,19 +53,19 @@ export default defineComponent({
 <style lang="scss" scoped>
 .checkbox-widget {
   width: 100%;
-  ::v-deep .ant-checkbox + span {
+  ::v-deep(.ant-checkbox + span) {
     width: 100%;
   }
-  ::v-deep .ant-checkbox {
+  ::v-deep(.ant-checkbox) {
     top: 0;
   }
 }
 .reset-padding {
-  ::v-deep .ant-collapse-header {
+  ::v-deep(.ant-collapse-header) {
     padding: 0 16px 0 11px !important;
   }
 }
-::v-deep .ant-collapse-header {
+::v-deep(.ant-collapse-header) {
   align-items: center !important;
 }
 </style>

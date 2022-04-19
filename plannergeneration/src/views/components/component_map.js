@@ -2,6 +2,7 @@ import { modelValueComponent } from '../../utils/vue3transform'
 import ToggleWidget from '../components/Collapse/index'
 import CheckboxWidget from '../components/Checkbox/index'
 import CodeWidget from '../components/CodeEdit/index'
+import TableWidget from '../components/TableWidge/tablewidget.vue'
 const widgetComponents = {
   //   CheckboxesWidget,
   //   RadioWidget,
@@ -67,7 +68,8 @@ const widgetComponents = {
     editable: { triggerType: 'text' }
   }),
   checkbox: CheckboxWidget,
-  code: CodeWidget
+  code: CodeWidget,
+  table: TableWidget
   //   SwitchWidget: modelValueComponent('a-switch', {
   //     model: 'checked'
   //   })
