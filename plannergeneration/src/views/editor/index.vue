@@ -24,7 +24,7 @@
       </li>
       <li>8.拖拽会发生抖动</li>
       <li>9.优化，让v-bind的属性不显示在dom上面</li>
-      <li>10.优化，让v-bind的属性不显示在dom上面</li>
+      <li>10.表格宽度高度的拖拽，可以在里面放一横一竖两个div/notion的做法是给cell里面都放上一横一竖的div 然后通过hover来让所有列都hover</li>
       <li>
         后期修改和编辑都通过单个block为单位，后台检索id对应的block然后只替换这个block
       </li>

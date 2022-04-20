@@ -9,6 +9,50 @@ const blockItemMap = new Map([
   [8, 'code'],
   [9, 'table']
 ])
+const blockItemDefault = {
+  1: {
+    has_children: false,
+    head1: { rich_text: 'tada!h1', checked: false, color: 'default' }
+  },
+  2: {
+    has_children: false,
+    head2: { rich_text: 'tada!h2', checked: false, color: 'default' }
+  },
+  3: {
+    has_children: false,
+    head3: { rich_text: 'tada!h3', checked: false, color: 'default' }
+  },
+  4: {
+    has_children: false,
+    head4: { rich_text: 'tada!h4', checked: false, color: 'default' }
+  },
+  5: {
+    has_children: false,
+    paragraph: { rich_text: 'tada!p', checked: false, color: 'default' }
+  },
+  6: {
+    has_children: false,
+    toggle: { rich_text: 'tada!toggle!', checked: false, color: 'default' },
+    collapse: [],
+    children: []
+  },
+  7: {
+    has_children: false,
+    checkbox: { rich_text: 'tada!checkbox!', checked: false, color: 'default' }
+  },
+  8: {
+    has_children: false,
+    code: { rich_text: 'tada!code!', checked: false, color: 'default' }
+  },
+  9: {
+    has_children: true,
+    table: { rich_text: 'tada!table!', checked: false, color: 'default' },
+    children: [
+      { children: [{ rich_text: '' }, { rich_text: '' }] },
+      { children: [{ rich_text: '' }, { rich_text: '' }] }
+    ]
+  }
+}
 export function guid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0
@@ -19,5 +63,8 @@ export function guid() {
 
 export function getBlockMap(blockId) {
   return blockItemMap.get(blockId)
+}
+export function getBlockDefault(blockId) {
+  return JSON.parse(JSON.stringify(blockItemDefault[blockId]))
 }
 export default blockItemMap

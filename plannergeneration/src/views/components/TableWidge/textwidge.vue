@@ -33,11 +33,11 @@
       <github-outlined />
     </button>
   </bubble-menu>
-  <editor-content :editor="editor" />
+  <editor-content :editor="editor" class="rich-editor-input" />
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, toRefs } from 'vue'
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import {
@@ -48,6 +48,7 @@ import {
 } from '@ant-design/icons-vue'
 // import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
 export default defineComponent({
+  inheritAttrs: false,
   name: 'st-text',
   props: {
     editorItem: {
@@ -64,8 +65,11 @@ export default defineComponent({
     GithubOutlined
   },
   setup() {
+    // const { editorItem: selfData } = toRefs(props)
+    // console.log(selfData)
+
     const editor = useEditor({
-      content: '<p>I’m running Tiptap with Vue.js. 🎉</p>',
+      content: '1232141231231',
       extensions: [StarterKit]
     })
 
@@ -79,5 +83,16 @@ export default defineComponent({
   background-color: #fff;
   outline: none;
   border: none;
+}
+.rich-editor-input {
+  min-height: 30px;
+  ::v-deep(.ProseMirror) {
+    outline: none;
+  }
+  ::v-deep(p) {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 0;
+  }
 }
 </style>
