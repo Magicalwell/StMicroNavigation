@@ -37,8 +37,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs } from 'vue'
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
+import { defineComponent } from 'vue'
+import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import {
   BoldOutlined,
@@ -51,11 +51,12 @@ export default defineComponent({
   inheritAttrs: false,
   name: 'st-text',
   props: {
-    editorItem: {
-      type: Object,
-      default: () => ({})
+    modelValue: {
+      type: String,
+      default: ''
     }
   },
+  emits: ['update:modelValue'],
   components: {
     EditorContent,
     BubbleMenu,
@@ -64,13 +65,19 @@ export default defineComponent({
     StrikethroughOutlined,
     GithubOutlined
   },
-  setup() {
-    // const { editorItem: selfData } = toRefs(props)
-    // console.log(selfData)
+  setup(props, { emit }) {
+    console.log(props.modelValue)
 
-    const editor = useEditor({
-      content: '1232141231231',
-      extensions: [StarterKit]
+    const editor = new Editor({
+      extensions: [StarterKit],
+      content: props.modelValue,
+      onUpdate: () => {
+        // HTML
+        emit('update:modelValue', editor.getHTML())
+
+        // JSON
+        // this.$emit('update:modelValue', this.editor.getJSON())
+      }
     })
 
     return { editor }
@@ -90,9 +97,12 @@ export default defineComponent({
     outline: none;
   }
   ::v-deep(p) {
-    height: 30px;
+    min-height: 30px;
     line-height: 30px;
     margin-bottom: 0;
+    word-break: normal;
+    white-space: normal;
+    word-wrap: break-word;
   }
 }
 </style>
