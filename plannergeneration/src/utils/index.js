@@ -48,8 +48,18 @@ const blockItemDefault = {
     has_children: true,
     table: { rich_text: 'tada!table!', checked: false, color: 'default' },
     children: [
-      { children: [{ rich_text: '' }, { rich_text: '' }] },
-      { children: [{ rich_text: '' }, { rich_text: '2313132' }] }
+      {
+        children: [
+          { rich_text: '', width: 100 },
+          { rich_text: '', width: 100 }
+        ]
+      },
+      {
+        children: [
+          { rich_text: '', width: 100 },
+          { rich_text: '2313132', width: 100 }
+        ]
+      }
     ]
   }
 }

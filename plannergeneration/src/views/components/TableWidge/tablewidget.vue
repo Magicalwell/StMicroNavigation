@@ -1,7 +1,17 @@
 <template>
-  <div style="display: flex">
-    <div style="position: relative">
-      <table border="1" class="table-widgets-box" @mouseup="cancelDragCol()">
+  <div
+    style="display: flex; margin-top: 10px"
+    @mousemove="moveCol($event)"
+    @mouseup="cancelDragCol()"
+  >
+    <div
+      style="position: relative"
+      @mouseleave="
+        addBottomTable = false;
+        addColTable = false
+      "
+    >
+      <table border="1" class="table-widgets-box" draggable="false">
         <colgroup>
           <col
             v-for="(item, column) in selfData.children[0].children"
@@ -14,6 +24,7 @@
           v-for="(out, index) in selfData.children"
           :key="index"
           class="cell-row"
+          @mouseenter="showBottomAdd(index, selfData.children.length)"
         >
           <td
             v-for="(inner, index1) in out.children"
@@ -23,15 +34,25 @@
               'col-hover': index1 === colNum,
               'cancel-border-right': index1 === out.children.length - 1
             }"
-            style="max-width: 100px; min-width: 100px"
+            :style="{
+              maxWidth: inner.width + 'px',
+              minWidth: inner.width + 'px'
+            }"
+            @mouseenter="showColAdd(index1, out.children.length)"
           >
-            <div
+            <!-- <div
               class="col-line"
               v-if="index1 !== out.children.length - 1"
               @mouseover="setHoverCol(index, index1, $event)"
               @mousedown="dragCol($event)"
               @mouseleave="resetHoverCol"
               @mousemove="moveCol($event)"
+            ></div> -->
+            <div
+              class="col-line"
+              @mouseover="setHoverCol(index, index1, $event)"
+              @mousedown="dragCol($event, inner)"
+              @mouseleave="resetHoverCol"
             ></div>
 
             <text-widget v-model="inner.rich_text" />
@@ -42,12 +63,27 @@
           ></div>
         </tr>
       </table>
+      <div
+        class="add-tablebtn-bottom add-btn"
+        v-if="addBottomTable"
+        @click="handleAdd(0)"
+      >
+        <plus-outlined />
+      </div>
+      <div
+        class="add-tablebtn-right add-btn"
+        v-if="addColTable"
+        @click="handleAdd(1)"
+      >
+        <plus-outlined />
+      </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, toRefs, ref } from 'vue'
 import TextWidget from './textwidge.vue'
+import { PlusOutlined } from '@ant-design/icons-vue'
 // import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
 export default defineComponent({
   inheritAttrs: false,
@@ -59,7 +95,8 @@ export default defineComponent({
     }
   },
   components: {
-    TextWidget
+    TextWidget,
+    PlusOutlined
   },
   setup(props) {
     const { editorItem: selfData } = toRefs(props)
@@ -72,15 +109,35 @@ export default defineComponent({
     //   // 计算属性初始化加10
     //   return props.editorItem.children[0]
     // })
-    const colNum = ref(-1)
-    const rowNum = ref(-1)
+    const colNum = ref(-1) // 列的index
+    const rowNum = ref(-1) // 行的index
     const dragStatus = ref(false)
-    const itemRef: any = ref([])
-    const returnColWidth = ref()
-    const mousePosition = ref()
-    const colRef = (el) => {
-      itemRef.value.push(el)
+    const itemRef = ref()
+    const itemWidthLabel = ref() // 列的初始宽度
+    const mousePosition = ref() // 保留鼠标点击的位置
+    const addBottomTable = ref(false)
+    const addColTable = ref(false)
+    function showBottomAdd(index, indexLength) {
+      if (index === indexLength - 1 && !addBottomTable.value) {
+        addBottomTable.value = true
+      }
+      if (index !== indexLength - 1) {
+        addBottomTable.value = false
+      }
     }
+    function showColAdd(index, indexLength) {
+      console.log(index, indexLength)
+
+      if (index === indexLength - 1 && !addColTable.value) {
+        addColTable.value = true
+      }
+      if (index !== indexLength - 1) {
+        addColTable.value = false
+      }
+    }
+    // const colRef = (el) => {
+    //   itemRef.value.push(el)
+    // }
 
     function setHoverCol(val1, val2, event) {
       colNum.value = val2
@@ -94,23 +151,51 @@ export default defineComponent({
     function resetHoverRow() {
       rowNum.value = -1
     }
-    function dragCol(event) {
+    function dragCol(event, item) {
       mousePosition.value = event.clientX
+      itemRef.value = item
+      console.log(item.width, 'item.widthitem.width')
+
+      itemWidthLabel.value = item.width
       dragStatus.value = true
       console.log(
         parseInt(event.target.parentNode.style.maxWidth),
         'eventeventeventevent'
       )
-      returnColWidth.value = parseInt(event.target.parentNode.style.maxWidth)
     }
     function cancelDragCol() {
       dragStatus.value = false
     }
     function moveCol(event) {
       if (dragStatus.value) {
-        console.log(event)
-        event.target.parentNode.style.maxWidth =
-          returnColWidth.value + (event.pageX - mousePosition.value) + 'px'
+        console.log(itemWidthLabel.value)
+        itemRef.value.width =
+          itemWidthLabel.value + (event.pageX - mousePosition.value) >= 100
+            ? itemWidthLabel.value + (event.pageX - mousePosition.value)
+            : 100
+      }
+    }
+    function handleAdd(flag) {
+      console.log(selfData.value.children)
+      if (flag === 0) {
+        const childrenRow = JSON.parse(
+          JSON.stringify(selfData.value.children[0].children)
+        )
+        selfData.value.children.push({
+          children: childrenRow.map((item) => {
+            item.rich_text = ''
+            return item
+          })
+        })
+      } else {
+        selfData.value.children.forEach((element) => {
+          console.log(element)
+          const tempCol = JSON.parse(JSON.stringify(element.children)).pop()
+          console.log(tempCol)
+          tempCol.rich_text = ''
+          tempCol.width = 100
+          element.children.push(tempCol)
+        })
       }
     }
     // return () =>
@@ -153,8 +238,11 @@ export default defineComponent({
       cancelDragCol,
       moveCol,
       dragStatus,
-      colRef,
-      returnColWidth
+      addBottomTable,
+      showBottomAdd,
+      addColTable,
+      showColAdd,
+      handleAdd
     }
   }
 })
@@ -165,6 +253,41 @@ export default defineComponent({
   position: relative;
   table-layout: fixed;
   word-break: break-all;
+  border-collapse: collapse;
+  moz-user-select: -moz-none;
+
+  -moz-user-select: none;
+
+  -o-user-select: none;
+
+  -khtml-user-select: none;
+
+  -webkit-user-select: none;
+
+  -ms-user-select: none;
+
+  user-select: none;
+  margin-bottom: 30px;
+}
+.add-btn {
+  position: absolute;
+  background-color: rgba(55, 53, 47, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.add-tablebtn-bottom {
+  width: 100%;
+  height: 20px;
+  bottom: 5px;
+  border-radius: 6px;
+}
+.add-tablebtn-right {
+  width: 20px;
+  right: -25px;
+  top: 0;
+  bottom: 30px;
+  border-radius: 6px;
 }
 .cell-row {
   position: relative;
@@ -172,9 +295,9 @@ export default defineComponent({
   white-space: nowrap;
   vertical-align: top;
   will-change: width, max-width;
-  // .cancel-border-right {
-  //   border-right: 0;
-  // }
+  .cancel-border-right {
+    border-right: 0;
+  }
 }
 .row-line {
   height: 4px;
@@ -195,7 +318,7 @@ export default defineComponent({
   height: calc(100% + 4px);
   position: absolute;
   right: -3px;
-  top: 0;
+  top: -2px;
   background-color: transparent;
   cursor: w-resize;
   padding: 0 1px;
