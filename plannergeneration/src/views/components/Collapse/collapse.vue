@@ -13,11 +13,7 @@
     </template>
     <a-collapse-panel :key="selfData.id">
       <template #header>
-        <a-textarea
-          auto-size
-          :bordered="false"
-          v-model:value="selfData.toggle.rich_text"
-        ></a-textarea>
+        <text-widget v-model="selfData.toggle.rich_text" style="flex: 1" />
       </template>
       <p
         v-if="!selfData.children || !selfData.children.length > 0"
@@ -44,7 +40,8 @@ import {
   onMounted
 } from 'vue'
 import { CaretRightOutlined } from '@ant-design/icons-vue'
-// import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
+import TextWidget from '../TableWidge/textwidge.vue'
+
 export default defineComponent({
   inheritAttrs: false,
   name: 'st-collapse',
@@ -103,6 +100,7 @@ export default defineComponent({
   },
   components: {
     CaretRightOutlined,
+    TextWidget,
     NestedEditor: defineAsyncComponent(
       () => import('../../editor/elementBox/NestedEditor.vue')
     )
@@ -113,7 +111,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .reset-padding {
   ::v-deep(.ant-collapse-header) {
-    padding: 0 16px 0 11px !important;
+    padding: 0 16px 0 0px !important;
   }
 }
 ::v-deep(.ant-collapse-header) {

@@ -61,9 +61,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.outer-box{
-  padding-left: 5px;
-}
 .my-editor {
   background: rgb(247, 246, 243);
   color: #ccc;

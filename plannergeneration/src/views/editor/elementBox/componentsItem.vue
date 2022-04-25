@@ -61,7 +61,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .draggableItem {
   position: relative;
-  padding-left: 40px;
+  padding-left: 50px;
   min-height: 30px;
   &:hover > .operation-btn {
     visibility: visible;

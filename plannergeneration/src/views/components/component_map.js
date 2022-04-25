@@ -3,6 +3,7 @@ import ToggleWidget from '../components/Collapse/index'
 import CheckboxWidget from '../components/Checkbox/index'
 import CodeWidget from '../components/CodeEdit/index'
 import TableWidget from '../components/TableWidge/tablewidget.vue'
+import TextWidget from '../components/TableWidge/textwidge.vue'
 const widgetComponents = {
   //   CheckboxesWidget,
   //   RadioWidget,
@@ -42,11 +43,12 @@ const widgetComponents = {
   //     }
   //   },
   //   TextAreaWidget: modelValueComponent('a-textarea')
-  paragraph: modelValueComponent('a-textarea', {
-    // 原版输入框是可以支持富文本的，这个需要自己封装组件，计划后期完善
-    'auto-size': true,
-    bordered: false
-  }),
+  // paragraph: modelValueComponent('a-textarea', {
+  //   // 原版输入框是可以支持富文本的，这个需要自己封装组件，计划后期完善
+  //   'auto-size': true,
+  //   bordered: false
+  // }),
+  paragraph: TextWidget,
   toggle: ToggleWidget,
   head1: modelValueComponent('a-typography-title', {
     model: 'content',

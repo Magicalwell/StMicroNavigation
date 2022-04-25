@@ -1,19 +1,23 @@
 <template>
-  <a-checkbox
-    v-model:checked="selfData.checkbox.checked"
-    class="checkbox-widget"
-  >
-    <a-textarea
+  <div style="display: flex; align-items: center">
+    <a-checkbox
+      v-model:checked="selfData.checkbox.checked"
+      class="checkbox-widget"
+    >
+      <!-- <a-textarea
       v-model:value="selfData.checkbox.rich_text"
       auto-size
       :bordered="false"
       style="width: 100%"
-    />
-  </a-checkbox>
+    /> -->
+    </a-checkbox>
+    <text-widget v-model="selfData.checkbox.rich_text" style="flex: 1" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, toRefs, onMounted } from 'vue'
+import TextWidget from '../TableWidge/textwidge.vue'
 // import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
 export default defineComponent({
   inheritAttrs: false,
@@ -23,6 +27,9 @@ export default defineComponent({
       type: Object,
       default: () => ({})
     }
+  },
+  components: {
+    TextWidget
   },
   setup(props) {
     onMounted(() => {
@@ -52,13 +59,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .checkbox-widget {
-  width: 100%;
-  ::v-deep(.ant-checkbox + span) {
-    width: 100%;
-  }
-  ::v-deep(.ant-checkbox) {
-    top: 0;
-  }
+  margin-right: 10px;
+  // ::v-deep(.ant-checkbox + span) {
+  //   width: 100%;
+  //   padding: 0;
+  // }
+  // ::v-deep(.ant-checkbox) {
+  //   top: 0;
+  // }
 }
 .reset-padding {
   ::v-deep(.ant-collapse-header) {

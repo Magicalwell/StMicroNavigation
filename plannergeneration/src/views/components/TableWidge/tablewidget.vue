@@ -1,6 +1,6 @@
 <template>
   <div
-    style="display: flex; margin-top: 10px"
+    style="display: flex; margin-top: 10px;"
     @mousemove="moveCol($event)"
     @mouseup="cancelDragCol()"
   >
@@ -74,6 +74,13 @@
         class="add-tablebtn-right add-btn"
         v-if="addColTable"
         @click="handleAdd(1)"
+      >
+        <plus-outlined />
+      </div>
+      <div
+        v-if="addBottomTable && addColTable"
+        class="add-btn add-tablebtn-both"
+        @click="handleAdd(2)"
       >
         <plus-outlined />
       </div>
@@ -187,15 +194,16 @@ export default defineComponent({
             return item
           })
         })
-      } else {
+      } else if (flag === 1) {
         selfData.value.children.forEach((element) => {
-          console.log(element)
           const tempCol = JSON.parse(JSON.stringify(element.children)).pop()
-          console.log(tempCol)
           tempCol.rich_text = ''
           tempCol.width = 100
           element.children.push(tempCol)
         })
+      } else {
+        handleAdd(0)
+        handleAdd(1)
       }
     }
     // return () =>
@@ -254,7 +262,7 @@ export default defineComponent({
   table-layout: fixed;
   word-break: break-all;
   border-collapse: collapse;
-  moz-user-select: -moz-none;
+  -moz-user-select: -moz-none;
 
   -moz-user-select: none;
 
@@ -268,6 +276,7 @@ export default defineComponent({
 
   user-select: none;
   margin-bottom: 30px;
+  margin-right: 30px;
 }
 .add-btn {
   position: absolute;
@@ -277,17 +286,24 @@ export default defineComponent({
   justify-content: center;
 }
 .add-tablebtn-bottom {
-  width: 100%;
+  width: calc(100% - 30px);
   height: 20px;
-  bottom: 5px;
+  bottom: 2px;
   border-radius: 6px;
 }
 .add-tablebtn-right {
   width: 20px;
-  right: -25px;
+  right: 0px;
   top: 0;
   bottom: 30px;
   border-radius: 6px;
+}
+.add-tablebtn-both {
+  right: 0;
+  bottom: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
 }
 .cell-row {
   position: relative;
