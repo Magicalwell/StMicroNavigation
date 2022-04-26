@@ -7,11 +7,16 @@
 .ant-collapse > .ant-collapse-item > .ant-collapse-header {
   padding: 0 16px 0 40px !important;
 }
-.ant-input.ant-input-borderless{
+.ant-input.ant-input-borderless {
   padding-top: 0;
   padding-bottom: 0;
   line-height: 30px;
   font-size: 14px;
   min-height: 30px;
+}
+.rich-text-popover-box {
+  .ant-popover-inner-content {
+    padding: 0 4px;
+  }
 }
 // 上面样式为覆盖ant-design的默认样式

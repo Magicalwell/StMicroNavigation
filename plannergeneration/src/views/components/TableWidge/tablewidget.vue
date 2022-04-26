@@ -1,6 +1,6 @@
 <template>
   <div
-    style="display: flex; margin-top: 10px;"
+    style="display: flex; margin-top: 10px"
     @mousemove="moveCol($event)"
     @mouseup="cancelDragCol()"
   >
@@ -277,6 +277,7 @@ export default defineComponent({
   user-select: none;
   margin-bottom: 30px;
   margin-right: 30px;
+  border-right: 1px solid rgb(233, 233, 231);
 }
 .add-btn {
   position: absolute;
@@ -327,6 +328,7 @@ export default defineComponent({
   position: relative;
   padding: 7px 0;
   min-width: 30px;
+  border: 1px solid rgb(233, 233, 231);
 }
 .col-line {
   z-index: 999;

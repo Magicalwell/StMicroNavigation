@@ -33,17 +33,31 @@
     >
       <github-outlined />
     </button>
-    <a-popover
+    <!-- <button
+      @click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+      :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }"
+    >
+      H1
+    </button> -->
+    <!-- <a-popover
       title="高亮标记"
       trigger="click"
       v-model:visible="popoverVisible"
       :destroyTooltipOnHide="true"
-      overlayClassName="popover-box"
+      overlayClassName="rich-text-popover-box"
       :getPopupContainer="
         (triggerNode) => {
           return triggerNode.parentNode
         }
       "
+    > -->
+    <a-popover
+      title="高亮标记"
+      trigger="click"
+      v-model:visible="popoverVisible"
+      :destroyTooltipOnHide="true"
+      overlayClassName="rich-text-popover-box"
+      placement="right"
     >
       <template #content>
         <div
@@ -69,18 +83,50 @@
         <highlight-outlined />
       </button>
     </a-popover>
+    <a-popover
+      title="字体设置"
+      trigger="click"
+      v-model:visible="colorPopoverVisible"
+      :destroyTooltipOnHide="true"
+      overlayClassName="rich-text-popover-box"
+      placement="right"
+    >
+      <template #content>
+        <div
+          class="mark-item"
+          v-for="(item, index) in colorData"
+          :key="index"
+          @click="editor.chain().focus().setColor(item.colorCode).run()"
+        >
+          <font-colors-outlined
+            class="item-icon"
+            :style="{ color: item.colorCode }"
+          />
+          <div style="flex: 1">{{ item.label }}</div>
+        </div>
+      </template>
+      <button class="float-utils">
+        <font-colors-outlined />
+      </button>
+    </a-popover>
   </bubble-menu>
-  <editor-content :editor="editor" class="rich-editor-input" />
+  <editor-content
+    :editor="editor"
+    class="rich-editor-input"
+    @keyup.enter="logaaaa($event)"
+  />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
 import Highlight from '@tiptap/extension-highlight'
 import StarterKit from '@tiptap/starter-kit'
+import TextStyle from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
 import {
   BoldOutlined,
   ItalicOutlined,
@@ -90,6 +136,35 @@ import {
   FontColorsOutlined
 } from '@ant-design/icons-vue'
 // import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
+const CustomHighlight = Highlight.extend({
+  addAttributes() {
+    return {
+      color: {
+        default: null,
+        // Customize the HTML parsing (for example, to load the initial content)
+        parseHTML: (element) => element.getAttribute('data-color'),
+        // … and customize the HTML rendering.
+        renderHTML: (attributes) => {
+          return {
+            'data-color': attributes.color,
+            style: `background-color: ${attributes.color};`
+          }
+        }
+      }
+    }
+  },
+  renderHTML({ HTMLAttributes }) {
+    return ['span', HTMLAttributes, 0]
+  }
+})
+const CustomText = Text.extend({
+  addKeyboardShortcuts() {
+    return {
+      // ↓ your new keyboard shortcut
+      'Mod-Enter': () => this.editor.commands.toggleBulletList()
+    }
+  }
+})
 export default defineComponent({
   inheritAttrs: false,
   name: 'st-text',
@@ -113,9 +188,18 @@ export default defineComponent({
   setup(props, { emit }) {
     console.log(props.modelValue)
     const popoverVisible = ref(false)
+    const colorPopoverVisible = ref(false)
     // 这个配置需要抽离出来，因为是可以被设置的
     const markData = ref([
       { label: 'hightLight', colorCode: null },
+      { label: 'orange', colorCode: '#ffc078' },
+      { label: 'green', colorCode: '#8ce99a' },
+      { label: 'blue', colorCode: '#e7f3f8' },
+      { label: 'purple', colorCode: '#b197fc' },
+      { label: 'red', colorCode: '#FDEBEC' },
+      { label: 'pinkRed', colorCode: '#ffa8a8' }
+    ])
+    const colorData = ref([
       { label: 'orange', colorCode: '#ffc078' },
       { label: 'green', colorCode: '#8ce99a' },
       { label: 'blue', colorCode: '#74c0fc' },
@@ -125,23 +209,54 @@ export default defineComponent({
     ])
     const editor = new Editor({
       extensions: [
-        StarterKit,
+        StarterKit.configure({
+          // Disable an included extension
+          bold: {
+            HTMLAttributes: {
+              class: 'my-custom-class'
+            }
+          }
+        }),
         Document,
         Paragraph,
-        Text,
-        Highlight.configure({ multicolor: true })
+        CustomText,
+        TextStyle,
+        Color,
+        CustomHighlight.configure({ multicolor: true })
       ],
       content: props.modelValue,
-      onUpdate: () => {
+      onUpdate: (...arg) => {
         // HTML
+        console.log(arg)
+
         emit('update:modelValue', editor.getHTML())
 
         // JSON
         // this.$emit('update:modelValue', this.editor.getJSON())
       }
     })
-
-    return { editor, popoverVisible, markData }
+    watch(
+      () => props.modelValue,
+      (newValue, oldValue) => {
+        console.log(newValue, oldValue)
+      }
+    )
+    function logaaaa(params) {
+      console.log(params, 1)
+      params.target.blur()
+    }
+    function inputggg(params) {
+      console.log(params.data, 1)
+    }
+    return {
+      editor,
+      popoverVisible,
+      markData,
+      colorData,
+      colorPopoverVisible,
+      logaaaa,
+      inputggg
+    }
   }
 })
 </script>
@@ -160,9 +275,11 @@ export default defineComponent({
 .rich-editor-input {
   width: 100%;
   min-height: 30px;
+  font-size: 16px;
   ::v-deep(.ProseMirror) {
     outline: none;
   }
+
   ::v-deep(p) {
     min-height: 30px;
     line-height: 30px;
@@ -182,9 +299,6 @@ export default defineComponent({
   border-radius: 6px;
   overflow: hidden;
   height: 32px;
-  ::v-deep(.ant-popover-inner-content) {
-    padding: 0 4px;
-  }
 }
 .mark-item {
   display: flex;
