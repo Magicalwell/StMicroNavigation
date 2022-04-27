@@ -113,7 +113,7 @@
   <editor-content
     :editor="editor"
     class="rich-editor-input"
-    @keyup.enter="logaaaa($event)"
+    @keydown="logaaaa($event)"
   />
 </template>
 
@@ -157,14 +157,6 @@ const CustomHighlight = Highlight.extend({
     return ['span', HTMLAttributes, 0]
   }
 })
-const CustomText = Text.extend({
-  addKeyboardShortcuts() {
-    return {
-      // ↓ your new keyboard shortcut
-      'Mod-Enter': () => this.editor.commands.toggleBulletList()
-    }
-  }
-})
 export default defineComponent({
   inheritAttrs: false,
   name: 'st-text',
@@ -185,11 +177,26 @@ export default defineComponent({
     HighlightOutlined,
     FontColorsOutlined
   },
-  setup(props, { emit }) {
+  setup(props, { emit, expose }) {
     console.log(props.modelValue)
     const popoverVisible = ref(false)
     const colorPopoverVisible = ref(false)
     // 这个配置需要抽离出来，因为是可以被设置的
+    const CustomText = Text.extend({
+      addKeyboardShortcuts() {
+        return {
+          // ↓ your new keyboard shortcut
+          'Control-Enter': () => {
+            return this.editor.commands.blur()
+          },
+          ArrowDown: () => {
+            console.log(999)
+
+            return this.editor.commands.blur()
+          }
+        }
+      }
+    })
     const markData = ref([
       { label: 'hightLight', colorCode: null },
       { label: 'orange', colorCode: '#ffc078' },
@@ -207,6 +214,7 @@ export default defineComponent({
       { label: 'red', colorCode: 'red' },
       { label: 'pinkRed', colorCode: '#ffa8a8' }
     ])
+    expose({ colorData })
     const editor = new Editor({
       extensions: [
         StarterKit.configure({
@@ -224,6 +232,7 @@ export default defineComponent({
         Color,
         CustomHighlight.configure({ multicolor: true })
       ],
+      autofocus: 'start',
       content: props.modelValue,
       onUpdate: (...arg) => {
         // HTML
@@ -242,8 +251,11 @@ export default defineComponent({
       }
     )
     function logaaaa(params) {
+      // params.preventDefault()
+      console.log(window.getSelection()!.focusNode)
+
       console.log(params, 1)
-      params.target.blur()
+      // params.target.blur()
     }
     function inputggg(params) {
       console.log(params.data, 1)
