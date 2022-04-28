@@ -118,7 +118,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, getCurrentInstance } from 'vue'
+import { defineComponent, ref, watch, getCurrentInstance, toRefs } from 'vue'
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -183,11 +183,12 @@ export default defineComponent({
     FontColorsOutlined
   },
   setup(props, { emit, expose, attrs }) {
-    console.log(attrs, 'attrsattrsattrs')
+    // console.log(attrs.editorItem, 'attrsattrsattrs')
     console.log(
       getCurrentInstance(),
       'getCurrentInstancegetCurrentInstancegetCurrentInstance'
     )
+    const { editorItem: selfData } = toRefs(attrs)
     const store = useStore()
     const popoverVisible = ref(false)
     const colorPopoverVisible = ref(false)
@@ -200,11 +201,11 @@ export default defineComponent({
             return this.editor.commands.blur()
           },
           ArrowDown: () => {
-            store.commit('GET_NEXTWIDGETS_ID', 111)
+            store.commit('GET_NEXTWIDGETS_ID', selfData)
             return false
           },
           ArrowUp: () => {
-            store.commit('GET_PREWIDGETS_ID', 222)
+            store.commit('GET_PREWIDGETS_ID', selfData)
             return false
           }
         }

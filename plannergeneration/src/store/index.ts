@@ -1,6 +1,21 @@
 import { createStore } from 'vuex'
 import { generatePage, generateBlockType } from '../utils/generateBlock'
 import { guid } from '../utils'
+function treeForeach(tree, func) {
+  let node
+  const list = [...tree]
+  while ((node = list.shift())) {
+    if (func(node)) {
+      if (list.length > 0) {
+        return list[0].id
+      } else {
+        return node.id
+      }
+    }
+    node.children && list.push(...node.children)
+  }
+}
+
 export default createStore({
   state: {
     textContainer: [
@@ -282,7 +297,16 @@ export default createStore({
     SET_DEFAULT_PAGE(state) {
       state.pageBox = generatePage()
     },
-    GET_NEXTWIDGETS_ID(state, id) {
+    GET_NEXTWIDGETS_ID(state, { id }) {
+      if (!state.focusId) {
+        state.focusId = id
+      }
+      // state.focusId = treeForeach(
+      //   state.pageBox.children,
+      //   (item) => (state.focusId = item.id)
+      // )
+      console.log(state.focusId)
+
       console.log(state.pageBox.children, id)
     },
     GET_PREWIDGETS_ID(state, id) {
