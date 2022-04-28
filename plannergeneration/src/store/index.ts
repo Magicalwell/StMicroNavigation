@@ -244,7 +244,8 @@ export default createStore({
           }
         }
       ]
-    }
+    },
+    focusId: ''
   },
   mutations: {
     ADD_NEW_DEFAULT_INPUT(state: any, data) {
@@ -280,6 +281,12 @@ export default createStore({
     },
     SET_DEFAULT_PAGE(state) {
       state.pageBox = generatePage()
+    },
+    GET_NEXTWIDGETS_ID(state, id) {
+      console.log(state.pageBox.children, id)
+    },
+    GET_PREWIDGETS_ID(state, id) {
+      console.log(state.pageBox.children, id)
     }
   },
   getters: {

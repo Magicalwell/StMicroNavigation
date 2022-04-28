@@ -1,16 +1,16 @@
 <template>
-  <draggable
-    :list="childComponentList"
-    v-bind="dragOptions"
-    item-key="id"
-
-  >
+  <draggable :list="childComponentList" v-bind="dragOptions" item-key="id">
     <template #item="{ element }">
       <components-Item
         :drag-options="dragOptions"
         :editor-item="element"
         :show-nested-editor="false"
         :globalOptions="globalOptions"
+        :ref="
+          (el) => {
+            if (el) widgetsList[el.id] = el
+          }
+        "
       >
       </components-Item>
     </template>
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted, computed } from 'vue'
+import { defineComponent, reactive, onMounted, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 import { generateBlockType } from '../../../utils/generateBlock.js'
@@ -47,6 +47,7 @@ export default defineComponent({
     function test() {
       console.log('ceshi')
     }
+    const widgetsList = ref([])
     const dragOptions = computed(() => {
       return {
         animation: 300,
@@ -67,9 +68,9 @@ export default defineComponent({
     function updateDatadragEnd() {
       console.log(111)
     }
-    console.log(props.childComponentList, 'propspropspropspropspropspropsprops')
+    console.log(widgetsList, 'widgetsListwidgetsListwidgetsList')
 
-    return { test, getdata, updateDatadragEnd, dragOptions }
+    return { test, getdata, updateDatadragEnd, dragOptions, widgetsList }
   }
   // computed: {
   //   ...mapState(['textContainer'])

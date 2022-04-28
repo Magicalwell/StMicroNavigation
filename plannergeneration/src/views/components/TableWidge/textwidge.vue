@@ -118,10 +118,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref, watch, getCurrentInstance } from 'vue'
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
+import { useStore } from 'vuex'
 import Text from '@tiptap/extension-text'
 import Highlight from '@tiptap/extension-highlight'
 import StarterKit from '@tiptap/starter-kit'
@@ -164,6 +165,10 @@ export default defineComponent({
     modelValue: {
       type: String,
       default: ''
+    },
+    focusStatus: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:modelValue'],
@@ -177,8 +182,13 @@ export default defineComponent({
     HighlightOutlined,
     FontColorsOutlined
   },
-  setup(props, { emit, expose }) {
-    console.log(props.modelValue)
+  setup(props, { emit, expose, attrs }) {
+    console.log(attrs, 'attrsattrsattrs')
+    console.log(
+      getCurrentInstance(),
+      'getCurrentInstancegetCurrentInstancegetCurrentInstance'
+    )
+    const store = useStore()
     const popoverVisible = ref(false)
     const colorPopoverVisible = ref(false)
     // 这个配置需要抽离出来，因为是可以被设置的
@@ -190,9 +200,12 @@ export default defineComponent({
             return this.editor.commands.blur()
           },
           ArrowDown: () => {
-            console.log(999)
-
-            return this.editor.commands.blur()
+            store.commit('GET_NEXTWIDGETS_ID', 111)
+            return false
+          },
+          ArrowUp: () => {
+            store.commit('GET_PREWIDGETS_ID', 222)
+            return false
           }
         }
       }
@@ -225,14 +238,12 @@ export default defineComponent({
             }
           }
         }),
-        Document,
-        Paragraph,
         CustomText,
         TextStyle,
         Color,
         CustomHighlight.configure({ multicolor: true })
       ],
-      autofocus: 'start',
+      autofocus: 'end',
       content: props.modelValue,
       onUpdate: (...arg) => {
         // HTML
@@ -245,14 +256,13 @@ export default defineComponent({
       }
     })
     watch(
-      () => props.modelValue,
+      () => props.focusStatus,
       (newValue, oldValue) => {
         console.log(newValue, oldValue)
       }
     )
     function logaaaa(params) {
       // params.preventDefault()
-      console.log(window.getSelection()!.focusNode)
 
       console.log(params, 1)
       // params.target.blur()
