@@ -110,6 +110,16 @@
       </button>
     </a-popover>
   </bubble-menu>
+  <a-popover
+    title="组件"
+    v-model:visible="addPopoverStatus"
+    :destroyTooltipOnHide="true"
+    placement="topLeft"
+  >
+    <template #content>
+      <div>段落组件</div>
+    </template>
+  </a-popover>
   <editor-content
     :editor="editor"
     class="rich-editor-input"
@@ -118,7 +128,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, getCurrentInstance, toRefs } from 'vue'
+import { defineComponent, ref, watch, toRefs } from 'vue'
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
@@ -184,14 +194,14 @@ export default defineComponent({
   },
   setup(props, { emit, expose, attrs }) {
     // console.log(attrs.editorItem, 'attrsattrsattrs')
-    console.log(
-      getCurrentInstance(),
-      'getCurrentInstancegetCurrentInstancegetCurrentInstance'
-    )
-    const { editorItem: selfData } = toRefs(attrs)
+
+    const { editorItem: selfData }: any = attrs
+    console.log(selfData.id)
+
     const store = useStore()
     const popoverVisible = ref(false)
     const colorPopoverVisible = ref(false)
+    const addPopoverStatus = ref(false)
     // 这个配置需要抽离出来，因为是可以被设置的
     const CustomText = Text.extend({
       addKeyboardShortcuts() {
@@ -206,6 +216,14 @@ export default defineComponent({
           },
           ArrowUp: () => {
             store.commit('GET_PREWIDGETS_ID', selfData)
+            return false
+          },
+          '/': () => {
+            if (editor.isEmpty) {
+              console.log('rree')
+
+              addPopoverStatus.value = true
+            }
             return false
           }
         }
@@ -248,8 +266,14 @@ export default defineComponent({
       content: props.modelValue,
       onUpdate: (...arg) => {
         // HTML
-        console.log(arg)
-
+        console.log(/^\/[A-Za-z]{0,5}$/.test(editor.getText()))
+        console.log(editor.getText())
+        if (
+          addPopoverStatus.value &&
+          !/^\/[A-Za-z]{0,5}$/.test(editor.getText())
+        ) {
+          addPopoverStatus.value = false
+        }
         emit('update:modelValue', editor.getHTML())
 
         // JSON
@@ -257,10 +281,11 @@ export default defineComponent({
       }
     })
     watch(
-      () => props.focusStatus,
+      () => store.state.focusId,
       (newValue, oldValue) => {
-        console.log(newValue, oldValue)
-      }
+        if (newValue === selfData.id) editor.commands.focus()
+      },
+      { deep: true }
     )
     function logaaaa(params) {
       // params.preventDefault()
@@ -278,7 +303,8 @@ export default defineComponent({
       colorData,
       colorPopoverVisible,
       logaaaa,
-      inputggg
+      inputggg,
+      addPopoverStatus
     }
   }
 })
