@@ -196,7 +196,6 @@ export default defineComponent({
     // console.log(attrs.editorItem, 'attrsattrsattrs')
 
     const { editorItem: selfData }: any = attrs
-    console.log(selfData.id)
 
     const store = useStore()
     const popoverVisible = ref(false)
