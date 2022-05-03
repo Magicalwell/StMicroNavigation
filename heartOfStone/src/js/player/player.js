@@ -20,7 +20,6 @@ var Player = new Phaser.Class({
     this.printsVertOffset = 10
 
     // this.setFrame(this.restingFrames.down);
-    this.faceOrientation()
     this.cellsWidth = 1
     this.cellsHeight = 1
 
@@ -35,32 +34,9 @@ var Player = new Phaser.Class({
     }
   },
 
-  setUp: function (data) {
-    this.id = data.id || 0
-    Engine.players[this.id] = this
-    Engine.entityManager.addToDisplayList(this)
-    this.setVisible(true)
-    // this.setInteractive();
+  setUp: function (data) {},
 
-    this.name = 'Player ' + this.id
-    this.setPosition(data.x, data.y)
-    this.updateBubblePosition()
-    this.manageOrientationPin()
-  },
-
-  update: function (data) {
-    console.log('updating player')
-    Moving.prototype.update.call(this, data)
-    if (data.x >= 0 && data.y >= 0) this.teleport(data.x, data.y)
-
-    var callbacks = {
-      dead: this.processDeath,
-      inBuilding: this.processBuilding,
-      path: this.processPath
-    }
-
-    this.firstUpdate = false
-  }
+  update: function (data) {}
 })
 
 export default Player

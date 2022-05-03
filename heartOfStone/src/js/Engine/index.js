@@ -1,59 +1,42 @@
 // import Player from '../player/player'
 import defaultUser from '../../assets/person/defaultPerson.png'
-const Engine = {
-  // TODO: Move to conf?
-  tileWidth: 32,
-  tileHeight: 32,
-  viewWidth: 32, // tiles; TODO: conf
-  viewHeight: 18, // tiles
+import newhero from '../../assets/person/newhero.png'
 
-  markerDepth: 1,
-  buildingsDepth: 2,
-  playersDepth: 2,
-  bubbleDepth: 11,
+export default class Engine extends Phaser.Scene {
+  constructor() {
+    super('WorldScene')
+  }
+  create() {
+    // this.input.setDefaultCursor('url(assets/ui/cursor-brown.cur), default')
+    // this.entityActions = EntityActionManager.init(this)
 
-  UIDepth: 12,
-  UIElementsDepth: 13,
-  UIContentDepth: 14,
-  UITextDepth: 15,
+    // this._createMap()
+    // this._createAnims()
 
-  tooltipDepth: 16,
-  tooltipElementsDepth: 17,
-  tooltipTextDepth: 18,
+    // // Connect to Server World
+    // this.server = window.io ? window.io() : defaultIO('http://localhost:3000')
 
-  // TODO: Move to conf
-  maxPathLength: 36,
+    // // Create player
+    // this.server.on('playerCreated', (player) => {
+    //   this.player = new Player(this, player.x, player.y, this.navMesh)
+    //   this.player.id = player.id
+    //   this.player.name = player.name
+    //   this.player.avatar = player.avatar
 
-  debugMarker: true,
-  debugCollisions: false,
-  dummyUI: false
+    //   // Camera follow player
+    //   this.cameras.main.setBounds(
+    //     0,
+    //     0,
+    //     this.map.widthInPixels,
+    //     this.map.heightInPixels
+    //   )
+    //   this.cameras.main.startFollow(this.player)
+    //   this.cameras.main.roundPixels = true
+
+    //   this._createEvents()
+
+    //   this.scene.launch('UIScene', { player: this.player, mapLayer: this.map })
+    //   this.scene.launch('ReactScene', { player: this.player })
+    // })
+  }
 }
-Engine.preload = function () {
-  // this.load.spritesheet('defaultUser', defaultUser, {
-  //   frameWidth: 64,
-  //   frameHeight: 64
-  // })
-  console.log(1111)
-  this.load.image('sprite', defaultUser)
-}
-Engine.create = function () {
-  // this.load.spritesheet('defaultUser', defaultUser, {
-  //   frameWidth: 64,
-  //   frameHeight: 64
-  // })
-  console.log(222)
-  this.add.image(1000, 100, 'sprite')
-  // this.tweens.add({
-  //   targets: Engine.players,
-  //   y: 650,
-  //   duration: 2000,
-  //   ease: 'Power2',
-  //   yoyo: true,
-  //   loop: -1
-  // })
-  // Engine.scene.input.on('pointerdown', Engine.handleDown)
-  // Engine.scene.input.on('pointerup', Engine.handleClick)
-  // Engine.scene.input.on('pointermove', Engine.trackMouse)
-}
-
-export default Engine

@@ -1,16 +1,22 @@
 import Phaser from 'phaser'
 import Engine from './js/Engine/index'
+import Boot from './js/Engine/preLoad'
 
 const config = {
   type: Phaser.AUTO,
   parent: 'app',
-  width: 800,
-  height: 600,
-  scene: [Engine],
+  width: window.innerWidth,
+  height: window.innerHeight,
+  scene: [Boot, Engine],
   scale: {
-    mode: Phaser.Scale.ScaleModes.NONE,
-    width: window.innerWidth,
-    height: window.innerHeight
+    mode: Phaser.Scale.RESIZE
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { z: 300 },
+      debug: false
+    }
   }
   // dom: {
   //   createContainer: true
