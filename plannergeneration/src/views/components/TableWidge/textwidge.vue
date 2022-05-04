@@ -110,16 +110,22 @@
       </button>
     </a-popover>
   </bubble-menu>
-  <a-popover
+  <!-- <a-popover
     title="组件"
     v-model:visible="addPopoverStatus"
     :destroyTooltipOnHide="true"
     placement="topLeft"
   >
     <template #content>
-      <div>段落组件</div>
+      <button
+        @click="editor.chain().focus().toggleStrike().run()"
+        :class="{ 'is-active': editor.isActive('strike') }"
+        class="float-utils"
+      >
+        <strikethrough-outlined />
+      </button>
     </template>
-  </a-popover>
+  </a-popover> -->
   <editor-content
     :editor="editor"
     class="rich-editor-input"
@@ -130,14 +136,14 @@
 <script lang="ts">
 import { defineComponent, ref, watch, toRefs } from 'vue'
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
-import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
 import { useStore } from 'vuex'
 import Text from '@tiptap/extension-text'
 import Highlight from '@tiptap/extension-highlight'
 import StarterKit from '@tiptap/starter-kit'
 import TextStyle from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
+import Commands from './commands'
+import suggestion from './suggestion'
 import {
   BoldOutlined,
   ItalicOutlined,
@@ -192,6 +198,9 @@ export default defineComponent({
     HighlightOutlined,
     FontColorsOutlined
   },
+  beforeUnmount() {
+    this.editor.destroy()
+  },
   setup(props, { emit, expose, attrs }) {
     // console.log(attrs.editorItem, 'attrsattrsattrs')
 
@@ -210,10 +219,13 @@ export default defineComponent({
             return this.editor.commands.blur()
           },
           ArrowDown: () => {
+            console.log(11)
+
             store.commit('GET_NEXTWIDGETS_ID', selfData)
             return false
           },
           ArrowUp: () => {
+            console.log(22)
             store.commit('GET_PREWIDGETS_ID', selfData)
             return false
           },
@@ -259,13 +271,14 @@ export default defineComponent({
         CustomText,
         TextStyle,
         Color,
+        Commands.configure({ suggestion }),
         CustomHighlight.configure({ multicolor: true })
       ],
       autofocus: 'end',
       content: props.modelValue,
       onUpdate: (...arg) => {
         // HTML
-        console.log(/^\/[A-Za-z]{0,5}$/.test(editor.getText()))
+        console.log(/^\/[A-Za-z]{0,10}$/.test(editor.getText()))
         console.log(editor.getText())
         if (
           addPopoverStatus.value &&
