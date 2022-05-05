@@ -11,7 +11,7 @@
       style="width: 100%"
     /> -->
     </a-checkbox>
-    <text-widget v-model="selfData.checkbox.rich_text" style="flex: 1" />
+    <text-widget v-model="selfData.checkbox.rich_text" style="flex: 1" :editorItem="editorItem"/>
   </div>
 </template>
 

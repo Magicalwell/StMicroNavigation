@@ -55,7 +55,7 @@
               @mouseleave="resetHoverCol"
             ></div>
 
-            <text-widget v-model="inner.rich_text" />
+            <text-widget v-model="inner.rich_text" :shortOrderValied="false" />
           </td>
           <div
             class="row-line"
@@ -133,8 +133,6 @@ export default defineComponent({
       }
     }
     function showColAdd(index, indexLength) {
-      console.log(index, indexLength)
-
       if (index === indexLength - 1 && !addColTable.value) {
         addColTable.value = true
       }
@@ -161,21 +159,15 @@ export default defineComponent({
     function dragCol(event, item) {
       mousePosition.value = event.clientX
       itemRef.value = item
-      console.log(item.width, 'item.widthitem.width')
 
       itemWidthLabel.value = item.width
       dragStatus.value = true
-      console.log(
-        parseInt(event.target.parentNode.style.maxWidth),
-        'eventeventeventevent'
-      )
     }
     function cancelDragCol() {
       dragStatus.value = false
     }
     function moveCol(event) {
       if (dragStatus.value) {
-        console.log(itemWidthLabel.value)
         itemRef.value.width =
           itemWidthLabel.value + (event.pageX - mousePosition.value) >= 100
             ? itemWidthLabel.value + (event.pageX - mousePosition.value)
@@ -183,7 +175,6 @@ export default defineComponent({
       }
     }
     function handleAdd(flag) {
-      console.log(selfData.value.children)
       if (flag === 0) {
         const childrenRow = JSON.parse(
           JSON.stringify(selfData.value.children[0].children)
@@ -206,34 +197,6 @@ export default defineComponent({
         handleAdd(1)
       }
     }
-    // return () =>
-    //   h('table', { class: { 'table-widgets-box': true }, border: '1' }, [
-    //     h('colgroup', null, [
-    //       colList.value.children.map(() => {
-    //         return h('col', { span: '1' })
-    //       })
-    //     ]),
-    //     ...selfData.value.children.map((trlist) => {
-    //       return h('tr', null, [
-    //         h('div', { class: { 'row-line': true } }),
-    //         ...trlist.children.map((colItem, index, arr) => {
-    //           return h(
-    //             'td',
-    //             { class: { cell: true }, 'data-td-index': index },
-    //             [
-    //               index !== arr.length
-    //                 ? h('div', {
-    //                   class: { 'col-line': true },
-    //                   onMouseover: (event) => testalr(event)
-    //                 })
-    //                 : null,
-    //               h(resolveComponent('TextWidget'))
-    //             ]
-    //           )
-    //         })
-    //       ])
-    //     })
-    //   ])
     return {
       selfData,
       setHoverCol,

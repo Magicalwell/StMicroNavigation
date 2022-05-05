@@ -16,6 +16,7 @@
         v-for="(item, index) in items"
         :key="index"
         @click="selectItem(index)"
+        ref="itemboxlist"
       >
         <font-colors-outlined class="item-icon" />
         <div style="flex: 1">
@@ -81,6 +82,8 @@ export default {
     upHandler() {
       this.selectedIndex =
         (this.selectedIndex + this.items.length - 1) % this.items.length
+      console.log(this.$refs.itemboxlist[this.selectedIndex].getBoundingClientRect())
+      this.$refs.itemboxlist[this.selectedIndex].scrollIntoView(true)
     },
     //     if (roleed.length > 0) {
     //      this.checked2 = roleed[0].id
@@ -95,6 +98,7 @@ export default {
     //  }
     downHandler() {
       this.selectedIndex = (this.selectedIndex + 1) % this.items.length
+      this.$refs.itemboxlist[this.selectedIndex].scrollIntoView(false)
     },
 
     enterHandler() {

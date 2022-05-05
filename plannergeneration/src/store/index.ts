@@ -5,22 +5,29 @@ function treeForeach(tree, func) {
   let node
   const list = [...tree]
   while ((node = list.shift())) {
+    console.log(node, '----------------')
+
     if (func(node)) {
       if (list.length > 0) {
-        return list[0].id
+        return node.children && node.children.length > 0
+          ? node.children[0].id
+          : list[0].id
       } else {
-        return node.id
+        return node.children && node.children.length > 0
+          ? node.children[0].id
+          : node.id
       }
     }
-    node.children && list.push(...node.children)
+    node.children && list.unshift(...node.children)
   }
 }
 function preTreeForeach(tree, func) {
   let node
   let preNode
+  let parentNode
   const list = [...tree]
   while ((node = list.shift())) {
-    console.log(node)
+    console.log(preNode, node, list)
 
     if (func(node)) {
       // if (list.length > 0) {
@@ -28,12 +35,19 @@ function preTreeForeach(tree, func) {
       // } else {
       //   return preNode.id
       // }
-      return preNode ? preNode.id : node.id
-    } else {
-      preNode = node
-    }
+      if (
+        preNode.children &&
+        preNode.children.length > 0 &&
+        node.id !== preNode.children[0].id
+      ) {
+        list.push(...preNode.children)
+        preNode = list.pop()
+      }
 
-    node.children && list.push(...node.children)
+      return preNode.id
+    }
+    preNode = node
+    node.children && node.children.length && list.unshift(...node.children)
   }
 }
 
@@ -319,6 +333,8 @@ export default createStore({
       state.pageBox = generatePage()
     },
     GET_NEXTWIDGETS_ID(state, { id }) {
+      console.log('treeForeach')
+
       state.focusId = id
       state.focusId = treeForeach(
         state.pageBox.children,
@@ -328,6 +344,7 @@ export default createStore({
     },
     GET_PREWIDGETS_ID(state, { id }) {
       console.log(id)
+      console.log('preTreeForeach')
 
       state.focusId = id
       state.focusId = preTreeForeach(

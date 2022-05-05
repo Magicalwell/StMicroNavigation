@@ -1,10 +1,5 @@
 <template>
-  <a-collapse
-    ghost
-    @change="changeActivekey"
-    v-model:activeKey="selfData.collapse"
-    class="reset-padding"
-  >
+  <a-collapse ghost v-model:activeKey="selfData.collapse" class="reset-padding">
     <!-- <template #expandIcon="{ isActive }">
       <caret-right-outlined :rotate="isActive ? 90 : 0" />
     </template> -->
@@ -13,7 +8,11 @@
     </template>
     <a-collapse-panel :key="selfData.id">
       <template #header>
-        <text-widget v-model="selfData.toggle.rich_text" style="flex: 1" />
+        <text-widget
+          v-model="selfData.toggle.rich_text"
+          :editorItem="editorItem"
+          style="flex: 1"
+        />
       </template>
       <p
         v-if="!selfData.children || !selfData.children.length > 0"
@@ -41,6 +40,7 @@ import {
 } from 'vue'
 import { CaretRightOutlined } from '@ant-design/icons-vue'
 import TextWidget from '../TableWidge/textwidge.vue'
+import { guid } from '../../../utils/index'
 
 export default defineComponent({
   inheritAttrs: false,
@@ -52,25 +52,15 @@ export default defineComponent({
     }
   },
   setup(props) {
-    onMounted(() => {
-      console.log('我重新渲染了')
-    })
     const activeKey = ref([])
-    console.log(
-      props.editorItem.collapse,
-      'editorItemeditorItemeditorItemeditorItem'
-    )
     const { editorItem: selfData } = toRefs(props)
     console.log(props.editorItem, 'selfDataselfDataselfDataselfData')
 
     // const activeKey = selfData.id
-    const changeActivekey = (key: string) => {
-      console.log(key, 'keykeykeykeykeykey')
-    }
     function addChildrenTo(value) {
       value.push({
         object: 'block',
-        id: 1231512321,
+        id: guid(),
         created_time: '12321312312',
         created_by: {
           object: 'user'
@@ -94,7 +84,6 @@ export default defineComponent({
     return {
       activeKey,
       selfData,
-      changeActivekey,
       addChildrenTo
     }
   },

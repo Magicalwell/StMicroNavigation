@@ -126,11 +126,7 @@
       </button>
     </template>
   </a-popover> -->
-  <editor-content
-    :editor="editor"
-    class="rich-editor-input"
-    @keydown="logaaaa($event)"
-  />
+  <editor-content :editor="editor" class="rich-editor-input" />
 </template>
 
 <script lang="ts">
@@ -185,6 +181,10 @@ export default defineComponent({
     focusStatus: {
       type: Boolean,
       default: false
+    },
+    shortOrderValied: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:modelValue'],
@@ -202,41 +202,37 @@ export default defineComponent({
     this.editor.destroy()
   },
   setup(props, { emit, expose, attrs }) {
-    // console.log(attrs.editorItem, 'attrsattrsattrs')
-
     const { editorItem: selfData }: any = attrs
+    console.log(props.shortOrderValied)
 
     const store = useStore()
     const popoverVisible = ref(false)
     const colorPopoverVisible = ref(false)
-    const addPopoverStatus = ref(false)
+    // const addPopoverStatus = ref(false)
     // 这个配置需要抽离出来，因为是可以被设置的
     const CustomText = Text.extend({
       addKeyboardShortcuts() {
         return {
-          // ↓ your new keyboard shortcut
           'Control-Enter': () => {
+            console.log(attrs, 'dasfaewqdsagaeasdqewqdadweqw')
+
+            store.commit('ADD_NEW_DEFAULT_INPUT')
             return this.editor.commands.blur()
           },
           ArrowDown: () => {
-            console.log(11)
-
             store.commit('GET_NEXTWIDGETS_ID', selfData)
             return false
           },
           ArrowUp: () => {
-            console.log(22)
             store.commit('GET_PREWIDGETS_ID', selfData)
             return false
-          },
-          '/': () => {
-            if (editor.isEmpty) {
-              console.log('rree')
-
-              addPopoverStatus.value = true
-            }
-            return false
           }
+          // '/': () => {
+          //   if (editor.isEmpty) {
+          //     addPopoverStatus.value = true
+          //   }
+          //   return false
+          // }
         }
       }
     })
@@ -257,7 +253,6 @@ export default defineComponent({
       { label: 'red', colorCode: 'red' },
       { label: 'pinkRed', colorCode: '#ffa8a8' }
     ])
-    expose({ colorData })
     const editor = new Editor({
       extensions: [
         StarterKit.configure({
@@ -268,24 +263,24 @@ export default defineComponent({
             }
           }
         }),
-        CustomText,
+        props.shortOrderValied ? CustomText : Text,
         TextStyle,
         Color,
-        Commands.configure({ suggestion }),
+        props.shortOrderValied
+          ? Commands.configure({ suggestion })
+          : Commands.configure({}),
         CustomHighlight.configure({ multicolor: true })
       ],
       autofocus: 'end',
       content: props.modelValue,
       onUpdate: (...arg) => {
-        // HTML
-        console.log(/^\/[A-Za-z]{0,10}$/.test(editor.getText()))
-        console.log(editor.getText())
-        if (
-          addPopoverStatus.value &&
-          !/^\/[A-Za-z]{0,5}$/.test(editor.getText())
-        ) {
-          addPopoverStatus.value = false
-        }
+        // 使用commands 暂时注释掉监听的方法
+        // if (
+        //   addPopoverStatus.value &&
+        //   !/^\/[A-Za-z]{0,5}$/.test(editor.getText())
+        // ) {
+        //   addPopoverStatus.value = false
+        // }
         emit('update:modelValue', editor.getHTML())
 
         // JSON
@@ -295,28 +290,21 @@ export default defineComponent({
     watch(
       () => store.state.focusId,
       (newValue, oldValue) => {
-        if (newValue === selfData.id) editor.commands.focus()
+        if (
+          newValue === (typeof selfData === 'object' ? selfData.id : selfData)
+        ) {
+          editor.commands.focus()
+        }
       },
       { deep: true }
     )
-    function logaaaa(params) {
-      // params.preventDefault()
-
-      console.log(params, 1)
-      // params.target.blur()
-    }
-    function inputggg(params) {
-      console.log(params.data, 1)
-    }
     return {
       editor,
       popoverVisible,
       markData,
       colorData,
-      colorPopoverVisible,
-      logaaaa,
-      inputggg,
-      addPopoverStatus
+      colorPopoverVisible
+      // addPopoverStatus 暂时不用监听的方法
     }
   }
 })
