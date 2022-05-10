@@ -148,15 +148,12 @@ import {
   HighlightOutlined,
   FontColorsOutlined
 } from '@ant-design/icons-vue'
-// import NestedEditor from '../../editor/elementBox/NestedEditor.vue'
 const CustomHighlight = Highlight.extend({
   addAttributes() {
     return {
       color: {
         default: null,
-        // Customize the HTML parsing (for example, to load the initial content)
         parseHTML: (element) => element.getAttribute('data-color'),
-        // … and customize the HTML rendering.
         renderHTML: (attributes) => {
           return {
             'data-color': attributes.color,
@@ -203,8 +200,7 @@ export default defineComponent({
   },
   setup(props, { emit, expose, attrs }) {
     const { editorItem: selfData }: any = attrs
-    console.log(props.shortOrderValied)
-
+    const { widgetType }: any = attrs
     const store = useStore()
     const popoverVisible = ref(false)
     const colorPopoverVisible = ref(false)
@@ -287,6 +283,9 @@ export default defineComponent({
         // this.$emit('update:modelValue', this.editor.getJSON())
       }
     })
+    if (widgetType) {
+      editor.commands.setHeading({ level: widgetType.level })
+    }
     watch(
       () => store.state.focusId,
       (newValue, oldValue) => {
