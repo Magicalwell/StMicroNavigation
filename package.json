@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@micro-zoe/micro-app": "^0.8.4",
+    "@tiptap/extension-placeholder": "^2.0.0-beta.48",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-class-component": "^8.0.0-0",

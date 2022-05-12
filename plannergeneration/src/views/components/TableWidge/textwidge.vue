@@ -58,6 +58,7 @@
       :destroyTooltipOnHide="true"
       overlayClassName="rich-text-popover-box"
       placement="right"
+      v-bind="popSetting"
     >
       <template #content>
         <div
@@ -90,6 +91,7 @@
       :destroyTooltipOnHide="true"
       overlayClassName="rich-text-popover-box"
       placement="right"
+      v-bind="popSetting"
     >
       <template #content>
         <div
@@ -135,11 +137,13 @@ import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import { useStore } from 'vuex'
 import Text from '@tiptap/extension-text'
 import Highlight from '@tiptap/extension-highlight'
+import Placeholder from '@tiptap/extension-placeholder'
 import StarterKit from '@tiptap/starter-kit'
 import TextStyle from '@tiptap/extension-text-style'
 import { Color } from '@tiptap/extension-color'
 import Commands from './commands'
 import suggestion from './suggestion'
+import Image from '@tiptap/extension-image'
 import {
   BoldOutlined,
   ItalicOutlined,
@@ -204,6 +208,9 @@ export default defineComponent({
     const store = useStore()
     const popoverVisible = ref(false)
     const colorPopoverVisible = ref(false)
+    const popSetting = ref({
+      getPopupContainer: () => document.querySelector('#app')
+    })
     // const addPopoverStatus = ref(false)
     // 这个配置需要抽离出来，因为是可以被设置的
     const CustomText = Text.extend({
@@ -262,6 +269,7 @@ export default defineComponent({
         props.shortOrderValied ? CustomText : Text,
         TextStyle,
         Color,
+        Image,
         props.shortOrderValied
           ? Commands.configure({ suggestion })
           : Commands.configure({}),
@@ -302,7 +310,8 @@ export default defineComponent({
       popoverVisible,
       markData,
       colorData,
-      colorPopoverVisible
+      colorPopoverVisible,
+      popSetting
       // addPopoverStatus 暂时不用监听的方法
     }
   }
@@ -335,10 +344,19 @@ export default defineComponent({
     word-break: normal;
     white-space: normal;
     word-wrap: break-word;
+    vertical-align: bottom;
   }
   ::v-deep(mark) {
     padding: 2px 0;
     border-radius: 6px;
+  }
+  ::v-deep(img) {
+    max-width: 100%;
+    height: auto;
+
+    &.ProseMirror-selectednode {
+      outline: 3px solid #68cef8;
+    }
   }
 }
 .bubble-menu {
