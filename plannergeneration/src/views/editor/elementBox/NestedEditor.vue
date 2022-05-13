@@ -1,5 +1,5 @@
 <template>
-  <draggable :list="childComponentList" v-bind="dragOptions" item-key="id">
+  <draggable :list="childComponentList" v-bind="dragOptions" item-key="id" @add="getdata">
     <template #item="{ element }">
       <components-Item
         :drag-options="dragOptions"

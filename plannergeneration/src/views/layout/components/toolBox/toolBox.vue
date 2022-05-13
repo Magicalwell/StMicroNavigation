@@ -1,6 +1,6 @@
 <template>
   <div class="tool-box">
-    <div style="padding: 10px">
+    <!-- <div style="padding: 10px">
       <div
         class="tool-item"
         v-for="item in defaultComponents"
@@ -10,18 +10,49 @@
       >
         <p>{{ item.value }}</p>
       </div>
-    </div>
+    </div> -->
+    <draggable
+      v-model="defaultComponents"
+      v-bind="dragOptions"
+      item-key="id"
+      @end="addWidgetByDrag"
+      :move="onMove"
+      :clone="cloneWidget"
+    >
+      <template #item="{ element }">
+        <div class="tool-item">
+          <span>{{ element.value }}</span>
+        </div>
+      </template>
+    </draggable>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
+import draggable from 'vuedraggable'
 import blockItemMap from '../../../../utils/index'
+import { generateBlockType } from '../../../../utils/generateBlock'
 export default defineComponent({
+  components: {
+    draggable
+  },
   setup() {
     const store = useStore()
     console.log([...blockItemMap.entries()])
+    const dragOptions = computed(() => {
+      return {
+        group: 'listComponentsGroup',
+        tag: 'div',
+        sort: true,
+        animation: 300,
+        ghostClass: 'ghostItem',
+        draggable: '.tool-item',
+        swapThreshold: 0.3,
+        forceFallback: true
+      }
+    })
     const defaultComponents = [...blockItemMap.entries()].map(
       ([key, value]) => {
         return {
@@ -34,10 +65,23 @@ export default defineComponent({
       store.commit('ADD_DARGACTIVEITEM', item)
       console.log(item)
     }
-    console.log(defaultComponents)
+    function addWidgetByDrag(e) {
+      console.log(123)
+    }
+    function onMove(e, originalEvent) {
+      console.log(e, originalEvent)
+      return true
+    }
+    function cloneWidget(origin) {
+      return generateBlockType(origin.id)
+    }
     return {
       defaultComponents,
-      saveDragType
+      saveDragType,
+      dragOptions,
+      addWidgetByDrag,
+      onMove,
+      cloneWidget
     }
   }
 })
@@ -54,5 +98,17 @@ export default defineComponent({
   left: 0;
 }
 .tool-item {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 6px 0 0 6px;
+}
+.ghostItem {
+  opacity: 0.6 !important;
+  background-color: aquamarine !important;
+}
+.dragClass {
+  background-color: cadetblue !important;
 }
 </style>
