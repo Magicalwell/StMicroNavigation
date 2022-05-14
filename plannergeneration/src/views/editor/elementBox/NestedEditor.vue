@@ -86,9 +86,9 @@ export default defineComponent({
 }
 .ghostItem {
   opacity: 0.6 !important;
-  background-color: aquamarine !important;
+  background-color: #f2f5fa !important;
 }
 .dragClass {
-  background-color: cadetblue !important;
+  background-color: #f2f5fa !important;
 }
 </style>

@@ -15,7 +15,7 @@ const widgetComponents = {
         h(TextWidget, {
           ...attrs,
           ...props,
-          widgetType: { level: 1 }
+          widgetType: { level: 1, type: 'head' }
         })
     }
   },
@@ -25,7 +25,7 @@ const widgetComponents = {
         h(TextWidget, {
           ...attrs,
           ...props,
-          widgetType: { level: 2 }
+          widgetType: { level: 2, type: 'head' }
         })
     }
   },
@@ -35,7 +35,7 @@ const widgetComponents = {
         h(TextWidget, {
           ...attrs,
           ...props,
-          widgetType: { level: 3 }
+          widgetType: { level: 3, type: 'head' }
         })
     }
   },
@@ -45,7 +45,7 @@ const widgetComponents = {
         h(TextWidget, {
           ...attrs,
           ...props,
-          widgetType: { level: 4 }
+          widgetType: { level: 4, type: 'head' }
         })
     }
   },
@@ -53,7 +53,27 @@ const widgetComponents = {
   toggle: ToggleWidget,
   checkbox: CheckboxWidget,
   code: CodeWidget,
-  table: TableWidget
+  table: TableWidget,
+  bulletList: {
+    setup(props, { attrs }) {
+      return () =>
+        h(TextWidget, {
+          ...attrs,
+          ...props,
+          widgetType: { type: 'bulletList' }
+        })
+    }
+  },
+  orderList: {
+    setup(props, { attrs }) {
+      return () =>
+        h(TextWidget, {
+          ...attrs,
+          ...props,
+          widgetType: { type: 'OrderedList' }
+        })
+    }
+  }
   //   SwitchWidget: modelValueComponent('a-switch', {
   //     model: 'checked'
   //   })

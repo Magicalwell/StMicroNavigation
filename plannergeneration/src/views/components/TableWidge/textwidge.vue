@@ -143,6 +143,9 @@ import { Color } from '@tiptap/extension-color'
 import Commands from './commands'
 import suggestion from './suggestion'
 import Image from '@tiptap/extension-image'
+import OrderedList from '@tiptap/extension-ordered-list'
+import ListItem from '@tiptap/extension-list-item'
+import BulletList from '@tiptap/extension-bullet-list'
 import {
   BoldOutlined,
   ItalicOutlined,
@@ -257,6 +260,9 @@ export default defineComponent({
     ])
     const editor = new Editor({
       extensions: [
+        BulletList,
+        ListItem,
+        OrderedList,
         StarterKit.configure({
           // Disable an included extension
           bold: {
@@ -290,8 +296,19 @@ export default defineComponent({
         // this.$emit('update:modelValue', this.editor.getJSON())
       }
     })
-    if (widgetType) {
+    console.log(widgetType)
+
+    if (widgetType && widgetType.type === 'head') {
       editor.commands.setHeading({ level: widgetType.level })
+    }
+    // list需要考虑一下交互，是否能调出/，调出后的行为是替换还是新增一个
+    if (
+      widgetType &&
+      (widgetType.type === 'OrderedList' || widgetType.type === 'bulletList')
+    ) {
+      console.log(widgetType.type)
+
+      editor.commands.toggleBulletList()
     }
     watch(
       () => store.state.focusId,

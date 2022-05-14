@@ -16,7 +16,6 @@
       v-bind="dragOptions"
       item-key="id"
       @end="addWidgetByDrag"
-      :move="onMove"
       :clone="cloneWidget"
     >
       <template #item="{ element }">
@@ -50,7 +49,8 @@ export default defineComponent({
         ghostClass: 'ghostItem',
         draggable: '.tool-item',
         swapThreshold: 0.3,
-        forceFallback: true
+        forceFallback: true,
+        dragClass: 'toolDragClass'
       }
     })
     const defaultComponents = [...blockItemMap.entries()].map(
@@ -68,10 +68,6 @@ export default defineComponent({
     function addWidgetByDrag(e) {
       console.log(123)
     }
-    function onMove(e, originalEvent) {
-      console.log(e, originalEvent)
-      return true
-    }
     function cloneWidget(origin) {
       return generateBlockType(origin.id)
     }
@@ -80,7 +76,6 @@ export default defineComponent({
       saveDragType,
       dragOptions,
       addWidgetByDrag,
-      onMove,
       cloneWidget
     }
   }
@@ -105,10 +100,14 @@ export default defineComponent({
   margin: 6px 0 0 6px;
 }
 .ghostItem {
-  opacity: 0.6 !important;
-  background-color: aquamarine !important;
+  opacity: 0.8 !important;
+  border: 0;
+  font-size: 16px;
+  background-color: #f2f5fa;
+  padding: 4px 20px;
+  margin-left: 50px;
 }
-.dragClass {
-  background-color: cadetblue !important;
+.toolDragClass {
+  border: 0;
 }
 </style>

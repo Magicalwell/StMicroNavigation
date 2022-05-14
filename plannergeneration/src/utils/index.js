@@ -7,7 +7,9 @@ const blockItemMap = new Map([
   [6, 'toggle'],
   [7, 'checkbox'],
   [8, 'code'],
-  [9, 'table']
+  [9, 'table'],
+  [10, 'bulletList'],
+  [11, 'orderList']
 ])
 const blockItemDefault = {
   1: {
@@ -61,6 +63,16 @@ const blockItemDefault = {
         ]
       }
     ]
+  },
+  10: {
+    has_children: true,
+    bulletList: { rich_text: '', checked: false, color: 'default' },
+    children: []
+  },
+  11: {
+    has_children: true,
+    orderList: { rich_text: '', checked: false, color: 'default' },
+    children: []
   }
 }
 export function guid() {
