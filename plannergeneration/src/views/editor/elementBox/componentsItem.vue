@@ -43,6 +43,8 @@ export default defineComponent({
     }
   },
   setup(props) {
+    console.log(props.editorItem, 'props.editorItemprops.editorItem')
+
     const attrs = computed(() => {
       return {
         // 这里是需要一个全局的配置，用于设置用户之前配置的信息，例如标题的字号，颜色

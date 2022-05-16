@@ -17,6 +17,10 @@
       item-key="id"
       @end="addWidgetByDrag"
       :clone="cloneWidget"
+      :options="{
+        group: { name: 'listComponentsGroup', pull: 'clone' },
+        sort: true
+      }"
     >
       <template #item="{ element }">
         <div class="tool-item">
@@ -42,9 +46,9 @@ export default defineComponent({
     console.log([...blockItemMap.entries()])
     const dragOptions = computed(() => {
       return {
-        group: 'listComponentsGroup',
+        group: { name: 'listComponentsGroup', pull: 'clone' },
         tag: 'div',
-        sort: true,
+        sort: false,
         animation: 300,
         ghostClass: 'ghostItem',
         draggable: '.tool-item',

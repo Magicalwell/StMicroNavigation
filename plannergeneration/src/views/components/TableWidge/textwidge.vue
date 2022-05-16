@@ -296,19 +296,17 @@ export default defineComponent({
         // this.$emit('update:modelValue', this.editor.getJSON())
       }
     })
-    console.log(widgetType)
+    console.log(widgetType, 'widgetTypewidgetTypewidgetTypewidgetType')
 
     if (widgetType && widgetType.type === 'head') {
       editor.commands.setHeading({ level: widgetType.level })
     }
     // list需要考虑一下交互，是否能调出/，调出后的行为是替换还是新增一个
-    if (
-      widgetType &&
-      (widgetType.type === 'OrderedList' || widgetType.type === 'bulletList')
-    ) {
-      console.log(widgetType.type)
-
+    if (widgetType && widgetType.type === 'bulletList') {
       editor.commands.toggleBulletList()
+    }
+    if (widgetType && widgetType.type === 'OrderedList') {
+      editor.commands.toggleOrderedList()
     }
     watch(
       () => store.state.focusId,
