@@ -66,7 +66,7 @@ const blockItemDefault = {
   },
   10: {
     has_children: true,
-    bulletList: { rich_text: '' }
+    bulletList: { rich_text: '<ul><li><p>11232</p></li><li><p>12321</p></li></ul>' }
   },
   11: {
     has_children: true,

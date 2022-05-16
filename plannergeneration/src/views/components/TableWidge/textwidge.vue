@@ -241,6 +241,8 @@ export default defineComponent({
         }
       }
     })
+    console.log(props.modelValue, '这是收到的数据')
+
     const markData = ref([
       { label: 'hightLight', colorCode: null },
       { label: 'orange', colorCode: '#ffc078' },
