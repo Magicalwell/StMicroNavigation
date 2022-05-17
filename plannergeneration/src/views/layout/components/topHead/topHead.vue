@@ -30,7 +30,8 @@
   </div>
 </template>
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import {
   MailOutlined,
   AppstoreOutlined,
@@ -45,6 +46,16 @@ export default defineComponent({
   },
   setup() {
     const current = ref(['notes'])
+    const router = useRouter()
+    watch(
+      () => router.currentRoute.value.name,
+      (newValue, oldValue) => {
+        console.log('watch', newValue)
+        current.value = [newValue]
+      },
+      { immediate: true }
+    )
+
     function handleClick({ item, key, keyPath }) {
       console.log(item, key, keyPath)
     }
