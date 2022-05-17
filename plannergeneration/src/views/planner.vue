@@ -1,3 +1,3 @@
 <template>
-  <div>111</div>
+  <div>图片编辑器</div>
 </template>

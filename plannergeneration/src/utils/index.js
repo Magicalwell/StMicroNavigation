@@ -66,11 +66,11 @@ const blockItemDefault = {
   },
   10: {
     has_children: true,
-    bulletList: { rich_text: '<ul><li><p>11232</p></li><li><p>12321</p></li></ul>' }
+    bulletList: { rich_text: '<ul><li><p></p></li></li></ul>' }
   },
   11: {
     has_children: true,
-    orderList: { rich_text: '' }
+    orderList: { rich_text: '<ol><li><p></p></li></li></ol>' }
   }
 }
 export function guid() {

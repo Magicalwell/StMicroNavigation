@@ -19,21 +19,29 @@
       </a-menu-item>
     </a-menu>
     <div>
-      <a-button type="dashed">Dashed Button</a-button>
-      <a-button type="dashed">Dashed Button</a-button>
-      <a-button type="dashed">Dashed Button</a-button>
-      <a-button type="dashed">Dashed Button</a-button>
+      <span style="margin-right: 24px">
+        <a-badge :count="1">
+          <a-avatar shape="square">
+            <template #icon><UserOutlined /></template>
+          </a-avatar>
+        </a-badge>
+      </span>
     </div>
   </div>
 </template>
 <script>
 import { defineComponent, ref } from 'vue'
-import { MailOutlined, AppstoreOutlined } from '@ant-design/icons-vue'
+import {
+  MailOutlined,
+  AppstoreOutlined,
+  UserOutlined
+} from '@ant-design/icons-vue'
 export default defineComponent({
   name: 'Home',
   components: {
     MailOutlined,
-    AppstoreOutlined
+    AppstoreOutlined,
+    UserOutlined
   },
   setup() {
     const current = ref(['notes'])
