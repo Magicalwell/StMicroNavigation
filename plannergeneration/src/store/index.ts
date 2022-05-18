@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { generatePage, generateBlockType } from '../utils/generateBlock'
 import { guid } from '../utils'
+import plannerVuex from './modules/planner'
 function treeForeach(tree, func) {
   let node
   const list = [...tree]
@@ -50,7 +51,13 @@ function preTreeForeach(tree, func) {
     node.children && node.children.length && list.unshift(...node.children)
   }
 }
-
+// const modulesFiles = require.context('./modules', false, /\.ts$/)
+// const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+//   const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1')
+//   const value = modulesFiles(modulePath)
+//   modules[moduleName] = value.default
+//   return modules
+// }, {})
 export default createStore({
   state: {
     textContainer: [
@@ -366,5 +373,7 @@ export default createStore({
     }
   },
   actions: {},
-  modules: {}
+  modules: {
+    plannerVuex
+  }
 })

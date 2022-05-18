@@ -4,8 +4,7 @@
       <Toolbar />
       <main>
         <section class="left">
-          左侧工具栏
-          <!-- <ComponentList /> -->
+          <ComponentList />
         </section>
         <section class="center">
           <div
@@ -42,12 +41,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import ComponentList from './plannerLayout/leftComponents/left.vue' // 左侧列表组件
 import plannerArea from './plannerLayout/area.vue'
 import Toolbar from './plannerLayout/toolbox/tool.vue'
 
 export default defineComponent({
   name: 'planner',
-  components: { plannerArea, Toolbar },
+  components: { plannerArea, Toolbar, ComponentList },
   setup() {
     function handleDrop() {
       console.log(11)
@@ -86,7 +86,7 @@ export default defineComponent({
     .left {
       position: absolute;
       height: 100%;
-      width: 200px;
+      width: 224px;
       left: 0;
       top: 0;
       padding-top: 10px;
@@ -101,7 +101,7 @@ export default defineComponent({
     }
 
     .center {
-      margin-left: 200px;
+      margin-left: 224px;
       margin-right: 262px;
       background: #f5f5f5;
       height: 100%;
