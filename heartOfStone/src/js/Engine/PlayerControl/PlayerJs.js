@@ -7,13 +7,13 @@ import Entity, { EntityType } from '../EntityManage/Entity'
 // import MiningSkill from './skills/MiningSkill'
 
 export default class Player extends Entity {
-  constructor(scene, x, y, navMesh) {
-    super(scene, x, y, navMesh, 'player', 1)
+  constructor(scene, x, y) {
+    super(scene, x, y, 'player', 1)
     // this.unitType = EntityType.PLAYER
     this.name = 'Player'
     this.animationKey = 'player'
     this.avatar = ''
-
+    this.id = 999
     // behaviors
     // this.inventory = new Inventory()
     // this.skills = new SkillsSystem([

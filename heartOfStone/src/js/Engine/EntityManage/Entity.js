@@ -2,7 +2,7 @@ import 'phaser'
 import { v4 as uuid } from 'uuid'
 import * as CONFIG from '../../../gameConfig'
 import { getTilePosition } from '../../utils/titleUtils'
-// import Mover from './Mover'
+import Mover from './Mover'
 // import WorldScene from '../scenes/WorldScene'
 // import EventDispatcher from '../services/EventDispatcher'
 // import EntityActionManager, {
@@ -50,7 +50,7 @@ export default class Entity extends Phaser.GameObjects.Container {
     scene.add.existing(this)
 
     // Create Unit sprite
-    // this._createUnitSprite(navMesh, texture, frame)
+    this._createUnitSprite(navMesh, texture, frame)
     // // Create name info
     // this._createName()
     // this._createUI()
@@ -99,7 +99,7 @@ export default class Entity extends Phaser.GameObjects.Container {
     // })
 
     // Register "follower" behavior
-    this.follower = new Mover(this.scene, navMesh, this.body)
+    this.follower = new Mover(this.scene, null, this.body)
   }
 
   _createUI() {
@@ -277,22 +277,22 @@ export default class Entity extends Phaser.GameObjects.Container {
   update() {
     if (!this.isMoving) return
 
-    // Animate player following current velocity
-    const velocity = this.body.velocity
-    if (velocity.y > 0 && Math.abs(velocity.y) > Math.abs(velocity.x)) {
-      this.animate(Position.DOWN)
-    } else if (
-      this.body.velocity.y < 0 &&
-      Math.abs(velocity.y) > Math.abs(velocity.x)
-    ) {
-      this.animate(Position.UP)
-    } else if (velocity.x > 0) {
-      this.animate(Position.RIGHT)
-    } else if (this.body.velocity.x < 0) {
-      this.animate(Position.LEFT)
-    } else {
-      // this.unitSprite.anims.stop()
-    }
+    // // Animate player following current velocity
+    // const velocity = this.body.velocity
+    // if (velocity.y > 0 && Math.abs(velocity.y) > Math.abs(velocity.x)) {
+    //   this.animate(Position.DOWN)
+    // } else if (
+    //   this.body.velocity.y < 0 &&
+    //   Math.abs(velocity.y) > Math.abs(velocity.x)
+    // ) {
+    //   this.animate(Position.UP)
+    // } else if (velocity.x > 0) {
+    //   this.animate(Position.RIGHT)
+    // } else if (this.body.velocity.x < 0) {
+    //   this.animate(Position.LEFT)
+    // } else {
+    //   // this.unitSprite.anims.stop()
+    // }
   }
 
   animate(position) {

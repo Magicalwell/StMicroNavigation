@@ -1,4 +1,4 @@
-import * as CONFIG from '../gameConfig'
+import * as CONFIG from '../../../gameConfig'
 
 export default class Mover {
   constructor(scene, navMesh, body) {
@@ -13,26 +13,27 @@ export default class Mover {
   }
 
   goTo(tile) {
+    console.log(tile, 'tiletiletile')
     const targetPoint = new Phaser.Math.Vector2(
       tile.pixelX + CONFIG.TILE_SIZE / 2,
       tile.pixelY + CONFIG.TILE_SIZE / 2
     )
-    // Find a path to the target
-    this.path = this.navMesh.findPath(
-      new Phaser.Math.Vector2(
-        this.body.x + this.body.width / 2,
-        this.body.y + this.body.height / 2
-      ),
-      targetPoint
-    )
+    // // Find a path to the target
+    // this.path = this.navMesh.findPath(
+    //   new Phaser.Math.Vector2(
+    //     this.body.x + this.body.width / 2,
+    //     this.body.y + this.body.height / 2
+    //   ),
+    //   targetPoint
+    // )
 
-    // DEBUG PATH
-    //   this.navMesh.debugDrawPath(this.path, 0xffd900);
+    // // DEBUG PATH
+    // //   this.navMesh.debugDrawPath(this.path, 0xffd900);
 
-    // If there is a valid path, grab the first point from the path and set it as the target
-    if (this.path && this.path.length > 0)
-      this.currentTarget = this.path.shift()
-    else this.currentTarget = null
+    // // If there is a valid path, grab the first point from the path and set it as the target
+    // if (this.path && this.path.length > 0)
+    this.currentTarget = targetPoint
+    // else this.currentTarget = null
   }
 
   update(time, deltaTime) {
@@ -49,31 +50,31 @@ export default class Mover {
         x,
         y
       )
-
       // If we approach current target
       if (distance < 4) {
         // Move to next path checkpoint (if one available)
-        if (this.path.length > 0) {
-          this.currentTarget = this.path.shift()
-        }
+        // if (this.path.length > 0) {
+        //   this.currentTarget = this.path.shift()
+        // }
         // Otherwise => End of move
         // => Clear target, and stop body
-        else {
-          this.currentTarget = null
-          this.body.stop()
+        // else {
+        this.currentTarget = null
+        this.body.stop()
 
-          // This is a workaround to reset position *after* next thick
-          // because body still has velocity and will move a little after this tick.
-          // @TODO check if prettier solution available.
-          setTimeout(() => {
-            this.body.reset(x, y)
-          })
-        }
+        // This is a workaround to reset position *after* next thick
+        // because body still has velocity and will move a little after this tick.
+        // @TODO check if prettier solution available.
+        setTimeout(() => {
+          this.body.reset(x, y)
+        })
+        // }
       }
 
       // If target, move towards
-      if (this.currentTarget)
+      if (this.currentTarget) {
         this.moveTowards(this.currentTarget, this.MAX_SPEED, deltaTime / 1000)
+      }
     }
   }
 

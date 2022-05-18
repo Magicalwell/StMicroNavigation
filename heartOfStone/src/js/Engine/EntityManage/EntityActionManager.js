@@ -1,7 +1,11 @@
-// import EventDispatcher from './EventDispatcher'
-// import Entity from './Entity'
+import EventDispatcher from './EventDispatcher'
+import Entity from './Entity'
 // import { ActionType } from '../types/Actions'
-
+const ActionStatus = {
+  PENDING: 'PENDING',
+  RUNNING: 'RUNNING',
+  COMPLETED: 'COMPLETED'
+}
 export default class EntityActionManager {
   static init(scene) {
     this.instance = new EntityActionManager(scene)
@@ -16,7 +20,8 @@ export default class EntityActionManager {
   }
 
   constructor(scene) {
-    this.THICK_TIMER = 100
+    this.THICK_TIMER = 200
+    this.emitter = EventDispatcher.getInstance()
     this.scene = scene
 
     this.actionsQueue = {}
@@ -24,6 +29,50 @@ export default class EntityActionManager {
     // scene: Phaser.Scene;
 
     this.entities = {}
+    this.update = () => {
+      console.log(this.actionsQueue)
+      for (let entityId in this.actionsQueue) {
+        const entityActions = this.actionsQueue[entityId]
+
+        // If no pending action for this entity, continue
+        // @TODO Remove entity from actionsQueue list if empty
+        console.log(111)
+        if (entityActions.length <= 0) {
+          continue
+        }
+
+        const nextAction = entityActions[0]
+
+        // Wait until current action is completed
+        if (nextAction.status === ActionStatus.RUNNING) {
+          if (
+            nextAction.progress &&
+            typeof nextAction.progress === 'function'
+          ) {
+            const progress = nextAction.progress(
+              nextAction,
+              this.entities[entityId]
+            )
+            this.emitter.emit(
+              ActionType.ACTION_PROGRESS,
+              this.entities[entityId],
+              progress,
+              ...nextAction.args
+            )
+          }
+
+          if (nextAction.isCompleted(nextAction, this.entities[entityId])) {
+            entityActions.shift()
+          }
+
+          continue
+        }
+
+        // If no action running, process first action in the queue
+        this._processAction(this.entities[entityId], entityActions[0])
+      }
+      setTimeout(this.update, this.THICK_TIMER)
+    }
     this.update()
     // scene.events.on("update", this.update, this);
     // scene.events.once("shutdown", this.destroy, this);
@@ -35,6 +84,7 @@ export default class EntityActionManager {
 
     // Clear queue and add actoin
     this.actionsQueue[entity.id] = [this._createAction(action)]
+    console.log(this.entities, this.actionsQueue)
   }
 
   enqueue(entity, action) {
@@ -44,47 +94,6 @@ export default class EntityActionManager {
     if (!this.actionsQueue[entity.id]) this.actionsQueue[entity.id] = []
 
     this.actionsQueue[entity.id].push(this._createAction(action))
-  }
-
-  update() {
-    for (let entityId in this.actionsQueue) {
-      const entityActions = this.actionsQueue[entityId]
-
-      // If no pending action for this entity, continue
-      // @TODO Remove entity from actionsQueue list if empty
-      if (entityActions.length <= 0) {
-        continue
-      }
-
-      const nextAction = entityActions[0]
-
-      // Wait until current action is completed
-      if (nextAction.status === ActionStatus.RUNNING) {
-        if (nextAction.progress && typeof nextAction.progress === 'function') {
-          const progress = nextAction.progress(
-            nextAction,
-            this.entities[entityId]
-          )
-          this.emitter.emit(
-            ActionType.ACTION_PROGRESS,
-            this.entities[entityId],
-            progress,
-            ...nextAction.args
-          )
-        }
-
-        if (nextAction.isCompleted(nextAction, this.entities[entityId])) {
-          entityActions.shift()
-        }
-
-        continue
-      }
-
-      // If no action running, process first action in the queue
-      this._processAction(this.entities[entityId], entityActions[0])
-    }
-
-    setTimeout(this.update, this.THICK_TIMER)
   }
 
   _processAction(entity, action) {
