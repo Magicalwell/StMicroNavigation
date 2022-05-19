@@ -91,13 +91,11 @@ export default defineComponent({
         }
       })
     }
-    const handlePreview = async (file: UploadProps['fileList'][number]) => {
-      store.commit('plannerVuex/changeImgFlag', file.preview)
-      console.log(store.state.plannerVuex)
-
+    const handlePreview = async (file) => {
       // 因为目前没有后台接口，暂时使用本地存储，等后续构建一个图床应用
       if (!file.url && !file.preview) {
         file.preview = (await getBase64(file.originFileObj)) as string
+        await store.commit('plannerVuex/changeImgFlag', file.preview)
       }
       previewImage.value = file.url || file.preview
       previewVisible.value = true

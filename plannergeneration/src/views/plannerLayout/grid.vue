@@ -1,8 +1,8 @@
 <template>
   <svg
     class="grid"
-    width="100%"
-    height="100%"
+    :width="width"
+    :height="height"
     xmlns="http://www.w3.org/2000/svg"
   >
     <defs>
@@ -42,10 +42,27 @@
   </svg>
 </template>
 
+<script>
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'Grid',
+  props: {
+    width: {
+      type: Number
+    },
+    height: {
+      type: Number
+    }
+  }
+})
+</script>
+
 <style lang="scss" scoped>
 .grid {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>

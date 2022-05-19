@@ -44,11 +44,13 @@ import { defineComponent } from 'vue'
 import ComponentList from './plannerLayout/leftComponents/left.vue' // 左侧列表组件
 import plannerArea from './plannerLayout/area.vue'
 import Toolbar from './plannerLayout/toolbox/tool.vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'planner',
   components: { plannerArea, Toolbar, ComponentList },
   setup() {
+    const store = useStore()
     function handleDrop() {
       console.log(11)
     }
@@ -59,7 +61,7 @@ export default defineComponent({
       console.log(11)
     }
     function deselectCurComponent() {
-      console.log(11)
+      store.commit('plannerVuex/hideContextMenu')
     }
     return {
       handleDrop,

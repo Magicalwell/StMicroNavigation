@@ -4,12 +4,29 @@
     @contextmenu="handleContextMenu"
     style="width: 1200px"
   >
-    <Grid />
-    <canvas id="plannerarea" width="1200" height="900" class="area"></canvas>
+    <div class="area-container">
+      <Grid
+        :width="parseInt(canvasStyleData.planerWidth)"
+        :height="parseInt(canvasStyleData.planerHeight)"
+      />
+      <canvas
+        id="plannerarea"
+        :width="canvasStyleData.planerWidth"
+        :height="canvasStyleData.planerHeight"
+        :style="{
+          width: canvasStyleData.planerWidth + 'px',
+          height: canvasStyleData.planerHeight + 'px'
+        }"
+        class="area"
+      ></canvas>
+    </div>
+
     <!-- https://blog.csdn.net/weixin_31222161/article/details/117763012   抠图 -->
     <!-- https://woai3c.github.io/visual-drag-demo/#/  参考 -->
     <!-- https://blog.csdn.net/daicooper/article/details/79800718 -->
     <!-- 由于图片比较大，转为base64的时候需要事件，此间不能点击 -->
+    <!-- 考虑将拖拽加入home中 -->
+    <ContextMenu />
   </div>
 </template>
 
@@ -18,16 +35,25 @@ import { defineComponent, onMounted, computed, watch, ref } from 'vue'
 import { useStore } from 'vuex'
 import { fabric } from 'fabric'
 import Grid from './grid.vue'
-
+import ContextMenu from './editor/contentText.vue'
 export default defineComponent({
   name: 'planner',
   components: {
-    Grid
+    Grid,
+    ContextMenu
   },
   setup() {
     const store = useStore()
+    const canvasStyleData = computed(
+      () => store.state.plannerVuex.canvasStyleData
+    )
     const saveFlag = computed(() => store.state.plannerVuex.saveFlag)
     const ImgFlag = computed(() => store.state.plannerVuex.addImageData)
+    const option = {
+      width: canvasStyleData.value.planerWidth, // 画布宽度
+      height: canvasStyleData.value.planerHeight, // 画布高度
+      backgroundColor: '#fff' // 设置画布背景色
+    }
     let plannerCanvas = null
     // const init = () => {}
     function exportImg() {
@@ -46,8 +72,25 @@ export default defineComponent({
       link.click()
       document.body.removeChild(link)
     }
-    function handleContextMenu() {
-      console.log(11)
+    const handleContextMenu = (e) => {
+      e.stopPropagation()
+      e.preventDefault()
+      // 计算菜单相对于编辑器的位移
+      let target = e.target
+      let top = e.offsetY
+      let left = e.offsetX
+
+      while (!target.className.includes('area-container')) {
+        if (target.parentNode.className.includes('area-container')) break
+        target = target.parentNode
+      }
+      while (!target.className.includes('area-container')) {
+        left += target.offsetLeft
+        top += target.offsetTop
+        target = target.parentNode
+      }
+
+      store.commit('plannerVuex/showContextMenu', { top, left })
     }
     const addToCanvasByUrl = (canvas, data) => {
       fabric.Image.fromURL(data, (img) => {
@@ -75,9 +118,17 @@ export default defineComponent({
         }
       }
     )
+    watch(
+      () => canvasStyleData.value,
+      (item) => {
+        plannerCanvas.setHeight(item.planerHeight)
+        plannerCanvas.setWidth(item.planerWidth)
+      },
+      { deep: true }
+    )
     onMounted(() => {
       // init()
-      plannerCanvas = new fabric.Canvas('plannerarea')
+      plannerCanvas = new fabric.Canvas('plannerarea', option)
       var rect = new fabric.Rect({
         left: 100,
         top: 100,
@@ -91,7 +142,7 @@ export default defineComponent({
       console.log('saveFlag')
     })
 
-    return { handleContextMenu }
+    return { handleContextMenu, canvasStyleData }
   }
 })
 </script>
@@ -99,9 +150,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .plannerarea {
   position: relative;
-  background: #fff;
   margin: 0 auto;
   height: 100%;
+  overflow-y: auto;
   .lock {
     &:hover {
       cursor: not-allowed;
@@ -109,6 +160,17 @@ export default defineComponent({
   }
   ::v-deep(.canvas-container) {
     margin: 0 auto;
+  }
+  .area-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    transform: translate(-50%, -50%);
+    // background: #fff;
+    text-align: center;
   }
 }
 </style>

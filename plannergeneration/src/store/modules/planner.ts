@@ -8,6 +8,15 @@ export default {
     addImageData: {
       data: '',
       flag: false
+    },
+    canvasStyleData: {
+      planerWidth: 595,
+      planerHeight: 842
+    },
+    rightMenu: {
+      menuTop: 0, // 右击菜单数据
+      menuLeft: 0,
+      menuShow: false
     }
   },
   mutations: {
@@ -34,6 +43,19 @@ export default {
         data: '',
         flag: false
       }
+    },
+    updatePlannerSize(state, data) {
+      state.planerWidth = data.planerWidth
+      state.planerHeight = data.planerHeight
+    },
+    showContextMenu(state, { top, left }) {
+      state.rightMenu.menuShow = true
+      state.rightMenu.menuTop = top
+      state.rightMenu.menuLeft = left
+    },
+
+    hideContextMenu(state) {
+      state.rightMenu.menuShow = false
     }
   },
   actions: {}
