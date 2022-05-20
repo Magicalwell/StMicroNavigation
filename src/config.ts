@@ -5,7 +5,7 @@ const config: Record<string, string> = {
   nuxtjs2: 'http://localhost:4003',
   react16: 'http://localhost:4004',
   react17: 'http://localhost:4005',
-  sidebar: 'http://localhost:4006',
+  heartofstone: 'http://localhost:4006',
   plannergeneration: 'http://localhost:4001',
   blogControl: 'http://localhost:8081',
   vue3: 'http://localhost:3001'

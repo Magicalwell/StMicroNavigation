@@ -1,3 +1,4 @@
+import './public-path.js'
 import Phaser from 'phaser'
 import Engine from './js/Engine/index'
 import Boot from './js/Engine/preLoad'
