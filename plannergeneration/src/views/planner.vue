@@ -36,11 +36,31 @@
         </section>
       </main>
     </div>
+    <a-modal
+      ref="modalRef"
+      v-model:visible="firstVisible"
+      :wrap-style="{ overflow: 'hidden' }"
+      @ok="handleOk"
+    >
+      <div style="max-height: 300px; overflow-y: auto">
+        <p>浮动的工具栏目前除了调整画布和导出之外，暂时都不能使用哦！</p>
+        <p>操作记录最多保留最近的20条！</p>
+        <p>...</p>
+      </div>
+      <template #title>
+        <div ref="modalTitleRef" style="width: 100%; cursor: move">
+          使用提示
+        </div>
+      </template>
+      <template #footer>
+        <a-button key="back" @click="handleCancel">知道了！</a-button>
+      </template>
+    </a-modal>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import ComponentList from './plannerLayout/leftComponents/left.vue' // 左侧列表组件
 import plannerArea from './plannerLayout/area.vue'
 import Toolbar from './plannerLayout/toolbox/tool.vue'
@@ -51,6 +71,7 @@ export default defineComponent({
   components: { plannerArea, Toolbar, ComponentList },
   setup() {
     const store = useStore()
+    const firstVisible = ref(true)
     function handleDrop() {
       console.log(11)
     }
@@ -61,13 +82,16 @@ export default defineComponent({
       console.log(11)
     }
     function deselectCurComponent() {
+      console.log('deselectCurComponent')
+
       store.commit('plannerVuex/hideContextMenu')
     }
     return {
       handleDrop,
       handleDragOver,
       handleMouseDown,
-      deselectCurComponent
+      deselectCurComponent,
+      firstVisible
     }
   }
 })

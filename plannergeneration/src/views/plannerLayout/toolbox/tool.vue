@@ -82,7 +82,7 @@
       </a-button>
     </a-tooltip>
 
-    <a-dropdown class="opt-btn">
+    <a-dropdown class="opt-btn" :trigger="['click']" v-bind="popSetting">
       <template #overlay>
         <a-menu @click="handleMenuClick">
           <a-menu-item :key="1">导出为jpg</a-menu-item>
@@ -134,6 +134,9 @@ export default defineComponent({
     const dragFlag = ref(false)
     const barPosition = ref({ top: '20px', left: '46%' })
     const canvasStyleData = ref(store.state.plannerVuex.canvasStyleData)
+    const popSetting = ref({
+      getPopupContainer: () => document.querySelector('#app')
+    })
     const foldTool = ref(false)
     function handleMenuClick(item) {
       store.commit('plannerVuex/changeSaveFlag', item.key)
@@ -166,7 +169,8 @@ export default defineComponent({
       foldTool,
       changeDragFlag,
       moveDrag,
-      barPosition
+      barPosition,
+      popSetting
     }
   }
 })

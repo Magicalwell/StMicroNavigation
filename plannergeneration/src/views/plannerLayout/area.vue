@@ -52,9 +52,12 @@ export default defineComponent({
     const option = {
       width: canvasStyleData.value.planerWidth, // 画布宽度
       height: canvasStyleData.value.planerHeight, // 画布高度
-      backgroundColor: '#fff' // 设置画布背景色
+      backgroundColor: '#fff', // 设置画布背景色
+      fireRightClick: true, // 启用右键，button的数字为3
+      stopContextMenu: false // 禁止默认右键菜单
     }
     let plannerCanvas = null
+    let chooseList = []
     // const init = () => {}
     function exportImg() {
       const dataURL = plannerCanvas.toDataURL({
@@ -75,6 +78,8 @@ export default defineComponent({
     const handleContextMenu = (e) => {
       e.stopPropagation()
       e.preventDefault()
+      console.log('handleContextMenu')
+      chooseList = plannerCanvas.getActiveObjects()
       // 计算菜单相对于编辑器的位移
       let target = e.target
       let top = e.offsetY
@@ -89,8 +94,27 @@ export default defineComponent({
         top += target.offsetTop
         target = target.parentNode
       }
-
-      store.commit('plannerVuex/showContextMenu', { top, left })
+      if (chooseList.length > 0) {
+        store.commit('plannerVuex/showContextMenu', { top, left })
+      }
+    }
+    const canvasOnMouseDown = (opt) => {
+      // canvas的事件要优先于plannerarea的contextmenu事件
+      // 鼠标事件触发的顺序：优先是mouse系列的事件，接着才是具体的click，或contextmenu
+      console.log('canvasOnMouseDown')
+      const chooseList = plannerCanvas.getActiveObjects()
+      if (opt.button === 3) {
+        console.log(chooseList)
+        if (chooseList.length === 0 && opt.target) {
+          plannerCanvas.setActiveObject(opt.target)
+        }
+        if (chooseList.length === 1 && opt.target) {
+          plannerCanvas.discardActiveObject()
+          plannerCanvas.setActiveObject(opt.target)
+        }
+        plannerCanvas.renderAll()
+        // plannerCanvas.setActiveObject(opt.target, true)
+      }
     }
     const addToCanvasByUrl = (canvas, data) => {
       fabric.Image.fromURL(data, (img) => {
@@ -99,6 +123,9 @@ export default defineComponent({
         img.center()
         img.sendBackwards()
       })
+    }
+    const canvasChangeCallback = () => {
+      console.log('it changed!!!')
     }
     watch(
       () => saveFlag.value.saveStatus,
@@ -126,6 +153,18 @@ export default defineComponent({
       },
       { deep: true }
     )
+    watch(
+      () => store.state.plannerVuex.canvasEvent.type,
+      (item) => {
+        if (item) {
+          console.log(chooseList)
+          chooseList.forEach((val) => {
+            plannerCanvas[item](val)
+          })
+        }
+      },
+      { deep: true }
+    )
     onMounted(() => {
       // init()
       plannerCanvas = new fabric.Canvas('plannerarea', option)
@@ -136,10 +175,11 @@ export default defineComponent({
         width: 20,
         height: 20
       })
-      console.log(rect)
-
       plannerCanvas.add(rect)
-      console.log('saveFlag')
+      plannerCanvas.on('mouse:down', canvasOnMouseDown)
+      plannerCanvas.on('object:added', canvasChangeCallback)
+      plannerCanvas.on('object:removed', canvasChangeCallback)
+      plannerCanvas.on('object:modified', canvasChangeCallback)
     })
 
     return { handleContextMenu, canvasStyleData }

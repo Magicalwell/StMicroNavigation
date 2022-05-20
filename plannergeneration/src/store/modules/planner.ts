@@ -17,6 +17,9 @@ export default {
       menuTop: 0, // 右击菜单数据
       menuLeft: 0,
       menuShow: false
+    },
+    canvasEvent: {
+      type: null
     }
   },
   mutations: {
@@ -56,6 +59,12 @@ export default {
 
     hideContextMenu(state) {
       state.rightMenu.menuShow = false
+    },
+    emitCanvasEvent(state, data) {
+      state.canvasEvent.type = data
+    },
+    resetCanvasEvent(state) {
+      state.canvasEvent.type = null
     }
   },
   actions: {}
