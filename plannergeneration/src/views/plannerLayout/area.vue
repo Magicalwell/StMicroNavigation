@@ -58,6 +58,7 @@ export default defineComponent({
     }
     let plannerCanvas = null
     let chooseList = []
+    const areaMoving = ref(false)
     // const init = () => {}
     function exportImg() {
       const dataURL = plannerCanvas.toDataURL({
@@ -101,7 +102,20 @@ export default defineComponent({
     const canvasOnMouseDown = (opt) => {
       // canvas的事件要优先于plannerarea的contextmenu事件
       // 鼠标事件触发的顺序：优先是mouse系列的事件，接着才是具体的click，或contextmenu
-      console.log('canvasOnMouseDown')
+      console.log(opt.target)
+      if (!opt.target) {
+        areaMoving.value = true
+        plannerCanvas.selection = false
+      }
+
+      // console.log(plannerCanvas.getZoom())
+      // plannerCanvas.setZoom(0.5)
+      // plannerCanvas.setWidth(
+      //   canvasStyleData.value.planerWidth * plannerCanvas.getZoom()
+      // )
+      // plannerCanvas.setHeight(
+      //   canvasStyleData.value.planerHeight * plannerCanvas.getZoom()
+      // )
       const chooseList = plannerCanvas.getActiveObjects()
       if (opt.button === 3) {
         console.log(chooseList)
@@ -177,9 +191,29 @@ export default defineComponent({
       })
       plannerCanvas.add(rect)
       plannerCanvas.on('mouse:down', canvasOnMouseDown)
+      plannerCanvas.on('mouse:up', function () {
+        areaMoving.value = false
+        plannerCanvas.selection = true
+      })
+      // 移动画布事件
+      plannerCanvas.on('mouse:move', function (e) {
+        if (areaMoving.value && e && e.e) {
+          var delta = new fabric.Point(e.e.movementX, e.e.movementY)
+          plannerCanvas.relativePan(delta)
+        }
+      })
       plannerCanvas.on('object:added', canvasChangeCallback)
       plannerCanvas.on('object:removed', canvasChangeCallback)
       plannerCanvas.on('object:modified', canvasChangeCallback)
+      // 鼠标滚动画布放大缩小
+      plannerCanvas.on('mouse:wheel', function (e) {
+        var zoom = (e.deltaY > 0 ? -0.1 : 0.1) + plannerCanvas.getZoom()
+        zoom = Math.max(0.1, zoom)
+        zoom = Math.min(3, zoom)
+        var zoomPoint = new fabric.Point(e.pointer.x, e.pointer.y)
+        console.log(zoomPoint)
+        plannerCanvas.zoomToPoint(zoomPoint, zoom)
+      })
     })
 
     return { handleContextMenu, canvasStyleData }

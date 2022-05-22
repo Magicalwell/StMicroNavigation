@@ -31,15 +31,42 @@
         />
       </div>
     </div>
-    <a-tooltip placement="topLeft">
+    <!-- <a-tooltip placement="topLeft">
       <template #title>
         <span>缩放画布</span>
       </template>
       <a-button type="primary" shape="circle" class="opt-btn" @click="showdata">
         <template #icon><SearchOutlined /></template>
       </a-button>
-    </a-tooltip>
-    <a-tooltip placement="topLeft">
+    </a-tooltip> -->
+    <!-- 11、子应用在沙箱环境中如何获取到外部真实window？
+    目前有3种方式在子应用中获取外部真实window 1、new Function("return window")()
+    或 Function("return window")() 2、(0, eval)('window') 3、window.rawWindow -->
+    <a-popover title="缩放画布" v-bind="popSetting" trigger="click">
+      <template #content>
+        <a-row style="min-width: 220px">
+          <a-col :span="12">
+            <a-slider
+              v-model:value="scaleValue"
+              :min="1"
+              :max="100"
+              @afterChange="onAfterChange"
+            />
+          </a-col>
+          <a-col :span="4">
+            <a-input-number
+              v-model:value="scaleValue"
+              :min="1"
+              :max="100"
+              style="margin-left: 16px"
+          /></a-col>
+        </a-row>
+      </template>
+      <a-button type="primary" shape="circle" class="opt-btn" @click="showdata">
+        <template #icon><SearchOutlined /></template>
+      </a-button>
+    </a-popover>
+    <a-tooltip placement="topLeft" v-bind="popSetting">
       <template #title>
         <span>删除元素</span>
       </template>
@@ -47,7 +74,7 @@
         <template #icon><delete-outlined /></template>
       </a-button>
     </a-tooltip>
-    <a-tooltip placement="topLeft">
+    <a-tooltip placement="topLeft" v-bind="popSetting">
       <template #title>
         <span>撤销</span>
       </template>
@@ -55,7 +82,7 @@
         <template #icon><undo-outlined /></template>
       </a-button>
     </a-tooltip>
-    <a-tooltip placement="topLeft">
+    <a-tooltip placement="topLeft" v-bind="popSetting">
       <template #title>
         <span>前进</span>
       </template>
@@ -64,7 +91,7 @@
       </a-button>
     </a-tooltip>
 
-    <a-tooltip placement="topLeft">
+    <a-tooltip placement="topLeft" v-bind="popSetting">
       <template #title>
         <span>保存</span>
       </template>
@@ -73,7 +100,7 @@
       </a-button>
     </a-tooltip>
 
-    <a-tooltip placement="topLeft">
+    <a-tooltip placement="topLeft" v-bind="popSetting">
       <template #title>
         <span>预览</span>
       </template>
@@ -134,6 +161,7 @@ export default defineComponent({
     const dragFlag = ref(false)
     const barPosition = ref({ top: '20px', left: '46%' })
     const canvasStyleData = ref(store.state.plannerVuex.canvasStyleData)
+    const scaleValue = ref(100)
     const popSetting = ref({
       getPopupContainer: () => document.querySelector('#app')
     })
@@ -162,6 +190,9 @@ export default defineComponent({
         barPosition.value.top = event.clientY - 69 + 'px'
       }
     }
+    const onAfterChange = () => {
+      console.log('change')
+    }
     return {
       handleMenuClick,
       showdata,
@@ -170,7 +201,9 @@ export default defineComponent({
       changeDragFlag,
       moveDrag,
       barPosition,
-      popSetting
+      popSetting,
+      scaleValue,
+      onAfterChange
     }
   }
 })

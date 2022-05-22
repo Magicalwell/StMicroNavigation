@@ -19,6 +19,12 @@
         </section>
         <section class="right">
           右侧的属性
+          <ul>
+            <li>1.待完善滚轮缩放和页面长度过长时滚动条的冲突问题</li>
+          </ul>
+          <!-- <AttrList v-if="curComponent" />
+          <AnimationList v-if="curComponent" /> -->
+
           <!-- <el-tabs v-model="activeName">
             <el-tab-pane label="属性" name="attr">
               <AttrList v-if="curComponent" />
@@ -40,7 +46,6 @@
       ref="modalRef"
       v-model:visible="firstVisible"
       :wrap-style="{ overflow: 'hidden' }"
-      @ok="handleOk"
     >
       <div style="max-height: 300px; overflow-y: auto">
         <p>浮动的工具栏目前除了调整画布和导出之外，暂时都不能使用哦！</p>
@@ -53,7 +58,7 @@
         </div>
       </template>
       <template #footer>
-        <a-button key="back" @click="handleCancel">知道了！</a-button>
+        <a-button key="back" @click="firstVisible = false">知道了！</a-button>
       </template>
     </a-modal>
   </div>
