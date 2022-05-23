@@ -20,6 +20,9 @@ export default {
     },
     canvasEvent: {
       type: null
+    },
+    toolBox: {
+      currentType: ''
     }
   },
   mutations: {
@@ -65,6 +68,9 @@ export default {
     },
     resetCanvasEvent(state) {
       state.canvasEvent.type = null
+    },
+    changeToolCurrentType(state, data) {
+      state.toolBox.currentType = data
     }
   },
   actions: {}

@@ -54,13 +54,15 @@ export default defineComponent({
       height: canvasStyleData.value.planerHeight, // 画布高度
       backgroundColor: '#fff', // 设置画布背景色
       fireRightClick: true, // 启用右键，button的数字为3
-      stopContextMenu: false // 禁止默认右键菜单
+      stopContextMenu: false, // 禁止默认右键菜单
+      fireMiddleClick: true
     }
     let plannerCanvas = null
     let chooseList = []
-    const areaMoving = ref(false)
-    // const init = () => {}
+    const areaMoving = ref(false) // 拖动的标志位
     function exportImg() {
+      plannerCanvas.setZoom(1)
+      plannerCanvas.absolutePan({ x: 0, y: 0 })
       const dataURL = plannerCanvas.toDataURL({
         width: plannerCanvas.width,
         height: plannerCanvas.height,
@@ -79,7 +81,6 @@ export default defineComponent({
     const handleContextMenu = (e) => {
       e.stopPropagation()
       e.preventDefault()
-      console.log('handleContextMenu')
       chooseList = plannerCanvas.getActiveObjects()
       // 计算菜单相对于编辑器的位移
       let target = e.target
@@ -102,12 +103,32 @@ export default defineComponent({
     const canvasOnMouseDown = (opt) => {
       // canvas的事件要优先于plannerarea的contextmenu事件
       // 鼠标事件触发的顺序：优先是mouse系列的事件，接着才是具体的click，或contextmenu
-      console.log(opt.target)
-      if (!opt.target) {
+      var canvasJsonData = JSON.stringify(plannerCanvas.toJSON())
+      console.log(JSON.parse(canvasJsonData))
+      if (opt.button === 2) {
         areaMoving.value = true
         plannerCanvas.selection = false
       }
+      if (
+        opt.button === 1 &&
+        store.state.plannerVuex.toolBox.currentType === 'text-input'
+      ) {
+        const text = new fabric.Textbox('', {
+          selectionColor: 'rgba(0,0,0,0.5)',
+          width: 100,
+          left: opt.pointer.x,
+          top: opt.pointer.y,
+          fontSize: 16,
+          lineHeight: 1,
+          lockScalingFlip: true, // 禁止负值反转
+          splitByGrapheme: true // 拆分中文，可以实现自动换行
+        })
 
+        // Render the Textbox in canvas
+        plannerCanvas.add(text)
+        text.enterEditing()
+        text.hiddenTextarea.focus()
+      }
       // console.log(plannerCanvas.getZoom())
       // plannerCanvas.setZoom(0.5)
       // plannerCanvas.setWidth(
@@ -118,7 +139,6 @@ export default defineComponent({
       // )
       const chooseList = plannerCanvas.getActiveObjects()
       if (opt.button === 3) {
-        console.log(chooseList)
         if (chooseList.length === 0 && opt.target) {
           plannerCanvas.setActiveObject(opt.target)
         }
@@ -138,14 +158,15 @@ export default defineComponent({
         img.sendBackwards()
       })
     }
-    const canvasChangeCallback = () => {
+    const canvasChangeCallback = (e) => {
       console.log('it changed!!!')
     }
+    const middleDbclick = ref(null)
+
     watch(
       () => saveFlag.value.saveStatus,
       (item) => {
         if (item) {
-          console.log(plannerCanvas.width)
           exportImg()
         }
       }
@@ -171,7 +192,6 @@ export default defineComponent({
       () => store.state.plannerVuex.canvasEvent.type,
       (item) => {
         if (item) {
-          console.log(chooseList)
           chooseList.forEach((val) => {
             plannerCanvas[item](val)
           })
@@ -181,6 +201,10 @@ export default defineComponent({
     )
     onMounted(() => {
       // init()
+      fabric.Object.prototype.cornerStyle = 'circle'
+      fabric.Object.prototype.cornerColor = 'dodgerblue'
+      fabric.Object.prototype.transparentCorners = false
+      fabric.Object.prototype.controls.mtr.cursorStyle = 'crosshair'
       plannerCanvas = new fabric.Canvas('plannerarea', option)
       var rect = new fabric.Rect({
         left: 100,
@@ -191,13 +215,34 @@ export default defineComponent({
       })
       plannerCanvas.add(rect)
       plannerCanvas.on('mouse:down', canvasOnMouseDown)
-      plannerCanvas.on('mouse:up', function () {
-        areaMoving.value = false
-        plannerCanvas.selection = true
+      plannerCanvas.on('mouse:up', function (e) {
+        if (e.button === 1) {
+          store.commit('plannerVuex/changeToolCurrentType', '') // 重置工具栏的选中状态
+        }
+        if (e.button === 2) {
+          plannerCanvas.defaultCursor = 'default'
+          areaMoving.value = false
+          plannerCanvas.selection = true
+          if (middleDbclick.value) {
+            // 通过定时器实现鼠标中键双击
+            clearTimeout(middleDbclick.value)
+            middleDbclick.value = null
+            plannerCanvas.setZoom(1)
+            plannerCanvas.absolutePan({ x: 0, y: 0 })
+            plannerCanvas.renderAll()
+          }
+
+          middleDbclick.value = setTimeout(() => {
+            clearTimeout(middleDbclick.value)
+            middleDbclick.value = null
+          }, 200)
+        }
       })
       // 移动画布事件
       plannerCanvas.on('mouse:move', function (e) {
         if (areaMoving.value && e && e.e) {
+          plannerCanvas.defaultCursor = 'move'
+          console.log(999)
           var delta = new fabric.Point(e.e.movementX, e.e.movementY)
           plannerCanvas.relativePan(delta)
         }
@@ -205,13 +250,12 @@ export default defineComponent({
       plannerCanvas.on('object:added', canvasChangeCallback)
       plannerCanvas.on('object:removed', canvasChangeCallback)
       plannerCanvas.on('object:modified', canvasChangeCallback)
-      // 鼠标滚动画布放大缩小
+      // 鼠标滚动画布放大缩小 mouse:dblclick
       plannerCanvas.on('mouse:wheel', function (e) {
-        var zoom = (e.deltaY > 0 ? -0.1 : 0.1) + plannerCanvas.getZoom()
+        var zoom = (e.e.deltaY > 0 ? -0.1 : 0.1) + plannerCanvas.getZoom()
         zoom = Math.max(0.1, zoom)
         zoom = Math.min(3, zoom)
         var zoomPoint = new fabric.Point(e.pointer.x, e.pointer.y)
-        console.log(zoomPoint)
         plannerCanvas.zoomToPoint(zoomPoint, zoom)
       })
     })
@@ -241,7 +285,7 @@ export default defineComponent({
     left: 50%;
     height: 100%;
     width: 100%;
-    overflow-y: auto;
+    overflow: hidden;
     transform: translate(-50%, -50%);
     // background: #fff;
     text-align: center;

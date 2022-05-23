@@ -4,7 +4,23 @@
       <Toolbar />
       <main>
         <section class="left">
-          <ComponentList />
+          <a-collapse
+            v-model:activeKey="activeKey"
+            :expand-icon-position="expandIconPosition"
+          >
+            <a-collapse-panel key="1" header="工具栏">
+              <SlideBar />
+              <template #extra><setting-outlined /></template>
+            </a-collapse-panel>
+            <a-collapse-panel key="2" header="图片上传">
+              <ComponentList />
+              <template #extra><setting-outlined /></template>
+            </a-collapse-panel>
+            <!-- <a-collapse-panel key="3" header="This is panel header 3">
+              <p>{{ text }}</p>
+              <template #extra><setting-outlined /></template>
+            </a-collapse-panel> -->
+          </a-collapse>
         </section>
         <section class="center">
           <div
@@ -21,6 +37,8 @@
           右侧的属性
           <ul>
             <li>1.待完善滚轮缩放和页面长度过长时滚动条的冲突问题</li>
+            <li>2.重叠元素的选中问题</li>
+            <li>3.文字模糊</li>
           </ul>
           <!-- <AttrList v-if="curComponent" />
           <AnimationList v-if="curComponent" /> -->
@@ -69,14 +87,25 @@ import { defineComponent, ref } from 'vue'
 import ComponentList from './plannerLayout/leftComponents/left.vue' // 左侧列表组件
 import plannerArea from './plannerLayout/area.vue'
 import Toolbar from './plannerLayout/toolbox/tool.vue'
+import SlideBar from './plannerLayout/leftComponents/toolitem.vue'
+import type { CollapseProps } from 'ant-design-vue'
+import { SettingOutlined } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'planner',
-  components: { plannerArea, Toolbar, ComponentList },
+  components: {
+    plannerArea,
+    Toolbar,
+    ComponentList,
+    SettingOutlined,
+    SlideBar
+  },
   setup() {
     const store = useStore()
     const firstVisible = ref(true)
+    const activeKey = ref(['1'])
+    const expandIconPosition = ref<CollapseProps['expandIconPosition']>('right')
     function handleDrop() {
       console.log(11)
     }
@@ -88,7 +117,7 @@ export default defineComponent({
     }
     function deselectCurComponent() {
       console.log('deselectCurComponent')
-
+      store.commit('plannerVuex/changeToolCurrentType', '')
       store.commit('plannerVuex/hideContextMenu')
     }
     return {
@@ -96,7 +125,9 @@ export default defineComponent({
       handleDragOver,
       handleMouseDown,
       deselectCurComponent,
-      firstVisible
+      firstVisible,
+      activeKey,
+      expandIconPosition
     }
   }
 })
@@ -117,10 +148,16 @@ export default defineComponent({
     .left {
       position: absolute;
       height: 100%;
-      width: 224px;
+      width: 226px;
       left: 0;
       top: 0;
       padding-top: 10px;
+      ::v-deep(.ant-collapse-header) {
+        padding: 6px 40px 6px 10px !important;
+      }
+      ::v-deep(.ant-collapse-content-box) {
+        padding: 6px !important;
+      }
     }
 
     .right {
