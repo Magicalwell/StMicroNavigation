@@ -23,7 +23,8 @@ export default {
     },
     toolBox: {
       currentType: ''
-    }
+    },
+    layoutContainer: []
   },
   mutations: {
     changeSaveFlag(state, data): void {
@@ -71,6 +72,9 @@ export default {
     },
     changeToolCurrentType(state, data) {
       state.toolBox.currentType = data
+    },
+    changeLayoutContainerArr(state, data) {
+      state.layoutContainer = data
     }
   },
   actions: {}

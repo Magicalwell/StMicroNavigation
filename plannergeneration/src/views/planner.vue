@@ -40,8 +40,9 @@
             <li>2.重叠元素的选中问题</li>
             <li>3.文字模糊</li>
           </ul>
-          <!-- <AttrList v-if="curComponent" />
-          <AnimationList v-if="curComponent" /> -->
+          <!-- <AttrList v-if="curComponent" /> -->
+          <LayoutList />
+          <!-- <AnimationList v-if="curComponent" /> -->
 
           <!-- <el-tabs v-model="activeName">
             <el-tab-pane label="属性" name="attr">
@@ -87,6 +88,7 @@ import { defineComponent, ref } from 'vue'
 import ComponentList from './plannerLayout/leftComponents/left.vue' // 左侧列表组件
 import plannerArea from './plannerLayout/area.vue'
 import Toolbar from './plannerLayout/toolbox/tool.vue'
+import LayoutList from './plannerLayout/rightComponents/layoutList.vue'
 import SlideBar from './plannerLayout/leftComponents/toolitem.vue'
 import type { CollapseProps } from 'ant-design-vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
@@ -99,7 +101,8 @@ export default defineComponent({
     Toolbar,
     ComponentList,
     SettingOutlined,
-    SlideBar
+    SlideBar,
+    LayoutList
   },
   setup() {
     const store = useStore()

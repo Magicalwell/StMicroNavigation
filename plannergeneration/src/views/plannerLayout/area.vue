@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, computed, watch, ref } from 'vue'
+import { defineComponent, onMounted, computed, watch, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { fabric } from 'fabric'
 import Grid from './grid.vue'
@@ -42,6 +42,11 @@ export default defineComponent({
     Grid,
     ContextMenu
   },
+  watch: {
+    plannerCanvas() {
+      console.log('new')
+    }
+  },
   setup() {
     const store = useStore()
     const canvasStyleData = computed(
@@ -49,16 +54,19 @@ export default defineComponent({
     )
     const saveFlag = computed(() => store.state.plannerVuex.saveFlag)
     const ImgFlag = computed(() => store.state.plannerVuex.addImageData)
+    // fabric配置属性
     const option = {
       width: canvasStyleData.value.planerWidth, // 画布宽度
       height: canvasStyleData.value.planerHeight, // 画布高度
       backgroundColor: '#fff', // 设置画布背景色
       fireRightClick: true, // 启用右键，button的数字为3
       stopContextMenu: false, // 禁止默认右键菜单
-      fireMiddleClick: true
+      fireMiddleClick: true,
+      altSelectionKey: 'altKey',
+      preserveObjectStacking: true
     }
-    let plannerCanvas = null
-    let chooseList = []
+    let plannerCanvas = reactive(null) // canvas实例
+    let chooseList = [] // 选中的元素list
     const areaMoving = ref(false) // 拖动的标志位
     function exportImg() {
       plannerCanvas.setZoom(1)
@@ -104,7 +112,6 @@ export default defineComponent({
       // canvas的事件要优先于plannerarea的contextmenu事件
       // 鼠标事件触发的顺序：优先是mouse系列的事件，接着才是具体的click，或contextmenu
       var canvasJsonData = JSON.stringify(plannerCanvas.toJSON())
-      console.log(JSON.parse(canvasJsonData))
       if (opt.button === 2) {
         areaMoving.value = true
         plannerCanvas.selection = false
@@ -129,14 +136,6 @@ export default defineComponent({
         text.enterEditing()
         text.hiddenTextarea.focus()
       }
-      // console.log(plannerCanvas.getZoom())
-      // plannerCanvas.setZoom(0.5)
-      // plannerCanvas.setWidth(
-      //   canvasStyleData.value.planerWidth * plannerCanvas.getZoom()
-      // )
-      // plannerCanvas.setHeight(
-      //   canvasStyleData.value.planerHeight * plannerCanvas.getZoom()
-      // )
       const chooseList = plannerCanvas.getActiveObjects()
       if (opt.button === 3) {
         if (chooseList.length === 0 && opt.target) {
@@ -180,6 +179,7 @@ export default defineComponent({
         }
       }
     )
+    // _objects
     watch(
       () => canvasStyleData.value,
       (item) => {
@@ -205,6 +205,12 @@ export default defineComponent({
       fabric.Object.prototype.cornerColor = 'dodgerblue'
       fabric.Object.prototype.transparentCorners = false
       fabric.Object.prototype.controls.mtr.cursorStyle = 'crosshair'
+      fabric.Canvas.prototype.orderObjects = function (compare) {
+        // this._objects.sort(compare)
+        console.log(this._objects)
+        // this.renderAll()
+        return this._objects
+      }
       plannerCanvas = new fabric.Canvas('plannerarea', option)
       var rect = new fabric.Rect({
         left: 100,
@@ -247,7 +253,14 @@ export default defineComponent({
           plannerCanvas.relativePan(delta)
         }
       })
-      plannerCanvas.on('object:added', canvasChangeCallback)
+      plannerCanvas.on('object:added', function () {
+        const tempList = plannerCanvas.getObjects()
+        tempList.forEach((element, index) => {
+          element.id = index
+          element.layoutName = `图层${index}`
+        })
+        store.commit('plannerVuex/changeLayoutContainerArr', tempList)
+      })
       plannerCanvas.on('object:removed', canvasChangeCallback)
       plannerCanvas.on('object:modified', canvasChangeCallback)
       // 鼠标滚动画布放大缩小 mouse:dblclick
@@ -260,7 +273,7 @@ export default defineComponent({
       })
     })
 
-    return { handleContextMenu, canvasStyleData }
+    return { handleContextMenu, canvasStyleData, plannerCanvas }
   }
 })
 </script>
