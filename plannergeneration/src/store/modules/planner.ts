@@ -24,7 +24,9 @@ export default {
     toolBox: {
       currentType: ''
     },
-    layoutContainer: []
+    layoutContainer: [],
+    layoutId: null,
+    layoutDragData: {}
   },
   mutations: {
     changeSaveFlag(state, data): void {
@@ -75,6 +77,26 @@ export default {
     },
     changeLayoutContainerArr(state, data) {
       state.layoutContainer = data
+    },
+    addLayoutContainerArr(state, data) {
+      data.id = state.layoutContainer.length
+      data.layoutName = `图层${state.layoutContainer.length}`
+      state.layoutContainer.push(data)
+      // state.layoutContainer.push({
+      //   ...data,
+      //   id: state.layoutContainer.length,
+      //   layoutName: `图层${state.layoutContainer.length}`
+      // })
+      // tempList.forEach((element, index) => {
+      //   element.id = index
+      //   element.layoutName = `图层${index}`
+      // })
+    },
+    changeLayoutId(state, data) {
+      state.layoutId = data
+    },
+    layoutDrag(state, data) {
+      state.layoutDragData = data
     }
   },
   actions: {}

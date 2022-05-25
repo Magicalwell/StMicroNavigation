@@ -30,18 +30,20 @@
             @mousedown="handleMouseDown"
             @mouseup="deselectCurComponent"
           >
-            <planner-area></planner-area>
+            <planner-area ref="plannerArea"></planner-area>
           </div>
         </section>
         <section class="right">
           右侧的属性
           <ul>
             <li>1.待完善滚轮缩放和页面长度过长时滚动条的冲突问题</li>
-            <li>2.重叠元素的选中问题</li>
+            <li>2.重叠元素的选中问题(两种解决方法，1.将选中的暂时置顶，2.禁用其他的元素为不可选中)</li>
             <li>3.文字模糊</li>
+            <li>4.层级拖动有两种方式，1是根据起始点的index进行moveto，2是将整个canvas重新渲染</li>
+            <li>5.待优化代码，将fabric的所有配置写入hooks</li>
           </ul>
           <!-- <AttrList v-if="curComponent" /> -->
-          <LayoutList />
+          <LayoutList :setActiveObj="plannerArea.setActiveSelect" />
           <!-- <AnimationList v-if="curComponent" /> -->
 
           <!-- <el-tabs v-model="activeName">
@@ -108,6 +110,7 @@ export default defineComponent({
     const store = useStore()
     const firstVisible = ref(true)
     const activeKey = ref(['1'])
+    const plannerArea = ref('null')
     const expandIconPosition = ref<CollapseProps['expandIconPosition']>('right')
     function handleDrop() {
       console.log(11)
@@ -130,7 +133,8 @@ export default defineComponent({
       deselectCurComponent,
       firstVisible,
       activeKey,
-      expandIconPosition
+      expandIconPosition,
+      plannerArea
     }
   }
 })

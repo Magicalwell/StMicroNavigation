@@ -36,6 +36,7 @@ import { useStore } from 'vuex'
 import { fabric } from 'fabric'
 import Grid from './grid.vue'
 import ContextMenu from './editor/contentText.vue'
+import { canvasConfig } from './hooks/common'
 export default defineComponent({
   name: 'planner',
   components: {
@@ -52,6 +53,7 @@ export default defineComponent({
     const canvasStyleData = computed(
       () => store.state.plannerVuex.canvasStyleData
     )
+
     const saveFlag = computed(() => store.state.plannerVuex.saveFlag)
     const ImgFlag = computed(() => store.state.plannerVuex.addImageData)
     // fabric配置属性
@@ -62,8 +64,8 @@ export default defineComponent({
       fireRightClick: true, // 启用右键，button的数字为3
       stopContextMenu: false, // 禁止默认右键菜单
       fireMiddleClick: true,
-      altSelectionKey: 'altKey',
-      preserveObjectStacking: true
+      altSelectionKey: 'altKey'
+      // preserveObjectStacking: true
     }
     let plannerCanvas = reactive(null) // canvas实例
     let chooseList = [] // 选中的元素list
@@ -111,7 +113,14 @@ export default defineComponent({
     const canvasOnMouseDown = (opt) => {
       // canvas的事件要优先于plannerarea的contextmenu事件
       // 鼠标事件触发的顺序：优先是mouse系列的事件，接着才是具体的click，或contextmenu
-      var canvasJsonData = JSON.stringify(plannerCanvas.toJSON())
+      const chooseList = plannerCanvas.getActiveObjects()
+      if (opt.target) {
+        store.commit('plannerVuex/changeLayoutId', opt.target.id)
+      } else {
+        store.commit('plannerVuex/changeLayoutId', -1)
+      }
+
+      // var canvasJsonData = JSON.stringify(plannerCanvas.toJSON())
       if (opt.button === 2) {
         areaMoving.value = true
         plannerCanvas.selection = false
@@ -136,7 +145,7 @@ export default defineComponent({
         text.enterEditing()
         text.hiddenTextarea.focus()
       }
-      const chooseList = plannerCanvas.getActiveObjects()
+
       if (opt.button === 3) {
         if (chooseList.length === 0 && opt.target) {
           plannerCanvas.setActiveObject(opt.target)
@@ -159,6 +168,20 @@ export default defineComponent({
     }
     const canvasChangeCallback = (e) => {
       console.log('it changed!!!')
+    }
+    const setActiveSelect = (order) => {
+      return new Promise((resolve) => {
+        const objs = plannerCanvas.getObjects().filter((e) => {
+          return e && e.id === order
+        })
+        console.log(objs)
+        if (objs && objs.length > 0) {
+          plannerCanvas.setActiveObject(objs[0])
+          plannerCanvas.renderAll()
+          resolve()
+        } else {
+        }
+      })
     }
     const middleDbclick = ref(null)
 
@@ -199,6 +222,14 @@ export default defineComponent({
       },
       { deep: true }
     )
+    watch(
+      () => store.state.plannerVuex.layoutDragData,
+      (item) => {
+        const objs = plannerCanvas.getObjects()
+        plannerCanvas.moveTo(objs[item.oldIndex], item.newIndex)
+      },
+      { deep: true }
+    )
     onMounted(() => {
       // init()
       fabric.Object.prototype.cornerStyle = 'circle'
@@ -220,6 +251,12 @@ export default defineComponent({
         height: 20
       })
       plannerCanvas.add(rect)
+      const tempList = plannerCanvas.getObjects()
+      tempList.forEach((element, index) => {
+        element.id = index
+        element.layoutName = `图层${index}`
+      })
+      store.commit('plannerVuex/changeLayoutContainerArr', tempList)
       plannerCanvas.on('mouse:down', canvasOnMouseDown)
       plannerCanvas.on('mouse:up', function (e) {
         if (e.button === 1) {
@@ -248,18 +285,14 @@ export default defineComponent({
       plannerCanvas.on('mouse:move', function (e) {
         if (areaMoving.value && e && e.e) {
           plannerCanvas.defaultCursor = 'move'
-          console.log(999)
           var delta = new fabric.Point(e.e.movementX, e.e.movementY)
           plannerCanvas.relativePan(delta)
         }
       })
-      plannerCanvas.on('object:added', function () {
-        const tempList = plannerCanvas.getObjects()
-        tempList.forEach((element, index) => {
-          element.id = index
-          element.layoutName = `图层${index}`
-        })
-        store.commit('plannerVuex/changeLayoutContainerArr', tempList)
+      plannerCanvas.on('object:added', function (e) {
+        if (e && e.target) {
+          store.commit('plannerVuex/addLayoutContainerArr', e.target)
+        }
       })
       plannerCanvas.on('object:removed', canvasChangeCallback)
       plannerCanvas.on('object:modified', canvasChangeCallback)
@@ -273,7 +306,12 @@ export default defineComponent({
       })
     })
 
-    return { handleContextMenu, canvasStyleData, plannerCanvas }
+    return {
+      handleContextMenu,
+      canvasStyleData,
+      plannerCanvas,
+      setActiveSelect
+    }
   }
 })
 </script>
