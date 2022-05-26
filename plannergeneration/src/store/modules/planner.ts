@@ -81,7 +81,9 @@ export default {
     addLayoutContainerArr(state, data) {
       data.id = state.layoutContainer.length
       data.layoutName = `图层${state.layoutContainer.length}`
-      state.layoutContainer.push(data)
+      state.layoutContainer.unshift(data)
+      console.log(state.layoutContainer)
+
       // state.layoutContainer.push({
       //   ...data,
       //   id: state.layoutContainer.length,
@@ -97,6 +99,11 @@ export default {
     },
     layoutDrag(state, data) {
       state.layoutDragData = data
+    },
+    removeDragList(state, data) {
+      state.layoutContainer = state.layoutContainer.filter(
+        (item) => item.id !== data
+      )
     }
   },
   actions: {}

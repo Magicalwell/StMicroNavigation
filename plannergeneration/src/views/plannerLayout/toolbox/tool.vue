@@ -78,7 +78,7 @@
       <template #title>
         <span>撤销</span>
       </template>
-      <a-button type="primary" shape="circle" class="opt-btn">
+      <a-button type="primary" shape="circle" class="opt-btn" disabled>
         <template #icon><undo-outlined /></template>
       </a-button>
     </a-tooltip>
@@ -86,7 +86,7 @@
       <template #title>
         <span>前进</span>
       </template>
-      <a-button type="primary" shape="circle" class="opt-btn">
+      <a-button type="primary" shape="circle" class="opt-btn" disabled>
         <template #icon><redo-outlined /></template>
       </a-button>
     </a-tooltip>
@@ -142,6 +142,12 @@ export default defineComponent({
     toolY: {
       type: String,
       default: '20px'
+    },
+    copy: {
+      type: Function
+    },
+    paste: {
+      type: Function
     }
   },
   name: 'tool',

@@ -37,6 +37,12 @@
         class="mouse-btn"
         >置底</a-button
       >
+      <a-button type="primary" ghost @click="copy" class="mouse-btn"
+        >复制</a-button
+      >
+      <a-button type="primary" ghost @click="paste" class="mouse-btn"
+        >粘贴</a-button
+      >
       <a-button
         type="primary"
         ghost
@@ -72,7 +78,16 @@ import { computed, defineComponent, nextTick } from 'vue'
 import { useStore } from 'vuex'
 
 export default defineComponent({
-  props: {},
+  props: {
+    copy: {
+      type: Function,
+      required: true
+    },
+    paste: {
+      type: Function,
+      required: true
+    }
+  },
   name: 'tool',
 
   setup() {

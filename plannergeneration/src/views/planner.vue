@@ -16,10 +16,6 @@
               <ComponentList />
               <template #extra><setting-outlined /></template>
             </a-collapse-panel>
-            <!-- <a-collapse-panel key="3" header="This is panel header 3">
-              <p>{{ text }}</p>
-              <template #extra><setting-outlined /></template>
-            </a-collapse-panel> -->
           </a-collapse>
         </section>
         <section class="center">
@@ -37,10 +33,15 @@
           右侧的属性
           <ul>
             <li>1.待完善滚轮缩放和页面长度过长时滚动条的冲突问题</li>
-            <li>2.重叠元素的选中问题(两种解决方法，1.将选中的暂时置顶，2.禁用其他的元素为不可选中)</li>
+            <li>
+              2.重叠元素的选中问题(两种解决方法，1.将选中的暂时置顶，2.禁用其他的元素为不可选中)
+            </li>
             <li>3.文字模糊</li>
-            <li>4.层级拖动有两种方式，1是根据起始点的index进行moveto，2是将整个canvas重新渲染</li>
+            <li>
+              4.层级拖动有两种方式，1是根据起始点的index进行moveto，2是将整个canvas重新渲染
+            </li>
             <li>5.待优化代码，将fabric的所有配置写入hooks</li>
+            <li>6.图层管理器和图层需要维护同一个id，且不能重复</li>
           </ul>
           <!-- <AttrList v-if="curComponent" /> -->
           <LayoutList :setActiveObj="plannerArea.setActiveSelect" />

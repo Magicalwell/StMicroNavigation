@@ -26,7 +26,7 @@
     <!-- https://blog.csdn.net/daicooper/article/details/79800718 -->
     <!-- 由于图片比较大，转为base64的时候需要事件，此间不能点击 -->
     <!-- 考虑将拖拽加入home中 -->
-    <ContextMenu />
+    <ContextMenu :copy="copyHandle" :paste="pasteHandle" />
   </div>
 </template>
 
@@ -67,9 +67,10 @@ export default defineComponent({
       altSelectionKey: 'altKey'
       // preserveObjectStacking: true
     }
-    let plannerCanvas = reactive(null) // canvas实例
+    let plannerCanvas = reactive({}) // canvas实例
     let chooseList = [] // 选中的元素list
     const areaMoving = ref(false) // 拖动的标志位
+    const copyData = ref([])
     function exportImg() {
       plannerCanvas.setZoom(1)
       plannerCanvas.absolutePan({ x: 0, y: 0 })
@@ -106,7 +107,7 @@ export default defineComponent({
         top += target.offsetTop
         target = target.parentNode
       }
-      if (chooseList.length > 0) {
+      if (chooseList.length > 0 || Object.keys(copyData.value).length > 0) {
         store.commit('plannerVuex/showContextMenu', { top, left })
       }
     }
@@ -163,11 +164,14 @@ export default defineComponent({
         // img.set(Image.defaultImage(canvas, img))
         canvas.add(img)
         img.center()
-        img.sendBackwards()
+        // img.sendBackwards()
       })
     }
     const canvasChangeCallback = (e) => {
       console.log('it changed!!!')
+    }
+    const canvasRemoveCallback = (e) => {
+      store.commit('plannerVuex/removeDragList', e.target.id)
     }
     const setActiveSelect = (order) => {
       return new Promise((resolve) => {
@@ -184,7 +188,37 @@ export default defineComponent({
       })
     }
     const middleDbclick = ref(null)
-
+    const copyHandle = () => {
+      plannerCanvas.getActiveObject().clone(function (cloned) {
+        copyData.value = cloned
+      })
+    }
+    const pasteHandle = () => {
+      // clone again, so you can do multiple copies.
+      copyData.value.clone(function (clonedObj) {
+        plannerCanvas.discardActiveObject()
+        clonedObj.set({
+          left: clonedObj.left + 10,
+          top: clonedObj.top + 10,
+          evented: true
+        })
+        if (clonedObj.type === 'activeSelection') {
+          // active selection needs a reference to the canvas.
+          clonedObj.canvas = plannerCanvas
+          clonedObj.forEachObject(function (obj) {
+            plannerCanvas.add(obj)
+          })
+          // this should solve the unselectability
+          clonedObj.setCoords()
+        } else {
+          plannerCanvas.add(clonedObj)
+        }
+        copyData.value.top += 10
+        copyData.value.left += 10
+        plannerCanvas.setActiveObject(clonedObj)
+        plannerCanvas.requestRenderAll()
+      })
+    }
     watch(
       () => saveFlag.value.saveStatus,
       (item) => {
@@ -226,6 +260,7 @@ export default defineComponent({
       () => store.state.plannerVuex.layoutDragData,
       (item) => {
         const objs = plannerCanvas.getObjects()
+
         plannerCanvas.moveTo(objs[item.oldIndex], item.newIndex)
       },
       { deep: true }
@@ -278,7 +313,7 @@ export default defineComponent({
           middleDbclick.value = setTimeout(() => {
             clearTimeout(middleDbclick.value)
             middleDbclick.value = null
-          }, 200)
+          }, 300)
         }
       })
       // 移动画布事件
@@ -291,10 +326,11 @@ export default defineComponent({
       })
       plannerCanvas.on('object:added', function (e) {
         if (e && e.target) {
+          console.log(e.target)
           store.commit('plannerVuex/addLayoutContainerArr', e.target)
         }
       })
-      plannerCanvas.on('object:removed', canvasChangeCallback)
+      plannerCanvas.on('object:removed', canvasRemoveCallback)
       plannerCanvas.on('object:modified', canvasChangeCallback)
       // 鼠标滚动画布放大缩小 mouse:dblclick
       plannerCanvas.on('mouse:wheel', function (e) {
@@ -310,7 +346,9 @@ export default defineComponent({
       handleContextMenu,
       canvasStyleData,
       plannerCanvas,
-      setActiveSelect
+      setActiveSelect,
+      copyHandle,
+      pasteHandle
     }
   }
 })

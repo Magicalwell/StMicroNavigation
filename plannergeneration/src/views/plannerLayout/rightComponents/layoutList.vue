@@ -20,12 +20,21 @@
       <template #item="{ element }">
         <div
           :class="{
-            layer_active: selectIndex == element.id
+            layer_active: selectIndex == element.id,
+            'drag-handle': !selectInputArr.includes(element.id)
           }"
           class="layout-item"
           @click="setAvtive(element.id)"
+          @dblclick="setInput(element.id)"
         >
-          {{ element.layoutName }} {{ element.id }}
+          <a-input
+            v-model:value.lazy="element.layoutName"
+            v-if="selectInputArr.includes(element.id)"
+            @blur="resetArr(element.id)"
+          ></a-input>
+          <div v-else>
+            {{ element.layoutName }}
+          </div>
         </div>
       </template>
     </draggable>
@@ -33,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 
@@ -54,6 +63,7 @@ export default defineComponent({
     const childComponentList = computed(
       () => store.state.plannerVuex.layoutContainer
     )
+    // childComponentList.value.reverse()
     const selectIndex = computed({
       get: () => {
         return store.state.plannerVuex.layoutId
@@ -62,7 +72,16 @@ export default defineComponent({
         store.commit('plannerVuex/changeLayoutId', val)
       }
     })
-    const dragOptions = {}
+    const dragOptions = {
+      animation: 300,
+      ghostClass: 'ghostItem',
+      draggable: '.drag-handle',
+      tag: 'div',
+      // handle: '.mover',
+      forceFallback: false,
+      dragClass: 'dragClass'
+    }
+    const selectInputArr = ref([])
     const setAvtive = (idx) => {
       if (selectIndex.value !== idx) {
         selectIndex.value = idx
@@ -76,16 +95,25 @@ export default defineComponent({
       console.log(arg)
 
       store.commit('plannerVuex/layoutDrag', {
-        newIndex: arg.newIndex,
-        oldIndex: arg.oldIndex
+        newIndex: childComponentList.value.length - 1 - arg.newIndex,
+        oldIndex: childComponentList.value.length - 1 - arg.oldIndex
       })
+    }
+    const setInput = (val: never) => {
+      selectInputArr.value.push(val)
+    }
+    const resetArr = (val) => {
+      selectInputArr.value = selectInputArr.value.filter((item) => item !== val)
     }
     return {
       childComponentList,
       dragOptions,
       selectIndex,
       setAvtive,
-      layoutMoved
+      layoutMoved,
+      setInput,
+      selectInputArr,
+      resetArr
     }
   }
 })
@@ -98,6 +126,10 @@ export default defineComponent({
 }
 .layout-item {
   padding: 4px 8px;
+  ::v-deep(.ant-input) {
+    padding: 0 !important;
+    border: none;
+  }
 }
 .layer_active {
   background-color: #ccc;
