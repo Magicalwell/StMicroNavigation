@@ -37,6 +37,7 @@ import { fabric } from 'fabric'
 import Grid from './grid.vue'
 import ContextMenu from './editor/contentText.vue'
 import { canvasConfig } from './hooks/common'
+import initAligningGuidelines from './hooks/line'
 export default defineComponent({
   name: 'planner',
   components: {
@@ -278,6 +279,7 @@ export default defineComponent({
         return this._objects
       }
       plannerCanvas = new fabric.Canvas('plannerarea', option)
+      initAligningGuidelines(plannerCanvas)
       var rect = new fabric.Rect({
         left: 100,
         top: 100,

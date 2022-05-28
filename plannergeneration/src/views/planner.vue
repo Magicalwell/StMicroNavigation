@@ -42,6 +42,7 @@
             </li>
             <li>5.待优化代码，将fabric的所有配置写入hooks</li>
             <li>6.图层管理器和图层需要维护同一个id，且不能重复</li>
+            <li>7.辅助线吸附功能(暂时有点问题)</li>
           </ul>
           <!-- <AttrList v-if="curComponent" /> -->
           <LayoutList :setActiveObj="plannerArea.setActiveSelect" />
