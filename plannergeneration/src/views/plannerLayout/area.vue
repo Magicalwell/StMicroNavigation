@@ -44,12 +44,7 @@ export default defineComponent({
     Grid,
     ContextMenu
   },
-  watch: {
-    plannerCanvas() {
-      console.log('new')
-    }
-  },
-  setup() {
+  setup(props, { expose }) {
     const store = useStore()
     const canvasStyleData = computed(
       () => store.state.plannerVuex.canvasStyleData
@@ -170,6 +165,23 @@ export default defineComponent({
     }
     const canvasChangeCallback = (e) => {
       console.log('it changed!!!')
+      store.commit(
+        'plannerVuex/pushHistory',
+        JSON.stringify(plannerCanvas.toJSON())
+      )
+      // store.commit(
+      //   'plannerVuex/changeLayoutContainerArr',
+      //   plannerCanvas.getObjects()
+      // )
+    }
+    const canvasReloadFromJson = () => {
+      console.log('gogogo')
+      plannerCanvas.loadFromJSON(
+        store.state.plannerVuex.canvasHistory[
+          store.state.plannerVuex.canvasHistory.length - 1
+        ]
+      )
+      plannerCanvas.renderAll()
     }
     const canvasRemoveCallback = (e) => {
       store.commit('plannerVuex/removeDragList', e.target.id)
@@ -188,6 +200,7 @@ export default defineComponent({
         }
       })
     }
+
     const middleDbclick = ref(null)
     const copyHandle = () => {
       plannerCanvas.getActiveObject().clone(function (cloned) {
@@ -220,6 +233,7 @@ export default defineComponent({
         plannerCanvas.requestRenderAll()
       })
     }
+    expose({ setActiveSelect, canvasReloadFromJson })
     watch(
       () => saveFlag.value.saveStatus,
       (item) => {
@@ -261,7 +275,6 @@ export default defineComponent({
       () => store.state.plannerVuex.layoutDragData,
       (item) => {
         const objs = plannerCanvas.getObjects()
-
         plannerCanvas.moveTo(objs[item.oldIndex], item.newIndex)
       },
       { deep: true }
@@ -350,7 +363,8 @@ export default defineComponent({
       plannerCanvas,
       setActiveSelect,
       copyHandle,
-      pasteHandle
+      pasteHandle,
+      canvasReloadFromJson
     }
   }
 })

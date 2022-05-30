@@ -78,7 +78,13 @@
       <template #title>
         <span>撤销</span>
       </template>
-      <a-button type="primary" shape="circle" class="opt-btn" disabled>
+      <a-button
+        type="primary"
+        shape="circle"
+        class="opt-btn"
+        :disabled="goBack.length <= 0"
+        @click="historyHandle(0)"
+      >
         <template #icon><undo-outlined /></template>
       </a-button>
     </a-tooltip>
@@ -86,7 +92,13 @@
       <template #title>
         <span>前进</span>
       </template>
-      <a-button type="primary" shape="circle" class="opt-btn" disabled>
+      <a-button
+        type="primary"
+        shape="circle"
+        class="opt-btn"
+        :disabled="goForword.length <= 0"
+        @click="historyHandle(1)"
+      >
         <template #icon><redo-outlined /></template>
       </a-button>
     </a-tooltip>
@@ -125,7 +137,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, nextTick } from 'vue'
+import { defineComponent, ref, nextTick, computed, emit } from 'vue'
 import { useStore } from 'vuex'
 import {
   SearchOutlined,
@@ -161,7 +173,7 @@ export default defineComponent({
     DownOutlined,
     CompressOutlined
   },
-  setup() {
+  setup(props, { emit }) {
     // 595×842
     const store = useStore()
     const dragFlag = ref(false)
@@ -181,6 +193,11 @@ export default defineComponent({
     const showdata = () => {
       console.log(store.state.plannerVuex.planerWidth)
     }
+
+    const goBack = computed(() => store.state.plannerVuex.canvasHistory)
+    const goForword = computed(
+      () => store.state.plannerVuex.canvasForwordHistory
+    )
     const changeDragFlag = (event, type) => {
       console.log(event)
       if (type) {
@@ -199,6 +216,14 @@ export default defineComponent({
     const onAfterChange = () => {
       console.log('change')
     }
+    const historyHandle = (type) => {
+      if (type === 0) {
+        store.commit('plannerVuex/pushHistory')
+      } else if (type === 1) {
+        store.commit('plannerVuex/popHistory')
+      }
+      emit('loadFromJson')
+    }
     return {
       handleMenuClick,
       showdata,
@@ -209,7 +234,10 @@ export default defineComponent({
       barPosition,
       popSetting,
       scaleValue,
-      onAfterChange
+      onAfterChange,
+      goBack,
+      goForword,
+      historyHandle
     }
   }
 })

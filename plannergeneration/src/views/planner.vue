@@ -1,7 +1,7 @@
 <template>
   <div class="planner-box">
     <div class="home">
-      <Toolbar />
+      <Toolbar @load-from-json="reLoad" />
       <main>
         <section class="left">
           <a-collapse
@@ -42,10 +42,12 @@
             </li>
             <li>5.待优化代码，将fabric的所有配置写入hooks</li>
             <li>6.图层管理器和图层需要维护同一个id，且不能重复</li>
-            <li>7.辅助线吸附功能(暂时有点问题)</li>
+            <li>7.辅助线吸附功能需要优化同时吸附多个点的情况</li>
           </ul>
           <!-- <AttrList v-if="curComponent" /> -->
-          <LayoutList :setActiveObj="plannerArea.setActiveSelect" />
+          <LayoutList
+            :setActiveObj="plannerArea.setActiveSelect" v-if="plannerArea"
+          />
           <!-- <AnimationList v-if="curComponent" /> -->
 
           <!-- <el-tabs v-model="activeName">
@@ -88,7 +90,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import ComponentList from './plannerLayout/leftComponents/left.vue' // 左侧列表组件
 import plannerArea from './plannerLayout/area.vue'
 import Toolbar from './plannerLayout/toolbox/tool.vue'
@@ -112,7 +114,7 @@ export default defineComponent({
     const store = useStore()
     const firstVisible = ref(true)
     const activeKey = ref(['1'])
-    const plannerArea = ref('null')
+    const plannerArea = ref()
     const expandIconPosition = ref<CollapseProps['expandIconPosition']>('right')
     function handleDrop() {
       console.log(11)
@@ -128,6 +130,9 @@ export default defineComponent({
       store.commit('plannerVuex/changeToolCurrentType', '')
       store.commit('plannerVuex/hideContextMenu')
     }
+    const reLoad = () => {
+      plannerArea.value.canvasReloadFromJson()
+    }
     return {
       handleDrop,
       handleDragOver,
@@ -136,7 +141,8 @@ export default defineComponent({
       firstVisible,
       activeKey,
       expandIconPosition,
-      plannerArea
+      plannerArea,
+      reLoad
     }
   }
 })

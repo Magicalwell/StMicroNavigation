@@ -26,7 +26,9 @@ export default {
     },
     layoutContainer: [],
     layoutId: null,
-    layoutDragData: {}
+    layoutDragData: {},
+    canvasHistory: [],
+    canvasForwordHistory: []
   },
   mutations: {
     changeSaveFlag(state, data): void {
@@ -104,6 +106,21 @@ export default {
       state.layoutContainer = state.layoutContainer.filter(
         (item) => item.id !== data
       )
+    },
+    pushHistory(state, data) {
+      if (data) {
+        state.canvasHistory.push(data)
+      } else {
+        state.canvasForwordHistory.push(state.canvasHistory.pop())
+      }
+      // state.layoutContainer = state.canvasHistory
+      // commit.synchronizationLayout()
+    },
+    popHistory(state, data) {
+      if (state.canvasForwordHistory.length > 0) {
+        state.canvasHistory.push(state.canvasForwordHistory.pop())
+        // state.layoutContainer = state.canvasHistory
+      }
     }
   },
   actions: {}
