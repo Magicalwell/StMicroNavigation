@@ -11,7 +11,7 @@ import Mover from './Mover'
 // import UIActions from './ui/UIActions'
 // import { ActionType } from '../types/Actions'
 // import { getPositionBetweenPoints } from '../utils/positionUtils'
-// import { Position } from '../types/Positions'
+import { Position } from '../types/Positions'
 // import ProgressBar from './ui/ProgressBar'
 // import { POINTER_CURSOR } from '../utils/cursorUtils'
 export default class Entity extends Phaser.GameObjects.Container {
@@ -50,7 +50,8 @@ export default class Entity extends Phaser.GameObjects.Container {
     scene.add.existing(this)
 
     // Create Unit sprite
-    this._createUnitSprite(navMesh, texture, frame)
+    this._createUnitSprite(texture, navMesh, frame)
+    console.log(navMesh, texture, frame)
     // // Create name info
     // this._createName()
     // this._createUI()
@@ -276,28 +277,28 @@ export default class Entity extends Phaser.GameObjects.Container {
 
   update() {
     if (!this.isMoving) return
-
-    // // Animate player following current velocity
-    // const velocity = this.body.velocity
-    // if (velocity.y > 0 && Math.abs(velocity.y) > Math.abs(velocity.x)) {
-    //   this.animate(Position.DOWN)
-    // } else if (
-    //   this.body.velocity.y < 0 &&
-    //   Math.abs(velocity.y) > Math.abs(velocity.x)
-    // ) {
-    //   this.animate(Position.UP)
-    // } else if (velocity.x > 0) {
-    //   this.animate(Position.RIGHT)
-    // } else if (this.body.velocity.x < 0) {
-    //   this.animate(Position.LEFT)
-    // } else {
-    //   // this.unitSprite.anims.stop()
-    // }
+    // Animate player following current velocity
+    const velocity = this.body.velocity
+    if (velocity.y > 0 && Math.abs(velocity.y) > Math.abs(velocity.x)) {
+      this.animate(Position.DOWN)
+    } else if (
+      this.body.velocity.y < 0 &&
+      Math.abs(velocity.y) > Math.abs(velocity.x)
+    ) {
+      this.animate(Position.UP)
+    } else if (velocity.x > 0) {
+      this.animate(Position.RIGHT)
+    } else if (this.body.velocity.x < 0) {
+      this.animate(Position.LEFT)
+    } else {
+      this.unitSprite.anims.stop()
+    }
   }
 
   animate(position) {
     switch (position) {
       case Position.UP:
+        console.log(222);
         this.unitSprite.play(this.animationKey + '-up', true)
         break
       case Position.LEFT:
@@ -307,6 +308,7 @@ export default class Entity extends Phaser.GameObjects.Container {
         this.unitSprite.play(this.animationKey + '-right', true)
         break
       case Position.DOWN:
+        this.unitSprite.play(this.animationKey + '-down', true)
       default:
         this.unitSprite.play(this.animationKey + '-down', true)
         break
