@@ -31,7 +31,15 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, computed, watch, ref, reactive } from 'vue'
+import {
+  defineComponent,
+  onMounted,
+  computed,
+  watch,
+  ref,
+  reactive,
+  onUnmounted
+} from 'vue'
 import { useStore } from 'vuex'
 import { fabric } from 'fabric'
 import Grid from './grid.vue'
@@ -276,6 +284,8 @@ export default defineComponent({
       (item) => {
         const objs = plannerCanvas.getObjects()
         plannerCanvas.moveTo(objs[item.oldIndex], item.newIndex)
+        console.log(plannerCanvas.getObjects(), 'plannerCanvas.getObjects()')
+        canvasChangeCallback()
       },
       { deep: true }
     )
@@ -356,7 +366,9 @@ export default defineComponent({
         plannerCanvas.zoomToPoint(zoomPoint, zoom)
       })
     })
-
+    onUnmounted(() => {
+      console.log('destory')
+    })
     return {
       handleContextMenu,
       canvasStyleData,
