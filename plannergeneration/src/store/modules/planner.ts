@@ -1,34 +1,40 @@
 export default {
   namespaced: true,
   state: {
+    canvasModel: 'none', // 当前canvas是否处于绘画模式
     saveFlag: {
+      // 导出图片的类型和触发器
       saveType: null,
       saveStatus: false
     },
     addImageData: {
+      // 图片数据，后续需要改成数组
       data: '',
       flag: false
     },
     canvasStyleData: {
+      // 画布数据
       planerWidth: 595,
       planerHeight: 842
     },
     rightMenu: {
-      menuTop: 0, // 右击菜单数据
+      menuTop: 0, // 右击菜单定位数据
       menuLeft: 0,
       menuShow: false
     },
     canvasEvent: {
+      // 右击菜单选中的类型
       type: null
     },
     toolBox: {
+      // 工具栏目前选中的工具类型
       currentType: ''
     },
-    layoutContainer: [],
-    layoutId: null,
-    layoutDragData: {},
-    canvasHistory: [],
-    canvasForwordHistory: []
+    layoutContainer: [], // 图层容器
+    layoutId: null, // 当前选中的图层id
+    layoutDragData: {}, // 图层管理器拖拽层级后的前后层级位置
+    canvasHistory: [], // 历史记录
+    canvasForwordHistory: [] // 前进记录
   },
   mutations: {
     changeSaveFlag(state, data): void {
