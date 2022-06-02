@@ -34,7 +34,10 @@ export default {
     layoutId: null, // 当前选中的图层id
     layoutDragData: {}, // 图层管理器拖拽层级后的前后层级位置
     canvasHistory: [], // 历史记录
-    canvasForwordHistory: [] // 前进记录
+    canvasForwordHistory: [], // 前进记录
+    toolsFeature: {
+      'pencil-input': { size: 15 }
+    } // 工具属性对象
   },
   mutations: {
     changeSaveFlag(state, data): void {

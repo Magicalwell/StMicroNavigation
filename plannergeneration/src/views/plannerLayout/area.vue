@@ -125,12 +125,12 @@ export default defineComponent({
       } else {
         store.commit('plannerVuex/changeLayoutId', -1)
       }
-
       // var canvasJsonData = JSON.stringify(plannerCanvas.toJSON())
       if (opt.button === 2) {
         areaMoving.value = true
         plannerCanvas.selection = false
       }
+      console.log(store.state.plannerVuex.toolBox.currentType)
       if (
         opt.button === 1 &&
         store.state.plannerVuex.toolBox.currentType === 'text-input'
@@ -298,7 +298,6 @@ export default defineComponent({
       fabric.Object.prototype.controls.mtr.cursorStyle = 'crosshair'
       fabric.Canvas.prototype.orderObjects = function (compare) {
         // this._objects.sort(compare)
-        console.log(this._objects)
         // this.renderAll()
         return this._objects
       }
@@ -321,7 +320,10 @@ export default defineComponent({
       store.commit('plannerVuex/changeLayoutContainerArr', tempList)
       plannerCanvas.on('mouse:down', canvasOnMouseDown)
       plannerCanvas.on('mouse:up', function (e) {
-        if (e.button === 1) {
+        if (
+          e.button === 1 &&
+          store.state.plannerVuex.toolBox.currentType === 'text-input'
+        ) {
           store.commit('plannerVuex/changeToolCurrentType', '') // 重置工具栏的选中状态
         }
         if (e.button === 2) {
@@ -353,7 +355,6 @@ export default defineComponent({
       })
       plannerCanvas.on('object:added', function (e) {
         if (e && e.target) {
-          console.log(e.target)
           store.commit('plannerVuex/addLayoutContainerArr', e.target)
         }
       })

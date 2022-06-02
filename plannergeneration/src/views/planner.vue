@@ -43,10 +43,12 @@
             <li>5.待优化代码，将fabric的所有配置写入hooks</li>
             <li>6.图层管理器和图层需要维护同一个id，且不能重复</li>
             <li>7.辅助线吸附功能需要优化同时吸附多个点的情况</li>
+            <li>8.根据表单字段动态生成对应的表单(schema应该包括两个部分，一部分为表单数据，另一部分用于绑定v-model)</li>
           </ul>
-          <!-- <AttrList v-if="curComponent" /> -->
+          <AttrList />
           <LayoutList
-            :setActiveObj="plannerArea.setActiveSelect" v-if="plannerArea"
+            :setActiveObj="plannerArea.setActiveSelect"
+            v-if="plannerArea"
           />
           <!-- <AnimationList v-if="curComponent" /> -->
 
@@ -95,6 +97,7 @@ import ComponentList from './plannerLayout/leftComponents/left.vue' // 左侧列
 import plannerArea from './plannerLayout/area.vue'
 import Toolbar from './plannerLayout/toolbox/tool.vue'
 import LayoutList from './plannerLayout/rightComponents/layoutList.vue'
+import AttrList from './plannerLayout/rightComponents/feature.vue'
 import SlideBar from './plannerLayout/leftComponents/toolitem.vue'
 import type { CollapseProps } from 'ant-design-vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
@@ -108,7 +111,8 @@ export default defineComponent({
     ComponentList,
     SettingOutlined,
     SlideBar,
-    LayoutList
+    LayoutList,
+    AttrList
   },
   setup() {
     const store = useStore()
@@ -127,7 +131,7 @@ export default defineComponent({
     }
     function deselectCurComponent() {
       console.log('deselectCurComponent')
-      store.commit('plannerVuex/changeToolCurrentType', '')
+      // store.commit('plannerVuex/changeToolCurrentType', '')
       store.commit('plannerVuex/hideContextMenu')
     }
     const reLoad = () => {
