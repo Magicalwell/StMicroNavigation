@@ -36,7 +36,9 @@ export default {
     canvasHistory: [], // 历史记录
     canvasForwordHistory: [], // 前进记录
     toolsFeature: {
-      'pencil-input': { size: 15 }
+      schema: [{ type: 'CPencil' }],
+
+      model: { size: 15, type: 'pencil' }
     } // 工具属性对象
   },
   mutations: {
