@@ -69,7 +69,8 @@ export default defineComponent({
       fireRightClick: true, // 启用右键，button的数字为3
       stopContextMenu: false, // 禁止默认右键菜单
       fireMiddleClick: true,
-      altSelectionKey: 'altKey'
+      altSelectionKey: 'altKey',
+      isDrawingMode: false
       // preserveObjectStacking: true
     }
     let plannerCanvas = reactive({}) // canvas实例
@@ -354,12 +355,20 @@ export default defineComponent({
         }
       })
       plannerCanvas.on('object:added', function (e) {
+        console.log('出发了')
         if (e && e.target) {
           store.commit('plannerVuex/addLayoutContainerArr', e.target)
         }
       })
       plannerCanvas.on('object:removed', canvasRemoveCallback)
       plannerCanvas.on('object:modified', canvasChangeCallback)
+      plannerCanvas.on('selection:created', () => {
+        console.log('//////')
+      })
+
+      plannerCanvas.on('path:created', (e) => {
+        console.log(e)
+      })
       // 鼠标滚动画布放大缩小 mouse:dblclick
       plannerCanvas.on('mouse:wheel', function (e) {
         var zoom = (e.e.deltaY > 0 ? -0.1 : 0.1) + plannerCanvas.getZoom()

@@ -5,7 +5,7 @@
       {{ toolsType }}
       <!-- 此处引入一个js的render文件，在里面绑定值，类似于SchemaField.js -->
       <!-- 可以打散单个表单模块进行render，也可以根据每种类型直接写对应的表单 -->
-      <component :is="toolsType" :form-render="valueList.model"></component>
+      <component :is="toolsType" :form-render="valueList[toolsType]"></component>
     </div>
     <div v-else>暂无相关属性,请选择图层或工具</div>
   </div>

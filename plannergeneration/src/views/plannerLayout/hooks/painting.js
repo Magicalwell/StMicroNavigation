@@ -4,6 +4,7 @@ import { useStore } from 'vuex'
 const usePainting = ({ plannerCanvas }) => {
   const store = useStore()
   const addNum = ref(0)
+  console.log(plannerCanvas.getActiveObjects())
   const hLinePatternBrush = new fabric.PencilBrush(plannerCanvas)
   // hLinePatternBrush.getPatternSrc = function () {
   //   var patternCanvas = fabric.document.createElement('canvas')
@@ -34,6 +35,8 @@ const usePainting = ({ plannerCanvas }) => {
     (item) => {
       if (item === 'pencil-input') {
         plannerCanvas.isDrawingMode = true
+      } else {
+        plannerCanvas.isDrawingMode = false
       }
     },
     { immediate: true }

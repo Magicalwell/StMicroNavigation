@@ -36,10 +36,12 @@ export default {
     canvasHistory: [], // 历史记录
     canvasForwordHistory: [], // 前进记录
     toolsFeature: {
-      schema: [{ type: 'CPencil' }],
-
-      model: { size: 15, type: 'pencil' }
-    } // 工具属性对象
+      'pencil-input': {
+        size: 2,
+        type: 'pencil'
+      }
+    }, // 工具属性对象
+    canvasSelectTarget: {} // 画布选中对象
   },
   mutations: {
     changeSaveFlag(state, data): void {
