@@ -312,7 +312,20 @@ export default defineComponent({
         width: 20,
         height: 20
       })
-      plannerCanvas.add(rect)
+      var rect1 = new fabric.Rect({
+        left: 200,
+        top: 200,
+        fill: 'blue',
+        width: 20,
+        height: 20
+      })
+      const group = new fabric.Group([rect, rect1], {
+        top: 50, // 整组距离顶部100
+        left: 100, // 整组距离左侧100
+        angle: -10 // 整组旋转-10deg
+      })
+      // 先删除之前的，再建立group
+      plannerCanvas.add(group)
       const tempList = plannerCanvas.getObjects()
       tempList.forEach((element, index) => {
         element.id = index
