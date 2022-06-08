@@ -97,7 +97,6 @@ export default class Mover {
     )
     const targetSpeed = distance / elapsedSeconds
     const magnitude = Math.min(maxSpeed, targetSpeed)
-
     this.scene.physics.velocityFromRotation(
       angle,
       magnitude,

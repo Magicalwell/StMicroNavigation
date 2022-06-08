@@ -30,13 +30,12 @@ export default class EntityActionManager {
 
     this.entities = {}
     this.update = () => {
-      console.log(this.actionsQueue)
+      // console.log(this.actionsQueue)
       for (let entityId in this.actionsQueue) {
         const entityActions = this.actionsQueue[entityId]
 
         // If no pending action for this entity, continue
         // @TODO Remove entity from actionsQueue list if empty
-        console.log(111)
         if (entityActions.length <= 0) {
           continue
         }

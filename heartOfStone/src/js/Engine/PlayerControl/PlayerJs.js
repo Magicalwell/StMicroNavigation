@@ -14,6 +14,12 @@ export default class Player extends Entity {
     this.animationKey = 'player'
     this.avatar = ''
     this.id = 999
+    console.log(x, y)
+    this.playerNickname = this.scene.add.text(
+      this.x,
+      this.y,
+      '埃斯基'
+    )
     // behaviors
     // this.inventory = new Inventory()
     // this.skills = new SkillsSystem([

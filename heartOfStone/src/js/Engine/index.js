@@ -17,7 +17,6 @@ export default class Engine extends Phaser.Scene {
       //   this.emitter.emit(ActionType.ENTITY_SELECT, null)
       //   return
       // }
-      console.log(pointer)
       this._moveEntity(this.player, pointer.worldX, pointer.worldY)
     }
   }
@@ -108,7 +107,13 @@ export default class Engine extends Phaser.Scene {
       0,
       0
     )
-    // this.mapLayers['objects'].setCollisionByExclusion([-1]);
+    // this.mapLayers['grass'].setCollisionByProperty({ collides: true })
+    this.mapLayers['test'] = this.map.createStaticLayer(
+      'test',
+      [tiles],
+      0,
+      0
+    )
     this.mapLayers['ui'] = this.map.createBlankDynamicLayer('UI', [
       tiles,
       tiles2
@@ -213,6 +218,25 @@ export default class Engine extends Phaser.Scene {
     })
   }
   _createEvents() {
+    console.log(this.mapLayers)
+    // this.physics.add.collider(
+    //   this.player,
+    //   this.mapLayers.grass,
+    //   () => console.log('碰了'),
+    //   null,
+    //   this
+    // )
+    var collider = this.physics.add.overlap(
+      this.player,
+      this.mapLayers.decorations,
+      (clownOnBlock) => {
+        console.log('碰了')
+        clownOnBlock.body.stop()
+        this.physics.world.removeCollider(collider)
+      },
+      null,
+      this
+    )
     // Server Connector Listener
     // const serverConnectorService = new ServerConnectorService(
     //   this.server,
@@ -251,7 +275,6 @@ export default class Engine extends Phaser.Scene {
       this.mapLayers['grass']
     )
 
-    console.log(tile)
     // Move Player to this position
     // Player will automatically find its path to the point and update its position accordingly
     this.entityActions.processNow(entity, {
@@ -281,5 +304,8 @@ export default class Engine extends Phaser.Scene {
       pointerTileXY.y
     )
     this.marker.setPosition(snappedWorldPoint.x, snappedWorldPoint.y)
+  }
+  colliderCallbackHandler() {
+    console.log('碰啦！')
   }
 }
