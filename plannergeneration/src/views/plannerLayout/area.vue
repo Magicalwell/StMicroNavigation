@@ -368,20 +368,22 @@ export default defineComponent({
         }
       })
       plannerCanvas.on('object:added', function (e) {
-        console.log('出发了')
+        console.log('出发了', e.target.type)
+        if (e && e.target && e.target.type === 'path') {
+          console.log('save')
+        }
         if (e && e.target) {
           store.commit('plannerVuex/addLayoutContainerArr', e.target)
         }
       })
       plannerCanvas.on('object:removed', canvasRemoveCallback)
       plannerCanvas.on('object:modified', canvasChangeCallback)
-      plannerCanvas.on('selection:created', () => {
-        console.log('//////')
-      })
-
-      plannerCanvas.on('path:created', (e) => {
-        console.log(e)
-      })
+      // plannerCanvas.on('selection:created', () => {
+      //   console.log('//////')
+      // })
+      // plannerCanvas.on('path:created', (e) => {
+      //   console.log(e)
+      // })
       // 鼠标滚动画布放大缩小 mouse:dblclick
       plannerCanvas.on('mouse:wheel', function (e) {
         var zoom = (e.e.deltaY > 0 ? -0.1 : 0.1) + plannerCanvas.getZoom()

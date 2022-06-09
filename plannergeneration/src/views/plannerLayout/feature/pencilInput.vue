@@ -1,7 +1,11 @@
 <template>
   <div>
     <span>画笔类型：</span>
-    <a-select ref="select" v-model:value="selfData.type" style="display:block;width:120px">
+    <a-select
+      ref="select"
+      v-model:value="selfData.type"
+      style="display: block; width: 120px"
+    >
       <a-select-option value="pencil">画笔</a-select-option>
       <a-select-option value="maopencil">毛笔</a-select-option>
     </a-select>
@@ -39,7 +43,7 @@ export default defineComponent({
     console.log(props.formRender)
     const { formRender: selfData } = toRefs(props)
 
-    return { value1: ref('pencil'), selfData }
+    return { selfData }
   }
 })
 </script>

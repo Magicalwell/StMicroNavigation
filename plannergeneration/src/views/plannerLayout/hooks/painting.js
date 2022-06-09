@@ -1,9 +1,12 @@
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { fabric } from 'fabric'
 import { useStore } from 'vuex'
 const usePainting = ({ plannerCanvas }) => {
   const store = useStore()
   const addNum = ref(0)
+  const pencilSize = computed(
+    () => store.state.plannerVuex.toolsFeature['pencil-input']
+  )
   console.log(plannerCanvas.getActiveObjects())
   const hLinePatternBrush = new fabric.PencilBrush(plannerCanvas)
   // hLinePatternBrush.getPatternSrc = function () {
@@ -26,6 +29,7 @@ const usePainting = ({ plannerCanvas }) => {
   // if (brush.getPatternSrc) {
   //   brush.source = brush.getPatternSrc()
   // }
+  console.log(pencilSize)
   plannerCanvas.freeDrawingBrush.width = 1
   brush.color = 'rgba(0,0,0)'
   console.log(plannerCanvas, '我是hooks')
@@ -40,6 +44,13 @@ const usePainting = ({ plannerCanvas }) => {
       }
     },
     { immediate: true }
+  )
+  watch(
+    () => store.state.plannerVuex.toolsFeature['pencil-input'],
+    (item) => {
+      plannerCanvas.freeDrawingBrush.width = item.size
+    },
+    { deep: true }
   )
   return {
     addNum
