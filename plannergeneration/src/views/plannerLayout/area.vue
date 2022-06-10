@@ -308,8 +308,8 @@ export default defineComponent({
         return this._objects
       }
       plannerCanvas = new fabric.Canvas('plannerarea', option)
-      usePainting({ plannerCanvas })
-      initAligningGuidelines(plannerCanvas)
+      usePainting({ plannerCanvas }) // 自由绘画功能
+      initAligningGuidelines(plannerCanvas) // 辅助线功能
       var rect = new fabric.Rect({
         left: 100,
         top: 100,
