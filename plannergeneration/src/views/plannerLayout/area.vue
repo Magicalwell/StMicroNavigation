@@ -120,6 +120,7 @@ export default defineComponent({
     const canvasOnMouseDown = (opt) => {
       // canvas的事件要优先于plannerarea的contextmenu事件
       // 鼠标事件触发的顺序：优先是mouse系列的事件，接着才是具体的click，或contextmenu
+      console.log(plannerCanvas.getObjects())
       const chooseList = plannerCanvas.getActiveObjects()
       if (opt.target) {
         store.commit('plannerVuex/changeLayoutId', opt.target.id)
@@ -198,12 +199,16 @@ export default defineComponent({
     }
     const setActiveSelect = (order) => {
       return new Promise((resolve) => {
+        plannerCanvas.forEachObject((item) => {
+          item.canvasBypaint = false
+        })
         const objs = plannerCanvas.getObjects().filter((e) => {
           return e && e.id === order
         })
         console.log(objs)
         if (objs && objs.length > 0) {
           plannerCanvas.setActiveObject(objs[0])
+          objs[0].canvasBypaint = true
           plannerCanvas.renderAll()
           resolve()
         } else {
@@ -319,6 +324,7 @@ export default defineComponent({
         width: 20,
         height: 20
       })
+      // var test3 = new fabric.Object({ canvasBypaint: true })
       const group = new fabric.Group([rect, rect1], {
         top: 50, // 整组距离顶部100
         left: 100, // 整组距离左侧100
@@ -326,6 +332,7 @@ export default defineComponent({
       })
       // 先删除之前的，再建立group
       plannerCanvas.add(group)
+      // plannerCanvas.add(test3)
       const tempList = plannerCanvas.getObjects()
       tempList.forEach((element, index) => {
         element.id = index
@@ -368,7 +375,6 @@ export default defineComponent({
         }
       })
       plannerCanvas.on('object:added', function (e) {
-        console.log('出发了', e.target.type)
         if (e && e.target && e.target.type === 'path') {
           console.log('save')
         }

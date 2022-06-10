@@ -7,6 +7,7 @@ const usePainting = ({ plannerCanvas }) => {
   const pencilSize = computed(
     () => store.state.plannerVuex.toolsFeature['pencil-input']
   )
+  const selectIndex = computed(() => store.state.plannerVuex.paintAimedLayout)
   console.log(plannerCanvas.getActiveObjects())
   const hLinePatternBrush = new fabric.PencilBrush(plannerCanvas)
   // hLinePatternBrush.getPatternSrc = function () {
@@ -32,8 +33,31 @@ const usePainting = ({ plannerCanvas }) => {
   console.log(pencilSize)
   plannerCanvas.freeDrawingBrush.width = 1
   brush.color = 'rgba(0,0,0)'
-  console.log(plannerCanvas, '我是hooks')
 
+  plannerCanvas.on('path:created', function (e) {
+    e.path.canvasBypaint = true
+    if (
+      Object.keys(store.state.plannerVuex.canvasByPaintList).length > 0 ||
+      selectIndex
+    ) {
+      const objs = plannerCanvas.getObjects().filter((e) => {
+        return e && e.canvasBypaint
+      })
+      const group = new fabric.Group([...objs], { canvasBypaint: true })
+      // console.log(e.path)
+      // plannerCanvas.remove(e.path)
+      console.log('删除', selectIndex)
+      objs.forEach((item) => {
+        plannerCanvas.remove(item)
+      })
+      // plannerCanvas.add(group)
+      plannerCanvas.insertAt(group, selectIndex)
+      // store.commit('plannerVuex/addCanvasByPaint', group)
+      console.log(store.state.plannerVuex.canvasByPaintList.path, '我是hooks')
+    } else {
+      store.commit('plannerVuex/addCanvasByPaint', e)
+    }
+  })
   watch(
     () => store.state.plannerVuex.toolBox.currentType,
     (item) => {
@@ -41,6 +65,10 @@ const usePainting = ({ plannerCanvas }) => {
         plannerCanvas.isDrawingMode = true
       } else {
         plannerCanvas.isDrawingMode = false
+        plannerCanvas.forEachObject((item) => {
+          item.canvasBypaint = false
+        })
+        store.commit('plannerVuex/addCanvasByPaint', {})
       }
     },
     { immediate: true }

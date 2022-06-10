@@ -31,22 +31,35 @@
         </section>
         <section class="right">
           右侧的属性
-          <ul>
-            <li>1.待完善滚轮缩放和页面长度过长时滚动条的冲突问题</li>
-            <li>
-              2.重叠元素的选中问题(两种解决方法，1.将选中的暂时置顶，2.禁用其他的元素为不可选中)
-            </li>
-            <li>3.绘画添加的图层，在图层管理器选中后没有反应,绘画会新建一个图层，要实现在原有的图层上面编辑</li>
-            <li>
-              4.层级拖动有两种方式，1是根据起始点的index进行moveto，2是将整个canvas重新渲染
-            </li>
-            <li>5.待优化代码，将fabric的所有配置写入hooks</li>
-            <li>6.图层管理器和图层需要维护同一个id，且不能重复</li>
-            <li>7.辅助线吸附功能需要优化同时吸附多个点的情况</li>
-            <li>8.根据表单字段动态生成对应的表单(schema应该包括两个部分，一部分为表单数据，另一部分用于绑定v-model)</li>
-            <li>9.表单属性根据每个工具给一个字段，载入时请求拿回之前设置的数据，图层用单独的一个</li>
-            <li>10.画笔每一步都创建了一个对象；对画笔参数进行修改双向绑定没用</li>
-          </ul>
+          <a-collapse v-model:activeKey="activeKey2">
+            <a-collapse-panel key="1" header="This is panel header 1">
+              <ul>
+                <li>1.待完善滚轮缩放和页面长度过长时滚动条的冲突问题</li>
+                <li>
+                  2.重叠元素的选中问题(两种解决方法，1.将选中的暂时置顶，2.禁用其他的元素为不可选中)
+                </li>
+                <li>
+                  3.绘画添加的图层，在图层管理器选中后没有反应,绘画会新建一个图层，要实现在原有的图层上面编辑
+                </li>
+                <li>
+                  4.层级拖动有两种方式，1是根据起始点的index进行moveto，2是将整个canvas重新渲染
+                </li>
+                <li>5.待优化代码，将fabric的所有配置写入hooks</li>
+                <li>6.图层管理器和图层需要维护同一个id，且不能重复</li>
+                <li>7.辅助线吸附功能需要优化同时吸附多个点的情况</li>
+                <li>
+                  8.根据表单字段动态生成对应的表单(schema应该包括两个部分，一部分为表单数据，另一部分用于绑定v-model)
+                </li>
+                <li>
+                  9.表单属性根据每个工具给一个字段，载入时请求拿回之前设置的数据，图层用单独的一个
+                </li>
+                <li>
+                  10.画笔每一步都创建了一个对象；对画笔参数进行修改双向绑定没用
+                </li>
+              </ul>
+            </a-collapse-panel>
+          </a-collapse>
+
           <AttrList />
           <LayoutList
             :setActiveObj="plannerArea.setActiveSelect"
@@ -121,6 +134,7 @@ export default defineComponent({
     const firstVisible = ref(true)
     const activeKey = ref(['1'])
     const plannerArea = ref()
+    const activeKey2 = ref(['0'])
     const expandIconPosition = ref<CollapseProps['expandIconPosition']>('right')
     function handleDrop() {
       console.log(11)
@@ -146,6 +160,7 @@ export default defineComponent({
       deselectCurComponent,
       firstVisible,
       activeKey,
+      activeKey2,
       expandIconPosition,
       plannerArea,
       reLoad

@@ -1,6 +1,7 @@
 export default {
   namespaced: true,
   state: {
+    staticId: 0, // 维护一份独立的id，用于给元素赋不重复的id
     canvasModel: 'none', // 当前canvas是否处于绘画模式
     saveFlag: {
       // 导出图片的类型和触发器
@@ -41,7 +42,9 @@ export default {
         type: 'pencil'
       }
     }, // 工具属性对象
-    canvasSelectTarget: {} // 画布选中对象
+    canvasSelectTarget: {}, // 画布选中对象
+    canvasByPaintList: {},
+    paintAimedLayout: null // 绘画模式中记录在哪个图层上绘画
   },
   mutations: {
     changeSaveFlag(state, data): void {
@@ -94,10 +97,12 @@ export default {
       state.layoutContainer = data
     },
     addLayoutContainerArr(state, data) {
-      data.id = state.layoutContainer.length
+      state.staticId++
+      data.id = state.staticId
       data.layoutName = `图层${state.layoutContainer.length}`
       state.layoutContainer.unshift(data)
-      console.log(state.layoutContainer)
+      console.log(state.layoutContainer, 'layoutContainerlayoutContainer')
+      // 在选中图层的时候，获取管理器中的index和name，在这里判断，如果有选中的就不给重新赋name
 
       // state.layoutContainer.push({
       //   ...data,
@@ -134,6 +139,12 @@ export default {
         state.canvasHistory.push(state.canvasForwordHistory.pop())
         // state.layoutContainer = state.canvasHistory
       }
+    },
+    addCanvasByPaint(state, data) {
+      state.canvasByPaintList = data
+    },
+    setPaintAimedLayout(state, data) {
+      state.paintAimedLayout = data
     }
   },
   actions: {}

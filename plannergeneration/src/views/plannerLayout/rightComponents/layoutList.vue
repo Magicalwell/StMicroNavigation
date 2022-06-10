@@ -70,6 +70,7 @@ export default defineComponent({
       },
       set: (val) => {
         store.commit('plannerVuex/changeLayoutId', val)
+        store.commit('plannerVuex/setPaintAimedLayout', val)
       }
     })
     const dragOptions = {
