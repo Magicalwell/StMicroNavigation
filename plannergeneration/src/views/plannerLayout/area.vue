@@ -121,9 +121,20 @@ export default defineComponent({
       // canvas的事件要优先于plannerarea的contextmenu事件
       // 鼠标事件触发的顺序：优先是mouse系列的事件，接着才是具体的click，或contextmenu
       console.log(plannerCanvas.getObjects())
+      const matchArr = plannerCanvas.getObjects()
       const chooseList = plannerCanvas.getActiveObjects()
       if (opt.target) {
-        store.commit('plannerVuex/changeLayoutId', opt.target.id)
+        console.log(
+          matchArr.length -
+            1 -
+            matchArr.findIndex((item) => item.id === opt.target.id)
+        )
+        store.commit(
+          'plannerVuex/changeLayoutId',
+          matchArr.length -
+            1 -
+            matchArr.findIndex((item) => item.id === opt.target.id)
+        )
       } else {
         store.commit('plannerVuex/changeLayoutId', -1)
       }
@@ -132,7 +143,6 @@ export default defineComponent({
         areaMoving.value = true
         plannerCanvas.selection = false
       }
-      console.log(store.state.plannerVuex.toolBox.currentType)
       if (
         opt.button === 1 &&
         store.state.plannerVuex.toolBox.currentType === 'text-input'
@@ -253,6 +263,7 @@ export default defineComponent({
       () => saveFlag.value.saveStatus,
       (item) => {
         if (item) {
+          console.log('here1111')
           exportImg()
         }
       }
@@ -291,7 +302,6 @@ export default defineComponent({
       (item) => {
         const objs = plannerCanvas.getObjects()
         plannerCanvas.moveTo(objs[item.oldIndex], item.newIndex)
-        console.log(plannerCanvas.getObjects(), 'plannerCanvas.getObjects()')
         canvasChangeCallback()
       },
       { deep: true }
@@ -375,9 +385,6 @@ export default defineComponent({
         }
       })
       plannerCanvas.on('object:added', function (e) {
-        if (e && e.target && e.target.type === 'path') {
-          console.log('save')
-        }
         if (e && e.target) {
           store.commit('plannerVuex/addLayoutContainerArr', e.target)
         }

@@ -99,7 +99,9 @@ export default {
     addLayoutContainerArr(state, data) {
       state.staticId++
       data.id = state.staticId
-      data.layoutName = `图层${state.layoutContainer.length}`
+      data.layoutName = data.layoutName
+        ? data.layoutName
+        : `图层${state.layoutContainer.length}`
       state.layoutContainer.unshift(data)
       console.log(state.layoutContainer, 'layoutContainerlayoutContainer')
       // 在选中图层的时候，获取管理器中的index和name，在这里判断，如果有选中的就不给重新赋name
@@ -113,6 +115,9 @@ export default {
       //   element.id = index
       //   element.layoutName = `图层${index}`
       // })
+    },
+    updateLayoutContainerArr(state, data) {
+      state.layoutContainer = data
     },
     changeLayoutId(state, data) {
       state.layoutId = data

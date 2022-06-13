@@ -17,14 +17,14 @@
       item-key="id"
       @sort="layoutMoved"
     >
-      <template #item="{ element }">
+      <template #item="{ element, index }">
         <div
           :class="{
-            layer_active: selectIndex == element.id,
+            layer_active: selectIndex == index,
             'drag-handle': !selectInputArr.includes(element.id)
           }"
           class="layout-item"
-          @click="setAvtive(element.id)"
+          @click="setAvtive(element.id, index)"
           @dblclick="setInput(element.id)"
         >
           <a-input
@@ -83,14 +83,11 @@ export default defineComponent({
       dragClass: 'dragClass'
     }
     const selectInputArr = ref([])
-    const setAvtive = (idx) => {
-      if (selectIndex.value !== idx) {
-        selectIndex.value = idx
-        console.log(idx)
+    const setAvtive = (idx, index) => {
+      selectIndex.value = index
+      console.log(index, idx, 'indexindexindex')
 
-        props.setActiveObj(idx)
-        // console.log(props.setActiveObj)
-      }
+      props.setActiveObj(idx)
     }
     const layoutMoved = (arg) => {
       console.log(arg)

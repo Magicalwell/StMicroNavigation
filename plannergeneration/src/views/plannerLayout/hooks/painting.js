@@ -4,8 +4,8 @@ import { useStore } from 'vuex'
 const usePainting = ({ plannerCanvas }) => {
   const store = useStore()
   const addNum = ref(0)
-  const pencilSize = computed(
-    () => store.state.plannerVuex.toolsFeature['pencil-input']
+  const layoutContainer = computed(
+    () => store.state.plannerVuex.layoutContainer
   )
   const selectIndex = computed(() => store.state.plannerVuex.paintAimedLayout)
   console.log(plannerCanvas.getActiveObjects())
@@ -30,7 +30,6 @@ const usePainting = ({ plannerCanvas }) => {
   // if (brush.getPatternSrc) {
   //   brush.source = brush.getPatternSrc()
   // }
-  console.log(pencilSize)
   plannerCanvas.freeDrawingBrush.width = 1
   brush.color = 'rgba(0,0,0)'
 
@@ -40,20 +39,23 @@ const usePainting = ({ plannerCanvas }) => {
       Object.keys(store.state.plannerVuex.canvasByPaintList).length > 0 ||
       selectIndex
     ) {
-      const objs = plannerCanvas.getObjects().filter((e) => {
+      const matchArr = plannerCanvas.getObjects()
+      const objs = matchArr.filter((e) => {
         return e && e.canvasBypaint
       })
-      const group = new fabric.Group([...objs], { canvasBypaint: true })
-      // console.log(e.path)
-      // plannerCanvas.remove(e.path)
-      console.log('删除', selectIndex)
+      const group = new fabric.Group([...objs], {
+        canvasBypaint: true,
+        layoutName: objs[0].layoutName
+      })
       objs.forEach((item) => {
         plannerCanvas.remove(item)
       })
-      // plannerCanvas.add(group)
-      plannerCanvas.insertAt(group, selectIndex)
-      // store.commit('plannerVuex/addCanvasByPaint', group)
-      console.log(store.state.plannerVuex.canvasByPaintList.path, '我是hooks')
+      plannerCanvas.add(group)
+      plannerCanvas.moveTo(group, selectIndex.value)
+      store.commit(
+        'plannerVuex/updateLayoutContainerArr',
+        plannerCanvas.getObjects()
+      )
     } else {
       store.commit('plannerVuex/addCanvasByPaint', e)
     }
