@@ -26,6 +26,10 @@
       </a-col>
     </a-row>
   </div>
+  <div>
+    <span>画笔颜色：</span>
+    <input type="color">
+  </div>
 </template>
 
 <script lang="ts">

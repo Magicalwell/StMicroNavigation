@@ -1,5 +1,5 @@
 import { fabric } from 'fabric'
-function initAligningGuidelines(canvas) {
+function initAligningGuidelines({ plannerCanvas: canvas }) {
   var ctx = canvas.getSelectionContext()
   var aligningLineOffset = 1
   var aligningLineMargin = 1
@@ -266,7 +266,8 @@ function initAligningGuidelines(canvas) {
   })
 
   canvas.on('before:render', function () {
-    canvas.clearContext(canvas.contextTop)
+    console.log(canvas.contextTop)
+    canvas.clearContext(ctx)
   })
 
   canvas.on('after:render', function () {
