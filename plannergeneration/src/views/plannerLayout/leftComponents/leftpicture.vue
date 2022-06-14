@@ -15,14 +15,22 @@
       :visible="previewVisible"
       :title="previewTitle"
       @cancel="handleCancel"
+      width="1000px"
     >
       <template #footer>
-        <a-button key="back">编辑</a-button>
+        <a-button key="back" @click="editImg">编辑</a-button>
         <a-button key="submit" type="primary" @click="addImg"
           >添加到画布</a-button
         >
       </template>
-      <img alt="example" style="width: 100%" :src="previewImage" />
+
+      <div style="display: flex">
+        <div style="flex: 1">
+          <img style="width:100%" :src="previewImage" />
+        </div>
+
+        <div style="flex: 1">1111</div>
+      </div>
     </a-modal>
   </div>
 </template>
@@ -105,6 +113,9 @@ export default defineComponent({
     const addImg = () => {
       store.commit('plannerVuex/changeImgFlag')
     }
+    const editImg = () => {
+      console.log(125555)
+    }
     return {
       previewVisible,
       previewImage,
@@ -113,7 +124,8 @@ export default defineComponent({
       handlePreview,
       previewTitle,
       uploadSync,
-      addImg
+      addImg,
+      editImg
     }
   }
 })
