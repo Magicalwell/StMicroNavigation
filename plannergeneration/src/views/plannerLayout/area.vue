@@ -124,19 +124,23 @@ export default defineComponent({
       const matchArr = plannerCanvas.getObjects()
       const chooseList = plannerCanvas.getActiveObjects()
       if (opt.target) {
-        console.log(
-          matchArr.length -
-            1 -
-            matchArr.findIndex((item) => item.id === opt.target.id)
-        )
         store.commit(
           'plannerVuex/changeLayoutId',
           matchArr.length -
             1 -
             matchArr.findIndex((item) => item.id === opt.target.id)
         )
-      } else {
+        store.commit(
+          'plannerVuex/setPaintAimedLayout',
+          matchArr.length -
+            1 -
+            matchArr.findIndex((item) => item.id === opt.target.id)
+        )
+      } else if (
+        store.state.plannerVuex.toolBox.currentType !== 'pencil-input'
+      ) {
         store.commit('plannerVuex/changeLayoutId', -1)
+        store.commit('plannerVuex/setPaintAimedLayout', -1)
       }
       // var canvasJsonData = JSON.stringify(plannerCanvas.toJSON())
       if (opt.button === 2) {
@@ -215,7 +219,6 @@ export default defineComponent({
         const objs = plannerCanvas.getObjects().filter((e) => {
           return e && e.id === order
         })
-        console.log(objs)
         if (objs && objs.length > 0) {
           plannerCanvas.setActiveObject(objs[0])
           objs[0].canvasBypaint = true
@@ -263,7 +266,6 @@ export default defineComponent({
       () => saveFlag.value.saveStatus,
       (item) => {
         if (item) {
-          console.log('here1111')
           exportImg()
         }
       }
@@ -273,7 +275,6 @@ export default defineComponent({
       (item) => {
         if (item) {
           addToCanvasByUrl(plannerCanvas, ImgFlag.value.data)
-          console.log(item, '监听了图片上传')
         }
       }
     )

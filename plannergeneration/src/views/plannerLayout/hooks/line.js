@@ -266,7 +266,6 @@ function initAligningGuidelines({ plannerCanvas: canvas }) {
   })
 
   canvas.on('before:render', function () {
-    console.log(canvas.contextTop)
     canvas.clearContext(ctx)
   })
 

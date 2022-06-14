@@ -4,11 +4,10 @@ import { useStore } from 'vuex'
 const usePainting = ({ plannerCanvas }) => {
   const store = useStore()
   const addNum = ref(0)
-  const layoutContainer = computed(
-    () => store.state.plannerVuex.layoutContainer
-  )
-  const selectIndex = computed(() => store.state.plannerVuex.paintAimedLayout)
-  console.log(plannerCanvas.getActiveObjects())
+  // const layoutContainer = computed(
+  //   () => store.state.plannerVuex.layoutContainer
+  // )
+  const selectIndex = computed(() => store.state.plannerVuex.layoutId)
   const hLinePatternBrush = new fabric.PencilBrush(plannerCanvas)
   // hLinePatternBrush.getPatternSrc = function () {
   //   var patternCanvas = fabric.document.createElement('canvas')
@@ -50,11 +49,11 @@ const usePainting = ({ plannerCanvas }) => {
       objs.forEach((item) => {
         plannerCanvas.remove(item)
       })
-      plannerCanvas.add(group)
-      plannerCanvas.moveTo(group, selectIndex.value)
+      plannerCanvas.insertAt(group, selectIndex.value)
+      // plannerCanvas.moveTo(group, selectIndex.value)
       store.commit(
         'plannerVuex/updateLayoutContainerArr',
-        plannerCanvas.getObjects()
+        plannerCanvas.getObjects().reverse()
       )
     } else {
       store.commit('plannerVuex/addCanvasByPaint', e)
@@ -79,6 +78,7 @@ const usePainting = ({ plannerCanvas }) => {
     () => store.state.plannerVuex.toolsFeature['pencil-input'],
     (item) => {
       plannerCanvas.freeDrawingBrush.width = item.size
+      plannerCanvas.freeDrawingBrush.color = item.color
     },
     { deep: true }
   )

@@ -20,7 +20,7 @@
       <template #item="{ element, index }">
         <div
           :class="{
-            layer_active: selectIndex == index,
+            layer_active: styleNum == index,
             'drag-handle': !selectInputArr.includes(element.id)
           }"
           class="layout-item"
@@ -63,14 +63,13 @@ export default defineComponent({
     const childComponentList = computed(
       () => store.state.plannerVuex.layoutContainer
     )
-    // childComponentList.value.reverse()
+    const styleNum = computed(() => store.state.plannerVuex.paintAimedLayout)
     const selectIndex = computed({
       get: () => {
         return store.state.plannerVuex.layoutId
       },
       set: (val) => {
         store.commit('plannerVuex/changeLayoutId', val)
-        store.commit('plannerVuex/setPaintAimedLayout', val)
       }
     })
     const dragOptions = {
@@ -84,8 +83,14 @@ export default defineComponent({
     }
     const selectInputArr = ref([])
     const setAvtive = (idx, index) => {
-      selectIndex.value = index
-      console.log(index, idx, 'indexindexindex')
+      selectIndex.value = childComponentList.value.length - 1 - index
+      store.commit('plannerVuex/setPaintAimedLayout', index)
+      console.log(
+        idx,
+        index,
+        'indexindexindex',
+        childComponentList.value.length - 1 - index
+      )
 
       props.setActiveObj(idx)
     }
@@ -111,7 +116,8 @@ export default defineComponent({
       layoutMoved,
       setInput,
       selectInputArr,
-      resetArr
+      resetArr,
+      styleNum
     }
   }
 })

@@ -28,7 +28,7 @@
   </div>
   <div>
     <span>画笔颜色：</span>
-    <input type="color">
+    <input type="color" v-model="selfData.color" />
   </div>
 </template>
 
@@ -44,7 +44,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    console.log(props.formRender)
     const { formRender: selfData } = toRefs(props)
 
     return { selfData }
