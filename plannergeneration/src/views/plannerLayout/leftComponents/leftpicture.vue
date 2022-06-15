@@ -18,19 +18,34 @@
       width="1000px"
     >
       <template #footer>
-        <a-button key="back" @click="editImg">编辑</a-button>
+        <a-button key="back" @click="editVisible = true" v-if="!btnStatus"
+          >编辑</a-button
+        >
+        <a-button key="save" @click="saveImg" v-else>保存</a-button>
         <a-button key="submit" type="primary" @click="addImg"
           >添加到画布</a-button
         >
       </template>
 
-      <div style="display: flex">
-        <div style="flex: 1">
-          <img style="width:100%" :src="previewImage" />
-        </div>
-
-        <div style="flex: 1">1111</div>
+      <div style="max-width: 500px; margin: 0 auto">
+        <!-- <PictureEdit :imgData="previewImage" /> -->
+        <img style="width: 100%" :src="previewImage" />
       </div>
+    </a-modal>
+    <a-modal
+      :visible="editVisible"
+      :title="previewTitle"
+      @cancel="editVisible = false"
+      width="100%"
+      wrapClassName="picture-edit"
+      dialogClass="testclass"
+    >
+      <template #footer>
+        <a-button key="save">保存</a-button>
+      </template>
+
+      <PictureEdit :imgData="previewImage" />
+      <!-- <img style="width: 100%" :src="previewImage" /> -->
     </a-modal>
   </div>
 </template>
@@ -39,7 +54,7 @@ import { PlusOutlined } from '@ant-design/icons-vue'
 import { defineComponent, ref } from 'vue'
 import { useStore } from 'vuex'
 import type { UploadProps } from 'ant-design-vue'
-
+import PictureEdit from '../pictureEdit/edit.vue'
 function getBase64(file: File) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -51,13 +66,16 @@ function getBase64(file: File) {
 
 export default defineComponent({
   components: {
-    PlusOutlined
+    PlusOutlined,
+    PictureEdit
   },
   setup() {
     const store = useStore()
     const previewVisible = ref(false)
+    const editVisible = ref(false)
     const previewImage = ref('')
     const previewTitle = ref('')
+    const btnStatus = ref(false)
     const fileList = ref<UploadProps['fileList']>([
       {
         uid: '-1',
@@ -114,23 +132,25 @@ export default defineComponent({
       store.commit('plannerVuex/changeImgFlag')
     }
     const editImg = () => {
-      console.log(125555)
+      btnStatus.value = true
     }
     return {
       previewVisible,
       previewImage,
+      editVisible,
       fileList,
       handleCancel,
       handlePreview,
       previewTitle,
       uploadSync,
       addImg,
-      editImg
+      editImg,
+      btnStatus
     }
   }
 })
 </script>
-<style>
+<style lang="scss">
 .ant-upload-select-picture-card i {
   font-size: 32px;
   color: #999;
@@ -139,5 +159,19 @@ export default defineComponent({
 .ant-upload-select-picture-card .ant-upload-text {
   margin-top: 8px;
   color: #666;
+}
+.picture-edit {
+  .ant-modal {
+    max-width: 100%;
+    top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  .ant-modal-content {
+    height: 100vh;
+  }
+  .ant-modal-body {
+    height: calc(100% - 108px);
+  }
 }
 </style>
