@@ -9,6 +9,7 @@
       <div>
         <plus-outlined />
         <div style="margin-top: 8px">上传图片</div>
+        <small>请勿上传大小超过5M的图片</small>
       </div>
     </a-upload>
     <a-modal
@@ -38,13 +39,13 @@
       @cancel="editVisible = false"
       width="100%"
       wrapClassName="picture-edit"
-      dialogClass="testclass"
+      :destroyOnClose="true"
     >
       <template #footer>
-        <a-button key="save">保存</a-button>
+        <a-button key="save" @click="saveChange">保存</a-button>
       </template>
 
-      <PictureEdit :imgData="previewImage" />
+      <PictureEdit :imgData="previewImage" ref="modalEdit" />
       <!-- <img style="width: 100%" :src="previewImage" /> -->
     </a-modal>
   </div>
@@ -76,25 +77,8 @@ export default defineComponent({
     const previewImage = ref('')
     const previewTitle = ref('')
     const btnStatus = ref(false)
+    const modalEdit = ref()
     const fileList = ref<UploadProps['fileList']>([
-      {
-        uid: '-1',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-      },
-      {
-        uid: '-2',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-      },
-      {
-        uid: '-3',
-        name: 'image.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
-      },
       {
         uid: '-4',
         name: 'image.png',
@@ -134,6 +118,10 @@ export default defineComponent({
     const editImg = () => {
       btnStatus.value = true
     }
+    const saveChange = () => {
+      modalEdit.value.savePicture()
+      console.log(fileList)
+    }
     return {
       previewVisible,
       previewImage,
@@ -145,7 +133,9 @@ export default defineComponent({
       uploadSync,
       addImg,
       editImg,
-      btnStatus
+      btnStatus,
+      modalEdit,
+      saveChange
     }
   }
 })
