@@ -14,11 +14,28 @@
           <a-select-option value="xiufupen">修复画笔</a-select-option>
           <a-select-option value="metalpen">钢笔</a-select-option>
           <a-select-option value="alibaba">阿里智能抠图</a-select-option>
+          <a-select-option value="earse">橡皮</a-select-option>
         </a-select>
+      </div>
+      <a-button
+        type="primary"
+        danger
+        ghost
+        style="font-size: 12px"
+        class="bar-item"
+        @click="resetCanvas"
+        >重置图片</a-button
+      >
+      <div class="bar-item" v-if="editType == 'cachupen'">
+        修复画笔功能：
+        <a-radio-group v-model:value="penModal">
+          <a-radio value="1">选中</a-radio>
+          <a-radio value="2">擦除</a-radio>
+        </a-radio-group>
       </div>
     </div>
     <div class="main-box">
-      <div style="height: 100%; flex: 1; overflow-y: auto">
+      <div class="main-bar">
         <a-spin :spinning="spinning">
           <canvas
             class="left-edit"
@@ -39,6 +56,8 @@
 import { defineComponent, ref, onMounted, watch, nextTick } from 'vue'
 import { useStore } from 'vuex'
 import useRc from './useRc'
+import { useMatting } from './useMatting'
+import { useEarse } from './useEarse'
 
 export default defineComponent({
   props: {
@@ -50,7 +69,9 @@ export default defineComponent({
     const store = useStore()
     const editType = ref('mobang')
     const editCanvasBox = ref(null)
+    const earseBox = ref(null)
     const spinning = ref(false)
+    const penModal = ref('0')
     const handleChange = () => {
       console.log(111)
     }
@@ -66,7 +87,6 @@ export default defineComponent({
       })
     }
     const sendDuring = () => {
-      console.log(102321)
       spinning.value = false
     }
     const canvasClick = (val) => {
@@ -80,28 +100,55 @@ export default defineComponent({
         // })
       }
     }
+
+    const resetCanvas = () => {
+      if (editType.value === 'mobang') {
+        useRc({ pictureData: props.imgData }, sendDuring)
+      }
+    }
     expose({ savePicture })
+
     onMounted(() => {
+      editCanvasBox.value = useRc(
+        {
+          pictureData: props.imgData
+        },
+        sendDuring
+      )
       watch(
         () => editType.value,
         (val) => {
           if (val === 'mobang') {
-            editCanvasBox.value = useRc(
-              {
-                pictureData: props.imgData
-              },
-              sendDuring
-            )
+            console.log('set魔棒')
+            if (earseBox.value) {
+              earseBox.value()
+            }
           }
           if (val === 'cachupen') {
-            editCanvasBox.value = ''
+            useMatting({ pictureData: props.imgData })
+            if (earseBox.value) {
+              earseBox.value()
+            }
+          }
+          if (val === 'earse') {
+            const { removeEarseListener } = useEarse()
+            earseBox.value = removeEarseListener
           }
         },
         { immediate: true }
       )
     })
 
-    return { editType, handleChange, editCanvasBox, spinning, canvasClick }
+    return {
+      editType,
+      earseBox,
+      handleChange,
+      editCanvasBox,
+      spinning,
+      canvasClick,
+      resetCanvas,
+      penModal
+    }
   }
 })
 </script>
@@ -111,10 +158,20 @@ export default defineComponent({
   height: 100%;
   .tools-bar {
     margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    .bar-item {
+      margin-left: 10px;
+    }
   }
 }
 .main-box {
   height: calc(100% - 32px);
   display: flex;
+  .main-bar {
+    height: 100%;
+    flex: 1;
+    overflow-y: auto;
+  }
 }
 </style>

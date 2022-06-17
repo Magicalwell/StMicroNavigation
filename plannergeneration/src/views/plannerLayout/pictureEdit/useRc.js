@@ -24,6 +24,7 @@ const useRc = ({ pictureData }, fn) => {
     //   x: e.offsetX,
     //   y: e.offsetY
     // })
+    console.log(e.offsetX, e.offsetY, colorList)
     cutoutFlood(
       canvas,
       e.offsetX,
@@ -36,7 +37,6 @@ const useRc = ({ pictureData }, fn) => {
     const context = canvas.getContext('2d')
     const imageInfo = context.getImageData(0, 0, canvas.width, canvas.height)
     const pixiArr = imageInfo.data
-    getArea(pixiArr, pos)
     for (let row = 0; row < canvas.height; row++) {
       let left = row * 4 * canvas.width
       let right = left + 4 * canvas.width - 1 - 3
@@ -127,10 +127,6 @@ const useRc = ({ pictureData }, fn) => {
       }
     }
     return true
-  }
-  function getArea(context, position) {
-    console.log(position.y * 4 * canvas.width + position.x * 4)
-    console.log(canvas.width, canvas.height)
   }
   function cutoutFlood(canvas, startX, startY, color, range = 0) {
     const context = canvas.getContext('2d')
