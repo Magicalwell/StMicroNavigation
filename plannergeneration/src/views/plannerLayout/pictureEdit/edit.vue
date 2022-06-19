@@ -33,30 +33,36 @@
           <a-radio value="2">擦除</a-radio>
         </a-radio-group>
       </div>
+      <!-- 修改让画布始终铺满，缩放其中的图片 导出的时候还原图片-->
     </div>
+    <p>
+      左侧可缩放拖拽 拖动时右侧会有视野框 右侧提供预览
+      切换画笔加载不同的逻辑/但要注意清除其他的方法
+    </p>
     <div class="main-box">
-      <div class="main-bar">
+      <div class="main-bar" style="margin-right: 12px">
+        画布：
         <a-spin :spinning="spinning">
           <canvas
-            class="left-edit"
+            class="matting-board"
             id="editcanvas"
             @click="canvasClick($event)"
           ></canvas>
         </a-spin>
       </div>
-      <div style="height: 100%; flex: 1">
-        <canvas class="preview" v-if="editType == 'cachupen'"></canvas>
-        <span v-else>暂无预览</span>
+      <div class="main-bar" style="margin-left: 12px">
+        预览：
+        <canvas class="preview" id="preview"></canvas>
       </div>
       <!-- 参考:https://github.com/corleone113/my-matting     https://www.php.cn/ps-tutorial-351889.html -->
     </div>
   </div>
 </template>
 <script>
-import { defineComponent, ref, onMounted, watch, nextTick } from 'vue'
+import { defineComponent, ref, onMounted, watch, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import useRc from './useRc'
-import { useMatting } from './useMatting'
+import { useMatting, useMattingBoard } from './useMatting'
 import { useEarse } from './useEarse'
 
 export default defineComponent({
@@ -65,13 +71,14 @@ export default defineComponent({
       type: String
     }
   },
-  setup(props, { expose, emit }) {
+  setup(props, { expose }) {
     const store = useStore()
     const editType = ref('mobang')
     const editCanvasBox = ref(null)
     const earseBox = ref(null)
     const spinning = ref(false)
     const penModal = ref('0')
+    const { imgData: imgPlaceHolder } = toRefs(props) // 在此生成img便于获取宽高
     const handleChange = () => {
       console.log(111)
     }
@@ -106,9 +113,38 @@ export default defineComponent({
         useRc({ pictureData: props.imgData }, sendDuring)
       }
     }
+    // const img = document.createElement('img')
+    // img.src = imgPlaceHolder.value
+    // console.log(img.width, 'img.widthimg.width')
+
+    // const draw = () => {
+    //   const contentWidth = document.getElementById('content').clientWidth
+    //   canvas.width = contentWidth
+    //   const { width } = canvas
+    //   ctx.fillStyle = 'red'
+    //   ctx.fillRect(0, 0, width, 50)
+    // }
+    // draw()
+    // 窗口缩放事件
+    // window.onresize = function () {
+    //   draw()
+    // }
     expose({ savePicture })
 
     onMounted(() => {
+      const canvas = document.querySelector('#editcanvas')
+      const canvasbox = document.querySelector('.ant-spin-container')
+      const context = canvas.getContext('2d')
+      const img = document.createElement('img')
+      img.src = imgPlaceHolder.value
+      img.onload = function () {
+        canvas.height = img.height
+        canvas.width = img.width
+        context.drawImage(img, 0, 0, img.width, img.height)
+        console.log(canvasbox)
+        console.log(img.width, canvas.width, '------------------')
+      }
+
       editCanvasBox.value = useRc(
         {
           pictureData: props.imgData
@@ -125,7 +161,17 @@ export default defineComponent({
             }
           }
           if (val === 'cachupen') {
-            useMatting({ pictureData: props.imgData })
+            const { picFile, isErasing, radius, hardness } = useMatting()
+            const {
+              width,
+              height,
+              inputCtx,
+              outputCtx,
+              outputHiddenCtx,
+              draggingInputBoard,
+              initialized,
+              mattingSources
+            } = useMattingBoard({ picFile, isErasing, radius, hardness })
             if (earseBox.value) {
               earseBox.value()
             }
@@ -166,12 +212,28 @@ export default defineComponent({
   }
 }
 .main-box {
-  height: calc(100% - 32px);
+  height: calc(100% - 66px);
   display: flex;
   .main-bar {
     height: 100%;
-    flex: 1;
-    overflow-y: auto;
+    flex: 1 1;
+    overflow-y: hidden;
   }
+}
+.matting-board {
+  flex: 1 50%;
+  border: 1px solid #c3c7c9;
+  background: #e3e7e9;
+  background-image: linear-gradient(45deg, #f6fafc 25%, transparent 0),
+    linear-gradient(45deg, transparent 75%, #f6fafc 0),
+    linear-gradient(45deg, #f6fafc 25%, transparent 0),
+    linear-gradient(45deg, transparent 75%, #f6fafc 0);
+  background-position: 0 0, 12px 12px, 12px 12px, 24px 24px;
+  background-size: 24px 24px;
+}
+.matting-board,
+.preview {
+  height: 100%;
+  width: 100%;
 }
 </style>

@@ -1,22 +1,21 @@
 import { ref, watch, computed } from 'vue'
 const useRc = ({ pictureData }, fn) => {
   const canvas = document.querySelector('#editcanvas')
-  let aimColor
+  // const canvasPre = document.querySelector('#preview')
   const context = canvas.getContext('2d')
-  const img = document.createElement('img')
-  img.src = pictureData
-  console.log(img.height, img.width)
-  img.onload = function () {
-    canvas.height = img.height
-    canvas.width = img.width
-    context.drawImage(img, 0, 0)
-    // cutout(canvas, [255, 255, 255], 0.2) // 对白色进行抠除，容差为0.2
-  }
-  //   canvas.onclick = function (e) {
-  //     console.log('ddddd', e)
-  //     console.log(context.getImageData(e.layerX, e.layerY, 1, 1).data)
-  //   }
+  // const contextPre = canvasPre.getContext('2d')
+  // const img = document.createElement('img')
+  // img.src = pictureData
+  // console.log(img.height, img.width)
+  // img.onload = function () {
+  //   canvas.height = img.height
+  //   canvas.width = img.width
+  //   context.drawImage(img, 0, 0)
+  //   contextPre.drawImage(img, 0, 0)
+  //   // cutout(canvas, [255, 255, 255], 0.2) // 对白色进行抠除，容差为0.2
+  // }
   function getAimRgb(e) {
+    console.log(e)
     const colorList = context
       .getImageData(e.offsetX, e.offsetY, 1, 1)
       .data.slice(0, 3)

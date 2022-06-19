@@ -35,7 +35,7 @@
     </a-modal>
     <a-modal
       :visible="editVisible"
-      :title="previewTitle"
+      :title="previewTitle + '支持改名'"
       @cancel="editVisible = false"
       width="100%"
       wrapClassName="picture-edit"
