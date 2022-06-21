@@ -19,6 +19,7 @@ export function useInitMattingBoards(props, useInitMattingBoardsConfig) {
   const updateBoardRect = () => {
     boardRect.value = computeBoardRect(inputCtx.value.canvas)
   }
+  console.log(inputCtx)
   const resizeBoards = () => {
     requestAnimationFrame(() => {
       const commonConfig = {
@@ -39,6 +40,7 @@ export function useInitMattingBoards(props, useInitMattingBoardsConfig) {
       })
     })
   }
+  console.log(picFile, 'picFilepicFile')
   // watch([picFile], async () => {
   //   if (picFile.value && width.value && height.value) {
   //     initialized.value = false
@@ -59,15 +61,13 @@ export function useInitMattingBoards(props, useInitMattingBoardsConfig) {
   //     initialized.value = true
   //   }
   // })
-  onMounted(() => {
-    window.addEventListener('resize', resizeBoards)
-    // window.addEventListener(
-    //   'scroll',
-    //   debounce(updateBoardRect, UPDATE_BOARDRECT_DEBOUNCE_TIME)
-    // )
-    window.addEventListener('scroll', updateBoardRect)
-  })
-  onUnmounted(() => {
-    window.removeEventListener('resize', resizeBoards)
-  })
+
+  window.addEventListener('resize', resizeBoards)
+  // window.addEventListener(
+  //   'scroll',
+  //   debounce(updateBoardRect, UPDATE_BOARDRECT_DEBOUNCE_TIME)
+  // )
+  window.addEventListener('scroll', updateBoardRect)
+
+  window.removeEventListener('resize', resizeBoards)
 }

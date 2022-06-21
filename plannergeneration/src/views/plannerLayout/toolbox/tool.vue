@@ -70,7 +70,7 @@
       <template #title>
         <span>删除元素</span>
       </template>
-      <a-button type="primary" shape="circle" class="opt-btn">
+      <a-button type="primary" shape="circle" class="opt-btn" disabled>
         <template #icon><delete-outlined /></template>
       </a-button>
     </a-tooltip>
@@ -107,7 +107,7 @@
       <template #title>
         <span>保存</span>
       </template>
-      <a-button type="primary" shape="circle" class="opt-btn">
+      <a-button type="primary" shape="circle" class="opt-btn" disabled>
         <template #icon> <save-outlined /></template>
       </a-button>
     </a-tooltip>
@@ -116,7 +116,7 @@
       <template #title>
         <span>预览</span>
       </template>
-      <a-button type="primary" shape="circle" class="opt-btn">
+      <a-button type="primary" shape="circle" class="opt-btn" disabled>
         <template #icon><eye-outlined /></template>
       </a-button>
     </a-tooltip>

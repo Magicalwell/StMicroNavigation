@@ -47,12 +47,13 @@
             class="matting-board"
             id="editcanvas"
             @click="canvasClick($event)"
+            ref="inputCvs"
           ></canvas>
         </a-spin>
       </div>
       <div class="main-bar" style="margin-left: 12px">
         预览：
-        <canvas class="preview" id="preview"></canvas>
+        <canvas class="preview" id="preview" ref="outputCvs"></canvas>
       </div>
       <!-- 参考:https://github.com/corleone113/my-matting     https://www.php.cn/ps-tutorial-351889.html -->
     </div>
@@ -78,6 +79,8 @@ export default defineComponent({
     const earseBox = ref(null)
     const spinning = ref(false)
     const penModal = ref('0')
+    const inputCvs = ref(null)
+    const outputCvs = ref(null)
     const { imgData: imgPlaceHolder } = toRefs(props) // 在此生成img便于获取宽高
     const handleChange = () => {
       console.log(111)
@@ -98,9 +101,18 @@ export default defineComponent({
     }
     const canvasClick = (val) => {
       if (editType.value === 'mobang') {
+        const plannerCanvas = document.querySelector('#editcanvas')
+        const rect = plannerCanvas.getBoundingClientRect()
+        var x = (val.clientX - rect.left) * (plannerCanvas.width / rect.width)
+        var y = (val.clientY - rect.top) * (plannerCanvas.height / rect.height)
+
         spinning.value = true
+        console.log(x, y, val)
         setTimeout(() => {
-          editCanvasBox.value.getAimRgb(val)
+          editCanvasBox.value.getAimRgb({
+            offsetX: parseInt(x),
+            offsetY: parseInt(y)
+          })
         }, 10)
         // nextTick(() => {
         //   editCanvasBox.value.getAimRgb(val)
@@ -133,7 +145,6 @@ export default defineComponent({
 
     onMounted(() => {
       const canvas = document.querySelector('#editcanvas')
-      const canvasbox = document.querySelector('.ant-spin-container')
       const context = canvas.getContext('2d')
       const img = document.createElement('img')
       img.src = imgPlaceHolder.value
@@ -141,7 +152,6 @@ export default defineComponent({
         canvas.height = img.height
         canvas.width = img.width
         context.drawImage(img, 0, 0, img.width, img.height)
-        console.log(canvasbox)
         console.log(img.width, canvas.width, '------------------')
       }
 
@@ -172,6 +182,14 @@ export default defineComponent({
               initialized,
               mattingSources
             } = useMattingBoard({ picFile, isErasing, radius, hardness })
+            picFile.value = props.imgData
+            const inputCanvas = inputCvs.value
+            const outputCanvas = outputCvs.value
+            inputCtx.value = inputCanvas.getContext('2d')
+            outputCtx.value = outputCanvas.getContext('2d')
+            const { clientWidth, clientHeight } = inputCanvas
+            width.value = clientWidth
+            height.value = clientHeight
             if (earseBox.value) {
               earseBox.value()
             }
@@ -193,7 +211,9 @@ export default defineComponent({
       spinning,
       canvasClick,
       resetCanvas,
-      penModal
+      penModal,
+      inputCvs,
+      outputCvs
     }
   }
 })

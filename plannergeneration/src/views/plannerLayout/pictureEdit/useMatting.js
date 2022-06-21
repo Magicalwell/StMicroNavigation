@@ -8,7 +8,6 @@ export function useMatting() {
   const radius = ref(12)
   const hardness = ref(0.5) // 边缘羽化半径
   const brushSize = computed(() => radius.value)
-  console.log(100000000)
   return {
     picFile,
     isErasing,
@@ -64,6 +63,7 @@ export function useMattingBoard(props) {
     isDrawing,
     listenerManager
   }
+  console.log(width, height)
   useInitMattingBoards(props, { ...initMattingConfig, width, height })
   // useInitDrawingListeners(props, initListenersConfig)
   // useInitTransformListener(initListenersConfig)
