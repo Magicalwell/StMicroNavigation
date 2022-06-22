@@ -11,9 +11,9 @@
         >
           <a-select-option value="mobang">魔棒</a-select-option>
           <a-select-option value="cachupen">擦除画笔</a-select-option>
-          <a-select-option value="xiufupen">修复画笔</a-select-option>
-          <a-select-option value="metalpen">钢笔</a-select-option>
-          <a-select-option value="alibaba">阿里智能抠图</a-select-option>
+          <a-select-option value="xiufupen" disabled>修复画笔</a-select-option>
+          <a-select-option value="metalpen" disabled>钢笔</a-select-option>
+          <a-select-option value="alibaba" disabled>阿里智能抠图</a-select-option>
           <a-select-option value="earse">橡皮</a-select-option>
         </a-select>
       </div>
@@ -29,8 +29,8 @@
       <div class="bar-item" v-if="editType == 'cachupen'">
         修复画笔功能：
         <a-radio-group v-model:value="penModal">
-          <a-radio value="1">选中</a-radio>
-          <a-radio value="2">擦除</a-radio>
+          <a-radio :value="true">选中</a-radio>
+          <a-radio :value="false">擦除</a-radio>
         </a-radio-group>
       </div>
       <!-- 修改让画布始终铺满，缩放其中的图片 导出的时候还原图片-->
@@ -75,12 +75,12 @@ export default defineComponent({
   setup(props, { expose }) {
     const store = useStore()
     const editType = ref('mobang')
-    const editCanvasBox = ref(null)
-    const earseBox = ref(null)
-    const spinning = ref(false)
-    const penModal = ref('0')
-    const inputCvs = ref(null)
-    const outputCvs = ref(null)
+    const editCanvasBox = ref(null) // 组件容器
+    const earseBox = ref(null) // 橡皮组件容器
+    const spinning = ref(false) // 旋转loading
+    const penModal = ref(false) // 修复画笔的模式
+    const inputCvs = ref(null) // 操作canvas
+    const outputCvs = ref(null) // 预览
     const { imgData: imgPlaceHolder } = toRefs(props) // 在此生成img便于获取宽高
     const handleChange = () => {
       console.log(111)
@@ -125,22 +125,6 @@ export default defineComponent({
         useRc({ pictureData: props.imgData }, sendDuring)
       }
     }
-    // const img = document.createElement('img')
-    // img.src = imgPlaceHolder.value
-    // console.log(img.width, 'img.widthimg.width')
-
-    // const draw = () => {
-    //   const contentWidth = document.getElementById('content').clientWidth
-    //   canvas.width = contentWidth
-    //   const { width } = canvas
-    //   ctx.fillStyle = 'red'
-    //   ctx.fillRect(0, 0, width, 50)
-    // }
-    // draw()
-    // 窗口缩放事件
-    // window.onresize = function () {
-    //   draw()
-    // }
     expose({ savePicture })
 
     onMounted(() => {
@@ -154,7 +138,7 @@ export default defineComponent({
         context.drawImage(img, 0, 0, img.width, img.height)
         console.log(img.width, canvas.width, '------------------')
       }
-
+      // 上面的方法考虑放在useRc里面
       editCanvasBox.value = useRc(
         {
           pictureData: props.imgData
@@ -171,7 +155,8 @@ export default defineComponent({
             }
           }
           if (val === 'cachupen') {
-            const { picFile, isErasing, radius, hardness } = useMatting()
+            const { picFile, radius, hardness } = useMatting() // 获取配置
+            picFile.value = props.imgData // 传入图片数据
             const {
               width,
               height,
@@ -181,10 +166,14 @@ export default defineComponent({
               draggingInputBoard,
               initialized,
               mattingSources
-            } = useMattingBoard({ picFile, isErasing, radius, hardness })
-            picFile.value = props.imgData
-            const inputCanvas = inputCvs.value
-            const outputCanvas = outputCvs.value
+            } = useMattingBoard({
+              picFile,
+              isErasing: penModal.value,
+              radius,
+              hardness
+            })
+            const inputCanvas = inputCvs.value // ref获取canvas
+            const outputCanvas = outputCvs.value // ref获取canvas
             inputCtx.value = inputCanvas.getContext('2d')
             outputCtx.value = outputCanvas.getContext('2d')
             const { clientWidth, clientHeight } = inputCanvas

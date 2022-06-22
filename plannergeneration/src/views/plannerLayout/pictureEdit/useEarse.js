@@ -58,11 +58,13 @@ export function useEarse(props) {
     if (e.button !== 0) {
       return
     }
-    console.log(e)
     isErasing = true
+    const rect = canvas.getBoundingClientRect()
+    var x = e.offsetX * (canvas.width / rect.width)
+    var y = e.offsetY * (canvas.height / rect.height)
     drawEraser({
-      x: e.offsetX,
-      y: e.offsetY
+      x: x,
+      y: y
     })
   }
 
@@ -77,9 +79,12 @@ export function useEarse(props) {
       return
     }
     if (isErasing) {
+      const rect = canvas.getBoundingClientRect()
+      var x = e.offsetX * (canvas.width / rect.width)
+      var y = e.offsetY * (canvas.height / rect.height)
       drawEraser({
-        x: e.offsetX,
-        y: e.offsetY
+        x: x,
+        y: y
       })
     }
   }

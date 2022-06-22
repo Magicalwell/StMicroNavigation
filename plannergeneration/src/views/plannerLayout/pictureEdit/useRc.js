@@ -32,88 +32,89 @@ const useRc = ({ pictureData }, fn) => {
       0.2
     )
   }
-  function cutout(canvas, color, range = 0, pos) {
-    const context = canvas.getContext('2d')
-    const imageInfo = context.getImageData(0, 0, canvas.width, canvas.height)
-    const pixiArr = imageInfo.data
-    for (let row = 0; row < canvas.height; row++) {
-      let left = row * 4 * canvas.width
-      let right = left + 4 * canvas.width - 1 - 3
-      let leftF = false
-      let rightF = false
-      while (!leftF || !rightF) {
-        if (!leftF) {
-          if (
-            testColor(
-              [pixiArr[left], pixiArr[left + 1], pixiArr[left + 2]],
-              color,
-              range
-            )
-          ) {
-            pixiArr[left + 3] = 0
-            left += 4
-          } else leftF = true
-        }
-        if (!rightF) {
-          if (
-            testColor(
-              [pixiArr[right], pixiArr[right + 1], pixiArr[right + 2]],
-              color,
-              range
-            )
-          ) {
-            pixiArr[right + 3] = 0
-            right -= 4
-          } else rightF = true
-        }
-        if (left === right) {
-          leftF = true
-          rightF = true
-        }
-      }
-    }
-    // 同理进行列扫描
-    for (let col = 0; col < canvas.width; col++) {
-      let top = col * 4 // 指向列头
-      let bottom =
-        top + (canvas.height - 2) * canvas.width * 4 + canvas.width * 4 // 指向列尾
-      let topF = false
-      let bottomF = false
-      while (!topF || !bottomF) {
-        if (!topF) {
-          if (
-            testColor(
-              [pixiArr[top], pixiArr[top + 1], pixiArr[top + 2]],
-              color,
-              range
-            )
-          ) {
-            pixiArr[top + 3] = 0
-            top += canvas.width * 4
-          } else topF = true
-        }
-        if (!bottomF) {
-          if (
-            testColor(
-              [pixiArr[bottom], pixiArr[bottom + 1], pixiArr[bottom + 2]],
-              color,
-              range
-            )
-          ) {
-            pixiArr[bottom + 3] = 0
-            bottom -= canvas.width * 4
-          } else bottomF = true
-        }
+  // 使用泛洪法，不用扫描法，扫描方法存在问题
+  // function cutout(canvas, color, range = 0, pos) {
+  //   const context = canvas.getContext('2d')
+  //   const imageInfo = context.getImageData(0, 0, canvas.width, canvas.height)
+  //   const pixiArr = imageInfo.data
+  //   for (let row = 0; row < canvas.height; row++) {
+  //     let left = row * 4 * canvas.width
+  //     let right = left + 4 * canvas.width - 1 - 3
+  //     let leftF = false
+  //     let rightF = false
+  //     while (!leftF || !rightF) {
+  //       if (!leftF) {
+  //         if (
+  //           testColor(
+  //             [pixiArr[left], pixiArr[left + 1], pixiArr[left + 2]],
+  //             color,
+  //             range
+  //           )
+  //         ) {
+  //           pixiArr[left + 3] = 0
+  //           left += 4
+  //         } else leftF = true
+  //       }
+  //       if (!rightF) {
+  //         if (
+  //           testColor(
+  //             [pixiArr[right], pixiArr[right + 1], pixiArr[right + 2]],
+  //             color,
+  //             range
+  //           )
+  //         ) {
+  //           pixiArr[right + 3] = 0
+  //           right -= 4
+  //         } else rightF = true
+  //       }
+  //       if (left === right) {
+  //         leftF = true
+  //         rightF = true
+  //       }
+  //     }
+  //   }
+  //   // 同理进行列扫描
+  //   for (let col = 0; col < canvas.width; col++) {
+  //     let top = col * 4 // 指向列头
+  //     let bottom =
+  //       top + (canvas.height - 2) * canvas.width * 4 + canvas.width * 4 // 指向列尾
+  //     let topF = false
+  //     let bottomF = false
+  //     while (!topF || !bottomF) {
+  //       if (!topF) {
+  //         if (
+  //           testColor(
+  //             [pixiArr[top], pixiArr[top + 1], pixiArr[top + 2]],
+  //             color,
+  //             range
+  //           )
+  //         ) {
+  //           pixiArr[top + 3] = 0
+  //           top += canvas.width * 4
+  //         } else topF = true
+  //       }
+  //       if (!bottomF) {
+  //         if (
+  //           testColor(
+  //             [pixiArr[bottom], pixiArr[bottom + 1], pixiArr[bottom + 2]],
+  //             color,
+  //             range
+  //           )
+  //         ) {
+  //           pixiArr[bottom + 3] = 0
+  //           bottom -= canvas.width * 4
+  //         } else bottomF = true
+  //       }
 
-        if (top === bottom) {
-          topF = true
-          bottomF = true
-        }
-      }
-    }
+  //       if (top === bottom) {
+  //         topF = true
+  //         bottomF = true
+  //       }
+  //     }
+  //   }
 
-    context.putImageData(imageInfo, 0, 0)
-  }
+  //   context.putImageData(imageInfo, 0, 0)
+  // }
   function testColor(current, target, range) {
     for (let i = 0; i < 3; i++) {
       if (

@@ -16,6 +16,15 @@ function copyImageInCanvas(hiddenContext, cloneCanvas) {
   hiddenContext.canvas.height = cloneCanvas.height
   hiddenContext.drawImage(cloneCanvas, 0, 0)
 }
+export async function getLoadedImage(picFile) {
+  const img = new Image()
+  img.crossOrigin = 'anonymous'
+  img.src = typeof picFile === 'string' ? picFile : URL.createObjectURL(picFile)
+  await new Promise((resolve) => {
+    img.onload = () => resolve()
+  })
+  return createImageBitmap(img)
+}
 export function resizeCanvas(config) {
   const {
     ctx,

@@ -63,7 +63,6 @@ export function useMattingBoard(props) {
     isDrawing,
     listenerManager
   }
-  console.log(width, height)
   useInitMattingBoards(props, { ...initMattingConfig, width, height })
   // useInitDrawingListeners(props, initListenersConfig)
   // useInitTransformListener(initListenersConfig)
