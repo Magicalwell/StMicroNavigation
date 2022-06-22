@@ -119,8 +119,13 @@ export default defineComponent({
       btnStatus.value = true
     }
     const saveChange = () => {
-      modalEdit.value.savePicture()
-      console.log(fileList)
+      // modalEdit.value.savePicture()
+      const dataURL = modalEdit.value.inputCvs.toDataURL('image/png')
+      console.log(fileList.value)
+      previewImage.value = dataURL
+      // store.commit('plannerVuex/changeImgFlag', dataURL)
+      // store.commit('plannerVuex/changeImgFlag')
+      // editVisible.value = false
     }
     return {
       previewVisible,

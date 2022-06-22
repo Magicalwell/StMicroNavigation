@@ -13,7 +13,9 @@
           <a-select-option value="cachupen">擦除画笔</a-select-option>
           <a-select-option value="xiufupen" disabled>修复画笔</a-select-option>
           <a-select-option value="metalpen" disabled>钢笔</a-select-option>
-          <a-select-option value="alibaba" disabled>阿里智能抠图</a-select-option>
+          <a-select-option value="alibaba" disabled
+            >阿里智能抠图</a-select-option
+          >
           <a-select-option value="earse">橡皮</a-select-option>
         </a-select>
       </div>
@@ -125,7 +127,7 @@ export default defineComponent({
         useRc({ pictureData: props.imgData }, sendDuring)
       }
     }
-    expose({ savePicture })
+    expose({ savePicture, inputCvs })
 
     onMounted(() => {
       const canvas = document.querySelector('#editcanvas')
