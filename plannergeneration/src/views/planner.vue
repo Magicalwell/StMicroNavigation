@@ -30,14 +30,13 @@
           </div>
         </section>
         <section class="right">
-          右侧的属性
           <a-collapse v-model:activeKey="activeKey2">
             <a-collapse-panel key="1" header="待解决事项">
               <ul>
                 <li>1.待完善滚轮缩放和页面长度过长时滚动条的冲突问题</li>
-                <li>
+                <!-- <li>
                   2.重叠元素的选中问题(两种解决方法，1.将选中的暂时置顶，2.禁用其他的元素为不可选中)
-                </li>
+                </li> -->
                 <!-- <li>
                   3.绘画添加的图层，在图层管理器选中后没有反应,绘画会新建一个图层，要实现在原有的图层上面编辑（用group实现）
                 </li> -->
@@ -45,7 +44,6 @@
                   4.层级拖动有两种方式，1是根据起始点的index进行moveto，2是将整个canvas重新渲染(目前选择moveto的方法)
                 </li> -->
                 <li>5.待优化代码，将fabric的所有配置写入hooks</li>
-                <li>7.辅助线吸附功能需要优化同时吸附多个点的情况</li>
                 <li>
                   8.根据表单字段动态生成对应的表单(schema应该包括两个部分，一部分为表单数据，另一部分用于绑定v-model)
                 </li>

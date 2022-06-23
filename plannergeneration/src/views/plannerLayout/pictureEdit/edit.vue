@@ -6,12 +6,16 @@
         <a-select
           ref="select"
           v-model:value="editType"
-          style="width: 120px"
+          style="width: 150px"
           @change="handleChange"
         >
           <a-select-option value="mobang">魔棒</a-select-option>
-          <a-select-option value="cachupen">擦除画笔</a-select-option>
-          <a-select-option value="xiufupen" disabled>修复画笔</a-select-option>
+          <a-select-option value="cachupen" disabled
+            >擦除画笔(开发中)</a-select-option
+          >
+          <a-select-option value="xiufupen" disabled
+            >修复画笔(开发中)</a-select-option
+          >
           <a-select-option value="metalpen" disabled>钢笔</a-select-option>
           <a-select-option value="alibaba" disabled
             >阿里智能抠图</a-select-option
@@ -124,6 +128,7 @@ export default defineComponent({
 
     const resetCanvas = () => {
       if (editType.value === 'mobang') {
+        console.log(33333)
         useRc({ pictureData: props.imgData }, sendDuring)
       }
     }

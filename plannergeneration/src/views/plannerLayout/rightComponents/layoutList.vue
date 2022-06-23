@@ -35,6 +35,9 @@
           <div v-else>
             {{ element.layoutName }}
           </div>
+          <span class="layout-btn" @click.stop="changeVisiable(element.id)">
+            <bulb-outlined />
+          </span>
         </div>
       </template>
     </draggable>
@@ -45,10 +48,11 @@
 import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
-
+import { BulbOutlined } from '@ant-design/icons-vue'
 export default defineComponent({
   components: {
-    draggable
+    draggable,
+    BulbOutlined
   },
   props: {
     setActiveObj: {
@@ -57,8 +61,6 @@ export default defineComponent({
     }
   },
   setup(props) {
-    console.log(props)
-
     const store = useStore()
     const childComponentList = computed(
       () => store.state.plannerVuex.layoutContainer
@@ -77,7 +79,6 @@ export default defineComponent({
       ghostClass: 'ghostItem',
       draggable: '.drag-handle',
       tag: 'div',
-      // handle: '.mover',
       forceFallback: false,
       dragClass: 'dragClass'
     }
@@ -95,8 +96,6 @@ export default defineComponent({
       props.setActiveObj(idx)
     }
     const layoutMoved = (arg) => {
-      console.log(arg)
-
       store.commit('plannerVuex/layoutDrag', {
         newIndex: childComponentList.value.length - 1 - arg.newIndex,
         oldIndex: childComponentList.value.length - 1 - arg.oldIndex
@@ -108,6 +107,18 @@ export default defineComponent({
     const resetArr = (val) => {
       selectInputArr.value = selectInputArr.value.filter((item) => item !== val)
     }
+    const changeVisiable = () => {
+      console.log(123)
+
+      //   hide(){
+      //     this.canvas.getActiveObject().set('opacity', 0).setCoords();
+      //     this.canvas.requestRenderAll()
+      // },
+      // display(){
+      //     this.canvas.getActiveObject().set('opacity', 1).setCoords();
+      //     this.canvas.requestRenderAll()
+      // },
+    }
     return {
       childComponentList,
       dragOptions,
@@ -117,7 +128,8 @@ export default defineComponent({
       setInput,
       selectInputArr,
       resetArr,
-      styleNum
+      styleNum,
+      changeVisiable
     }
   }
 })
@@ -129,13 +141,29 @@ export default defineComponent({
   min-height: 200px;
 }
 .layout-item {
-  padding: 4px 8px;
+  position: relative;
+  padding: 4px 8px 4px 40px;
   ::v-deep(.ant-input) {
     padding: 0 !important;
     border: none;
   }
+  &:hover .layout-btn {
+    display: inline-block;
+  }
 }
 .layer_active {
   background-color: #ccc;
+}
+.layout-btn {
+  position: absolute;
+  left: 6px;
+  top: 0;
+  display: none;
+  width: 30px;
+  height: 100%;
+  font-size: 18px;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
 }
 </style>

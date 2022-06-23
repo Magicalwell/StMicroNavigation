@@ -1,7 +1,7 @@
 import { ref, watch, computed } from 'vue'
 import { fabric } from 'fabric'
 import { useStore } from 'vuex'
-const usePainting = ({ plannerCanvas }) => {
+const usePainting = ({ plannerCanvas, setActiveSelect }) => {
   const store = useStore()
   const addNum = ref(0)
   // const layoutContainer = computed(
@@ -49,7 +49,9 @@ const usePainting = ({ plannerCanvas }) => {
       objs.forEach((item) => {
         plannerCanvas.remove(item)
       })
+
       plannerCanvas.insertAt(group, selectIndex.value)
+      setActiveSelect(group.id)
       // plannerCanvas.moveTo(group, selectIndex.value)
       store.commit(
         'plannerVuex/updateLayoutContainerArr',

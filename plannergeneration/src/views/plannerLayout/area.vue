@@ -123,12 +123,13 @@ export default defineComponent({
       console.log(plannerCanvas.getObjects())
       const matchArr = plannerCanvas.getObjects()
       const chooseList = plannerCanvas.getActiveObjects()
-      if (opt.target) {
+      if (
+        opt.target &&
+        store.state.plannerVuex.toolBox.currentType !== 'pencil-input'
+      ) {
         store.commit(
           'plannerVuex/changeLayoutId',
-          matchArr.length -
-            1 -
-            matchArr.findIndex((item) => item.id === opt.target.id)
+          matchArr.findIndex((item) => item.id === opt.target.id)
         )
         store.commit(
           'plannerVuex/setPaintAimedLayout',
@@ -222,6 +223,7 @@ export default defineComponent({
         if (objs && objs.length > 0) {
           plannerCanvas.setActiveObject(objs[0])
           objs[0].canvasBypaint = true
+          console.log(objs[0])
           plannerCanvas.renderAll()
           resolve()
         } else {
@@ -319,7 +321,7 @@ export default defineComponent({
         return this._objects
       }
       plannerCanvas = new fabric.Canvas('plannerarea', option)
-      usePainting({ plannerCanvas }) // 自由绘画功能
+      usePainting({ plannerCanvas, setActiveSelect }) // 自由绘画功能
       initAligningGuidelines({ plannerCanvas }) // 辅助线功能
       var rect = new fabric.Rect({
         left: 100,

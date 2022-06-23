@@ -15,7 +15,6 @@ const useRc = ({ pictureData }, fn) => {
   //   // cutout(canvas, [255, 255, 255], 0.2) // 对白色进行抠除，容差为0.2
   // }
   function getAimRgb(e) {
-    console.log(e)
     const colorList = context
       .getImageData(e.offsetX, e.offsetY, 1, 1)
       .data.slice(0, 3)

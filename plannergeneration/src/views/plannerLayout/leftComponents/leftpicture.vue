@@ -123,9 +123,9 @@ export default defineComponent({
       const dataURL = modalEdit.value.inputCvs.toDataURL('image/png')
       console.log(fileList.value)
       previewImage.value = dataURL
-      // store.commit('plannerVuex/changeImgFlag', dataURL)
-      // store.commit('plannerVuex/changeImgFlag')
-      // editVisible.value = false
+      store.commit('plannerVuex/changeImgFlag', dataURL)
+      store.commit('plannerVuex/changeImgFlag')
+      editVisible.value = false
     }
     return {
       previewVisible,
