@@ -44,7 +44,34 @@
         </n-grid-item>
       </n-grid>
     </div>
-    <div class="container-footer"></div>
+    <div class="container-footer">
+      <a href="http://beian.miit.gov.cn/" target="_blank"
+        >鄂ICP备2021015726号</a
+      >
+      <a
+        target="_blank"
+        href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=42011102004602"
+        style="
+          display: flex;
+          text-decoration: none;
+          height: 20px;
+          line-height: 20px;
+          justify-content: center;
+        "
+        ><img src="img/备案图标.png" />
+        <p
+          style="
+            float: left;
+            height: 20px;
+            line-height: 20px;
+            margin: 0px 0px 0px 5px;
+            color:#fff
+          "
+        >
+          鄂公网安备 42011102004602号
+        </p>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -89,7 +116,12 @@ export default {
   height: 300px;
 }
 .container-footer {
+  text-align: center;
   height: 200px;
-  background-color: cadetblue;
+  background-color: #000;
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
 }
 </style>

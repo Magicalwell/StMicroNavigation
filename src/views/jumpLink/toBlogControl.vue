@@ -1,9 +1,9 @@
 <template>
   <div>
     <micro-app
-      name="blog-control"
+      name="blogcontrol"
       :url="url"
-      baseroute="/blogcontrol"
+      baseroute="/main-app/blogcontrol"
       @created="handleCreate"
       @beforemount="handleBeforeMount"
       @mounted="handleMount"
@@ -21,7 +21,7 @@ export default {
   name: 'blogControl',
   data() {
     return {
-      url: `${config.blogControl}/`
+      url: `${config.blogControl}/child/blogcontrol/`
     }
   },
   methods: {

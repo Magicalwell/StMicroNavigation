@@ -8,6 +8,7 @@ module.exports = {
     hot: false,
     disableHostCheck: true,
     open: true,
+    port: 3000,
     overlay: {
       warnings: false,
       errors: true

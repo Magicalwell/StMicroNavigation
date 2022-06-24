@@ -1,6 +1,7 @@
 import serve from "@/utils/require.js";
 import { getBaseUrl } from "./index";
 export function login(data) {
+  console.log(process.env[getBaseUrl("/userlogin")]);
   return serve({
     url: process.env[getBaseUrl("/userlogin")] + "/userlogin",
     method: "post",

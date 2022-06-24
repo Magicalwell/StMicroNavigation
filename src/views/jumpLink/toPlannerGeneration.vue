@@ -3,7 +3,7 @@
     <micro-app
       name="plannergeneration"
       :url="url"
-      baseroute="/plannergeneration"
+      baseroute="/main-app/plannergeneration"
       @created="handleCreate"
       @beforemount="handleBeforeMount"
       @mounted="handleMount"
@@ -23,7 +23,7 @@ export default {
   name: 'plannergeneration',
   data() {
     return {
-      url: `${config.plannergeneration}/`
+      url: `${config.plannergeneration}/child/plannergeneration/`
     }
   },
   methods: {
