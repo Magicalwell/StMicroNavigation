@@ -25,7 +25,12 @@ module.exports = {
       }
     ]
   },
-  devServer: {},
+  devServer: {
+    port: 4006,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
+  },
   plugins: [
     new CleanWebpackPlugin({
       root: path.resolve(__dirname, '../')

@@ -141,9 +141,17 @@ const menuOptions = [
         icon: renderIcon(WineIcon)
       },
       {
-        label: '一些游戏',
-        disabled: true,
-        key: 'the-past-increases-the-future-recedes'
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/heartofstone'
+              }
+            },
+            { default: () => '石之心V1.0' }
+          ),
+        key: 'heartofstone'
       }
     ]
   }
