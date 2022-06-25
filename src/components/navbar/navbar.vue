@@ -62,20 +62,20 @@ const menuOptions = [
     key: '/project',
     icon: renderIcon(BookIcon),
     children: [
-      {
-        label: () =>
-          h(
-            RouterLink,
-            {
-              to: {
-                path: '/app-vue3'
-              }
-            },
-            { default: () => '测试项目' }
-          ),
-        key: '/app-vue3',
-        icon: renderIcon(PersonIcon)
-      },
+      // {
+      //   label: () =>
+      //     h(
+      //       RouterLink,
+      //       {
+      //         to: {
+      //           path: '/app-vue3'
+      //         }
+      //       },
+      //       { default: () => '测试项目' }
+      //     ),
+      //   key: '/app-vue3',
+      //   icon: renderIcon(PersonIcon)
+      // },
       {
         label: () =>
           h(
@@ -91,41 +91,36 @@ const menuOptions = [
         icon: renderIcon(WineIcon)
       },
       {
-        label: '组件库',
+        label: '组件库(待接入)',
         disabled: true,
         key: 'stoneUi'
       },
       {
-        label: '弹幕学习室',
+        label: '弹幕学习室(待接入)',
         disabled: true,
         key: 'danmuStudy'
       },
-      {
-        label: '加点three.js?',
-        disabled: true,
-        key: 'danmuStudy'
-      },
-      {
-        label: '低代码',
-        key: 'food',
-        disabled: true,
-        children: [
-          // {
-          //   label: () =>
-          //     h(
-          //       RouterLink,
-          //       {
-          //         to: {
-          //           path: '/plannergeneration'
-          //         }
-          //       },
-          //       { default: () => '手账' }
-          //     ),
-          //   key: '/plannergeneration',
-          //   icon: renderIcon(WineIcon)
-          // }
-        ]
-      },
+      // {
+      //   label: '低代码',
+      //   key: 'food',
+      //   disabled: true,
+      //   children: [
+      //     // {
+      //     //   label: () =>
+      //     //     h(
+      //     //       RouterLink,
+      //     //       {
+      //     //         to: {
+      //     //           path: '/plannergeneration'
+      //     //         }
+      //     //       },
+      //     //       { default: () => '手账' }
+      //     //     ),
+      //     //   key: '/plannergeneration',
+      //     //   icon: renderIcon(WineIcon)
+      //     // }
+      //   ]
+      // },
       {
         label: () =>
           h(
@@ -135,7 +130,7 @@ const menuOptions = [
                 path: '/plannergeneration'
               }
             },
-            { default: () => '笔记或手账?随你' }
+            { default: () => '来点笔记或手账吧' }
           ),
         key: '/plannergeneration',
         icon: renderIcon(WineIcon)
