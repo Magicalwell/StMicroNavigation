@@ -5,6 +5,7 @@
       ref="select"
       v-model:value="selfData.type"
       style="display: block; width: 120px"
+      v-bind="popSetting"
     >
       <a-select-option value="pencil">画笔</a-select-option>
       <a-select-option value="maopencil">毛笔</a-select-option>
@@ -45,8 +46,11 @@ export default defineComponent({
   },
   setup(props) {
     const { formRender: selfData } = toRefs(props)
+    const popSetting = ref({
+      getPopupContainer: () => document.querySelector('#app')
+    })
 
-    return { selfData }
+    return { selfData, popSetting }
   }
 })
 </script>

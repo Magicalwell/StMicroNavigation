@@ -5,6 +5,7 @@
       list-type="picture-card"
       @preview="handlePreview"
       :before-upload="uploadSync"
+      action="http://127.0.0.1"
     >
       <div>
         <plus-outlined />

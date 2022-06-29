@@ -8,6 +8,7 @@
           v-model:value="editType"
           style="width: 150px"
           @change="handleChange"
+          v-bind="popSetting"
         >
           <a-select-option value="mobang">魔棒</a-select-option>
           <a-select-option value="cachupen" disabled
@@ -91,6 +92,9 @@ export default defineComponent({
     const handleChange = () => {
       console.log(111)
     }
+    const popSetting = ref({
+      getPopupContainer: () => document.querySelector('#app')
+    })
     const savePicture = () => {
       const plannerCanvas = document.querySelector('#editcanvas')
       const dataURL = plannerCanvas.toDataURL({
@@ -209,7 +213,8 @@ export default defineComponent({
       resetCanvas,
       penModal,
       inputCvs,
-      outputCvs
+      outputCvs,
+      popSetting
     }
   }
 })
