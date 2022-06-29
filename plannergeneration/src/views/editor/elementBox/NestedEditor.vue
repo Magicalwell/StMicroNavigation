@@ -40,13 +40,6 @@ export default defineComponent({
     componentsItem
   },
   setup(props) {
-    onMounted(() => {
-      console.log(generateBlockType())
-    })
-
-    function test() {
-      console.log('ceshi')
-    }
     const widgetsList = ref([])
     const dragOptions = computed(() => {
       return {
@@ -62,15 +55,11 @@ export default defineComponent({
         fallbackTolerance: 0
       }
     })
-    function getdata() {
-      console.log('跑了')
-    }
     function updateDatadragEnd() {
       console.log(111)
     }
-    console.log(widgetsList, 'widgetsListwidgetsListwidgetsList')
 
-    return { test, getdata, updateDatadragEnd, dragOptions, widgetsList }
+    return { updateDatadragEnd, dragOptions, widgetsList }
   }
   // computed: {
   //   ...mapState(['textContainer'])

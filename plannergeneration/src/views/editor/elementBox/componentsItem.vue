@@ -43,7 +43,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    console.log(props.editorItem, 'props.editorItemprops.editorItem')
+    // console.log(props.editorItem, 'props.editorItemprops.editorItem')
 
     const attrs = computed(() => {
       return {

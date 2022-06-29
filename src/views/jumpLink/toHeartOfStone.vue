@@ -3,7 +3,7 @@
     <micro-app
       name="heartofstone"
       :url="url"
-      baseroute="/heartofstone"
+      baseroute="/main-app/heartofstone"
       @created="handleCreate"
       @beforemount="handleBeforeMount"
       @mounted="handleMount"
@@ -22,7 +22,7 @@ export default {
   name: 'heartofstone',
   data() {
     return {
-      url: `${config.heartofstone}/`
+      url: `${config.heartofstone}/child/heartofstone/`
     }
   },
   methods: {
