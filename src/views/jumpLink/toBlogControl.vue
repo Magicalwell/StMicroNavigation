@@ -10,6 +10,7 @@
       @unmount="handleUnmount"
       @error="handleError"
       @datachange="handleDataChange"
+      class="micro-container"
     ></micro-app>
   </div>
 </template>
@@ -52,4 +53,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.micro-container {
+  width: 100%;
+  height: 100%;
+}
+</style>
