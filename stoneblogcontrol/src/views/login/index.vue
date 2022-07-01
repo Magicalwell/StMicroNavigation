@@ -89,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 #login {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: #fff;
   color: #4e5969;
   display: flex;
