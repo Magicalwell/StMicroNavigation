@@ -1,7 +1,13 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router'
-import store from './store'
+import { setupRouter } from './router'
+import { setCreatStore } from './store'
 import microApp from '@micro-zoe/micro-app'
-microApp.start()
-createApp(App).use(store).use(router).mount('#app')
+async function bootstrap() {
+  microApp.start()
+  const app = createApp(App)
+  setCreatStore(app)
+  setupRouter(app)
+  app.mount('#app')
+}
+bootstrap()

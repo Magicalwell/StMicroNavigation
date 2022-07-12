@@ -22,18 +22,6 @@ function renderIcon(icon) {
 }
 const menuOptions = [
   {
-    // label: () =>
-    //   h(
-    //     'RouterLink',
-    //     {
-    //       to: {
-    //         path: '/home'
-    //       }
-    //     },
-    //     { default: () => '首页' }
-    //   ),
-    // key: 'hear-the-wind-sing',
-    // icon: renderIcon(BookIcon)
     label: () =>
       h(
         RouterLink,
@@ -62,20 +50,6 @@ const menuOptions = [
     key: '/project',
     icon: renderIcon(BookIcon),
     children: [
-      // {
-      //   label: () =>
-      //     h(
-      //       RouterLink,
-      //       {
-      //         to: {
-      //           path: '/app-vue3'
-      //         }
-      //       },
-      //       { default: () => '测试项目' }
-      //     ),
-      //   key: '/app-vue3',
-      //   icon: renderIcon(PersonIcon)
-      // },
       {
         label: () =>
           h(
