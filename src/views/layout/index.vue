@@ -1,17 +1,16 @@
 <template>
-  <div class="main-navbar" :class="{ show: navbarStatus }">
-    <!-- <div class="navbar-btn" @click="navbarStatus = !navbarStatus"></div> -->
+  <!-- <div class="main-navbar" :class="{ show: navbarStatus }">
     <main-Navbar></main-Navbar>
     <n-icon size="40" class="navbar-btn" @click="navbarStatus = !navbarStatus">
       <Arrow-Down-Circle-Sharp></Arrow-Down-Circle-Sharp>
     </n-icon>
-  </div>
+  </div> -->
+  <main-Navbar></main-Navbar>
   <app-Main></app-Main>
 </template>
 
 <script lang="ts">
 import { ArrowDownCircleSharp } from '@vicons/ionicons5'
-import { NIcon } from 'naive-ui'
 import appMain from './appMain/appMain.vue'
 import mainNavbar from '@/components/navbar/navbar.vue'
 export default {
@@ -21,9 +20,8 @@ export default {
     }
   },
   components: {
-    NIcon,
     appMain,
-    ArrowDownCircleSharp,
+
     mainNavbar
   }
 }

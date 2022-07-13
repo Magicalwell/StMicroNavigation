@@ -14,8 +14,7 @@ export const RootRoute = {
     {
       path: '/home',
       name: 'home',
-      component: () => import('../../views/Home.vue'),
-      meta: { title: '主控台', fixed: true, canDelete: false, showTag: true }
+      component: () => import('../../views/Home.vue')
     },
     {
       path: '/blogcontrol/:*',
