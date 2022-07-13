@@ -74,27 +74,11 @@ const menuOptions = [
         disabled: true,
         key: 'danmuStudy'
       },
-      // {
-      //   label: '低代码',
-      //   key: 'food',
-      //   disabled: true,
-      //   children: [
-      //     // {
-      //     //   label: () =>
-      //     //     h(
-      //     //       RouterLink,
-      //     //       {
-      //     //         to: {
-      //     //           path: '/plannergeneration'
-      //     //         }
-      //     //       },
-      //     //       { default: () => '手账' }
-      //     //     ),
-      //     //   key: '/plannergeneration',
-      //     //   icon: renderIcon(WineIcon)
-      //     // }
-      //   ]
-      // },
+      {
+        label: '低代码',
+        key: 'lowcode',
+        disabled: true
+      },
       {
         label: () =>
           h(
@@ -145,3 +129,22 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.top-nav-main {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 333;
+  background-color: #fff;
+  height: 50px;
+  width: 100%;
+  box-shadow: 1px 4px 12px rgba($color: #000000, $alpha: 0.1);
+  ::v-deep(.n-menu-item) {
+    height: 100%;
+  }
+  ::v-deep(.n-menu-item-content) {
+    height: 100%;
+  }
+}
+</style>

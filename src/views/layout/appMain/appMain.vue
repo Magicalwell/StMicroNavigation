@@ -1,6 +1,6 @@
 <template>
   <div>
-    <LayoutMultipleHeader />
+    <!-- <LayoutMultipleHeader /> -->
     <PageLayout />
     <div id="content" class="app-view-box"></div>
     <!-- 预留微前端挂载 -->
@@ -13,8 +13,8 @@ import PageLayout from './page.vue'
 import LayoutMultipleHeader from '@/components/mutiTabs/mutiTabs.vue'
 export default defineComponent({
   components: {
-    PageLayout,
-    LayoutMultipleHeader
+    PageLayout
+    // LayoutMultipleHeader
   },
   setup() {
     return {}

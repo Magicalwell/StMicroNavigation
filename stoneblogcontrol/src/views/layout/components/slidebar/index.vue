@@ -80,9 +80,6 @@ export default {
 .slidebar-container {
   position: fixed;
   height: 100%;
-  top: 0;
-  left: 0;
-  bottom: 0;
   background-color: #fff;
   box-shadow: 6px 0px 12px rgba($color: #000000, $alpha: 0.1);
 }

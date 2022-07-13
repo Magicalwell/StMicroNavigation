@@ -147,7 +147,7 @@ export default defineComponent({
       }
     ])
     const activeId = ref(0)
-    const tabList = ref([])
+    const tabList: any = ref([])
     const setTabList = (el) => {
       if (el) {
         tabList.value.push(el)
@@ -155,8 +155,6 @@ export default defineComponent({
     }
     const toLeft = () => {
       activeId.value++
-      console.log(111)
-
       var ele = document.getElementById(activeId.value + 'get')
 
       if (ele && ele.scrollIntoView) {
