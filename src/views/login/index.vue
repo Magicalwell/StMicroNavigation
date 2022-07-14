@@ -21,7 +21,9 @@
       </n-grid-item>
       <n-grid-item span="2 l:1">
         <div class="form-container">
-          <LoginForm />
+          <n-message-provider>
+            <LoginForm />
+          </n-message-provider>
           <RegisterForm />
         </div>
       </n-grid-item>
@@ -30,7 +32,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import { NGrid, NGridItem, NButton } from 'naive-ui'
+import { NGrid, NGridItem, NButton, NMessageProvider } from 'naive-ui'
 import LoginForm from './loginForm.vue'
 import RegisterForm from './registerForm.vue'
 import { useLoginState } from './useLogin'
@@ -46,7 +48,14 @@ export default defineComponent({
     handleBackLogin()
     return { formValue, goback }
   },
-  components: { NGrid, NGridItem, NButton, LoginForm, RegisterForm }
+  components: {
+    NGrid,
+    NGridItem,
+    NButton,
+    LoginForm,
+    RegisterForm,
+    NMessageProvider
+  }
 })
 </script>
 <style lang="scss" scoped>

@@ -1,20 +1,21 @@
 <template>
   <div class="login-form" v-show="getState">
     <h2 style="text-align: center; margin: 0 0 10px 0">登录</h2>
-    <n-form ref="formRef" :model="formValue" :show-label="false">
-      <n-form-item label="姓名" path="userName">
+    <n-form ref="formRef" :model="formValue" :show-label="false" :rules="rules">
+      <n-form-item label="用户名" path="userName">
         <n-input v-model:value="formValue.userName" placeholder="输入账号" />
       </n-form-item>
-      <n-form-item label="年龄" path="passWord">
+      <n-form-item label="密码" path="passWord">
         <n-input v-model:value="formValue.passWord" placeholder="输入密码" />
       </n-form-item>
-      <n-form-item label="电话号码" path="phone">
+      <n-form-item label="验证码" path="authCode">
         <n-input
           v-model:value="formValue.authCode"
           placeholder="验证码"
           class="mgr10"
         />
-        <span style="white-space: nowrap">验证码:7788</span>
+        <!-- <span style="white-space: nowrap">验证码:7788</span> -->
+        <Identify v-model:identifyCode="identifyCode" ref="identifyCodeRef" />
       </n-form-item>
       <div style="display: flex">
         <n-button
@@ -38,48 +39,85 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive, unref, ref } from 'vue'
-import { NForm, NFormItem, NInput, NButton } from 'naive-ui'
+import {
+  NForm,
+  NFormItem,
+  NInput,
+  NButton,
+  FormRules,
+  useMessage
+} from 'naive-ui'
 import { useLoginState, LoginStateEnum } from './useLogin'
 import { useStore } from 'vuex'
+
+import Identify from '../../components/identify/identify.vue'
 export default defineComponent({
   setup() {
     const formValue = reactive({ userName: '', passWord: '', authCode: null })
+    const identifyCode = ref({ code: '', timeStap: null })
+    const identifyCodeRef = ref()
+    const formRef = ref()
     const loading = ref(false)
     const userStore = useStore()
+    const message = useMessage()
     const getState = computed(
       () => unref(getLoginState) === LoginStateEnum.LOGIN
     )
-    const { setLoginState, getLoginState } = useLoginState()
-    async function handleLogin() {
-      //   const data = await validForm()
-      const data = formValue
-      if (!data) return
-      try {
-        loading.value = true
-        const { userInfo } = await userStore.dispatch('user/login', {
-          password: data.userName,
-          username: data.passWord,
-          authCode: data.authCode
-        })
-        if (userInfo) {
-          //   notification.success({
-          //     message: t('sys.login.loginSuccessTitle'),
-          //     description: `${t('sys.login.loginSuccessDesc')}: ${
-          //       userInfo.realname
-          //     }`,
-          //     duration: 3
-          //   })
+    const rules: FormRules = {
+      userName: [
+        {
+          required: true,
+          message: '请输入用户名',
+          trigger: 'blur'
         }
-      } catch (error) {
-        // notification.error({
-        //   message: t('sys.api.errorTip'),
-        //   description: error.message || t('sys.api.networkExceptionMsg'),
-        //   duration: 3
-        // })
-        loading.value = false
+      ],
+      passWord: [
+        {
+          required: true,
+          message: '请输入密码',
+          trigger: 'blur'
+        }
+      ],
+      authCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+    }
 
-        // handleChangeCheckCode()
-      }
+    const { setLoginState, getLoginState } = useLoginState()
+    // const { validForm } = useFormValid(formRef)
+
+    function handleLogin() {
+      formRef.value.validate(async (errors) => {
+        if (!errors) {
+          if (formValue.authCode !== identifyCode.value.code) {
+            return message.error('请输入正确的验证码！')
+          }
+          try {
+            loading.value = true
+            const { userInfo } = await userStore.dispatch('user/login', {
+              password: formValue.userName,
+              username: formValue.passWord,
+              authCode: formValue.authCode
+            })
+            if (userInfo) {
+              //   notification.success({
+              //     message: t('sys.login.loginSuccessTitle'),
+              //     description: `${t('sys.login.loginSuccessDesc')}: ${
+              //       userInfo.realname
+              //     }`,
+              //     duration: 3
+              //   })
+            }
+          } catch (error) {
+            // notification.error({
+            //   message: t('sys.api.errorTip'),
+            //   description: error.message || t('sys.api.networkExceptionMsg'),
+            //   duration: 3
+            // })
+            loading.value = false
+            identifyCodeRef.value.renderCode()
+            // handleChangeCheckCode() 暂时用canvas代替
+          }
+        }
+      })
     }
     return {
       getLoginState,
@@ -88,10 +126,14 @@ export default defineComponent({
       setLoginState,
       LoginStateEnum,
       handleLogin,
-      loading
+      loading,
+      identifyCode,
+      identifyCodeRef,
+      formRef,
+      rules
     }
   },
-  components: { NForm, NFormItem, NInput, NButton }
+  components: { NForm, NFormItem, NInput, NButton, Identify }
 })
 </script>
 

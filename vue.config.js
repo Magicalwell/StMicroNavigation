@@ -20,13 +20,6 @@ module.exports = {
       jsonpFunction: 'webpackJsonp-main-vue3'
     }
   },
-  resolve: {
-    alias: [
-      {
-        '@': 'src'
-      }
-    ]
-  },
   chainWebpack: (config) => {
     // config.resolve.alias.set("@micro-zoe/micro-app", path.join(__dirname, '../../../micro-app/lib/index.esm.js'))
 

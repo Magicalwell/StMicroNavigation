@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import PageLayout from './page.vue'
-import LayoutMultipleHeader from '@/components/mutiTabs/mutiTabs.vue'
+// import LayoutMultipleHeader from '@/components/mutiTabs/mutiTabs.vue'
 export default defineComponent({
   components: {
     PageLayout
