@@ -1,5 +1,4 @@
 // const path = require('path')
-
 module.exports = {
   outputDir: 'main-app',
   publicPath: '/main-app/',
@@ -20,6 +19,13 @@ module.exports = {
     output: {
       jsonpFunction: 'webpackJsonp-main-vue3'
     }
+  },
+  resolve: {
+    alias: [
+      {
+        '@': 'src'
+      }
+    ]
   },
   chainWebpack: (config) => {
     // config.resolve.alias.set("@micro-zoe/micro-app", path.join(__dirname, '../../../micro-app/lib/index.esm.js'))

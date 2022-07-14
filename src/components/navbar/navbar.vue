@@ -1,17 +1,21 @@
 <template>
-  <n-menu
-    v-model:value="activeId"
-    mode="horizontal"
-    :options="menuOptions"
-    dropdown-placement="top"
-    class="top-nav-main"
-  />
+  <div class="top-nav-main">
+    <n-menu
+      v-model:value="activeId"
+      mode="horizontal"
+      :options="menuOptions"
+      dropdown-placement="top"
+    />
+    <div class="nav-right">
+      <n-button ghost color="#8a2be2" @click="handleClick"> 登录 </n-button>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, h, ref } from 'vue'
-import { NIcon, NMenu } from 'naive-ui'
-import { RouterLink } from 'vue-router'
+import { NIcon, NMenu, NButton } from 'naive-ui'
+import { RouterLink, useRouter } from 'vue-router'
 import {
   BookOutline as BookIcon,
   PersonOutline as PersonIcon,
@@ -111,16 +115,22 @@ const menuOptions = [
 ]
 export default defineComponent({
   setup() {
+    const router = useRouter()
+    const handleClick = () => {
+      router.push('/login')
+    }
     return {
       activeKey: ref(null),
-      menuOptions
+      menuOptions,
+      handleClick
     }
   },
   data() {
     return {}
   },
   components: {
-    NMenu
+    NMenu,
+    NButton
   },
   computed: {
     activeId() {
@@ -139,6 +149,11 @@ export default defineComponent({
   background-color: #fff;
   height: 50px;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
   box-shadow: 1px 4px 12px rgba($color: #000000, $alpha: 0.1);
   ::v-deep(.n-menu-item) {
     height: 100%;
@@ -146,5 +161,8 @@ export default defineComponent({
   ::v-deep(.n-menu-item-content) {
     height: 100%;
   }
+}
+.nav-right {
+  float: right;
 }
 </style>

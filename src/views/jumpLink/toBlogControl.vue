@@ -11,6 +11,7 @@
       @error="handleError"
       @datachange="handleDataChange"
       class="micro-container"
+      keep-alive
     ></micro-app>
   </div>
 </template>

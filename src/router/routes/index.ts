@@ -39,8 +39,13 @@ const PAGE_NOT_FOUND_ROUTE = {
   redirect: '/home',
   hidden: true
 }
+const LoginRoute = {
+  path: '/login',
+  name: 'login',
+  component: () => import('../../views/login/index.vue')
+}
 export const basicRoutes = [
-  //   LoginRoute,
+  LoginRoute,
   RootRoute,
   ...tempObjList,
   //   ...mainOutRoutes,
