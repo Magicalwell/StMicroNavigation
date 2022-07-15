@@ -14,7 +14,7 @@
         <n-grid-item span="2 m:1">
           <div class="grid-right layoutbox">
             <!-- <h1 style="font-size: 36px; margin-bottom: 0">你好，我是三石</h1> -->
-            <h1 style="font-size: 42px">
+            <h1 style="font-size: 42px;text-indent:2em">
               认识世界的角度和感受世界的方式可能有千万种，就像每一条路每个选择其实都没有对错，它们都有其意义，而找到这个意义并为之付出时间和生命，那就是前进。
             </h1>
             <p>你好，我是三石，很高兴认识你。</p>
@@ -23,12 +23,11 @@
             </p>
             <p>非常抱歉的是，有些问题可能需要您注意一下：</p>
             <ol>
-              <li>主导航栏按钮在左上角！</li>
               <li>由于服务器没有配置代理，所以刷新页面会导致404。</li>
               <li>
                 由于缺少后台代码，各个应用之间的数据还未打通，主应用与子应用，子应用与子应用。管理系统目前还无法控制整个网站的权限。
               </li>
-              <li>暂时没有适配移动端。</li>
+              <li>正在适配移动端。</li>
               <li>所有项目都暂时没有后台，不能持久化保存数据。</li>
             </ol>
             <span class="line"></span>
@@ -204,6 +203,7 @@ export default {
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
+  border-radius: 12px;
   &.control-system {
     background: url('../assets/20220629215630.png');
   }

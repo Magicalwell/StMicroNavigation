@@ -1,6 +1,7 @@
 import { defaultHttp } from './index'
 import { router } from '../router'
 import { PageEnum } from '../enums/pageEnum'
+import { useStore } from 'vuex'
 enum Api {
   Login = '/userlogin',
   phoneLogin = '/sys/phoneLogin',
@@ -39,10 +40,14 @@ export function loginApi(params) {
 }
 export function getUserInfo() {
   return defaultHttp(Api.GetUserInfo, null, 'get').catch((e) => {
+    const store = useStore()
+    console.log(store)
     if (e && (e.message.includes('timeout') || e.message.includes('401'))) {
-      //   const userStore = useUserStoreWithOut()
-      //   userStore.setToken('')
-      //   setAuthCache(TOKEN_KEY, null)
+      const store = useStore()
+      console.log(store)
+
+      // store.setToken('')
+      // setAuthCache(TOKEN_KEY, null)
       router.push(PageEnum.BASE_LOGIN)
     }
   })

@@ -6,14 +6,13 @@
     </n-icon>
   </div> -->
   <main-Navbar></main-Navbar>
-  <div style="height:50px"></div>
+  <div style="height: 50px"></div>
   <app-Main></app-Main>
 </template>
 
 <script lang="ts">
-import { ArrowDownCircleSharp } from '@vicons/ionicons5'
 import appMain from './appMain/appMain.vue'
-import mainNavbar from '@/components/navbar/navbar.vue'
+import mainNavbar from './header/index.vue'
 export default {
   data() {
     return {
@@ -22,7 +21,6 @@ export default {
   },
   components: {
     appMain,
-
     mainNavbar
   }
 }
