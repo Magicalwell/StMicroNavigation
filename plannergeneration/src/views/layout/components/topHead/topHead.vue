@@ -1,63 +1,36 @@
 <template>
   <div class="generation-head">
-    <a-menu
-      v-model:selectedKeys="current"
-      mode="horizontal"
-      @click="handleClick"
+    <a-radio-group
+      v-model:value="current"
+      button-style="solid"
+      @change="handleClick"
     >
-      <a-menu-item key="notes">
-        <template #icon>
-          <mail-outlined />
-        </template>
-        <router-link to="/Home/notes">三石笔记</router-link>
-      </a-menu-item>
-      <a-menu-item key="planner">
-        <template #icon>
-          <appstore-outlined />
-        </template>
-        <router-link to="/Home/planner">手账生成器</router-link>
-      </a-menu-item>
-    </a-menu>
-    <div>
-      <span style="margin-right: 24px">
-        <a-badge :count="1">
-          <a-avatar shape="square">
-            <template #icon><UserOutlined /></template>
-          </a-avatar>
-        </a-badge>
-      </span>
-    </div>
+      <a-radio-button value="notes">三石笔记</a-radio-button>
+      <a-radio-button value="planner">手账生成器</a-radio-button>
+    </a-radio-group>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  MailOutlined,
-  AppstoreOutlined,
-  UserOutlined
-} from '@ant-design/icons-vue'
 export default defineComponent({
   name: 'Home',
-  components: {
-    MailOutlined,
-    AppstoreOutlined,
-    UserOutlined
-  },
+  components: {},
   setup() {
-    const current = ref(['notes'])
+    const current = ref<string>('notes')
     const router = useRouter()
     watch(
       () => router.currentRoute.value.name,
-      (newValue, oldValue) => {
-        console.log('watch', newValue)
-        current.value = [newValue]
+      (newValue) => {
+        // console.log('watch', newValue)
+        current.value = newValue as string
+        console.log(newValue, 'newValuenewValuenewValue')
       },
       { immediate: true }
     )
 
-    function handleClick({ item, key, keyPath }) {
-      console.log(item, key, keyPath)
+    function handleClick(item) {
+      router.replace({ path: `/Home/${item.target.value}` })
     }
     return {
       current,
@@ -71,10 +44,10 @@ export default defineComponent({
 .generation-head {
   width: 100%;
   height: 50px;
-  padding: 0 2% 0 80px;
+  padding: 0 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 12px rgba($color: #000000, $alpha: 0.2);
+  border-top: 1px solid #ccc;
 }
 </style>

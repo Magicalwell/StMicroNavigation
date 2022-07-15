@@ -1,16 +1,5 @@
 <template>
   <div class="tool-box">
-    <!-- <div style="padding: 10px">
-      <div
-        class="tool-item"
-        v-for="item in defaultComponents"
-        :key="item.id"
-        :draggable="true"
-        @dragstart="saveDragType(item)"
-      >
-        <p>{{ item.value }}</p>
-      </div>
-    </div> -->
     <draggable
       v-model="defaultComponents"
       v-bind="dragOptions"
@@ -91,8 +80,7 @@ export default defineComponent({
   position: absolute;
   top: 0;
   bottom: 0;
-  background: #fff;
-  box-shadow: 2px 0px 12px rgba($color: #000000, $alpha: 0.12);
+  background: #f5f5f5;
   width: 260px;
   left: 0;
 }

@@ -20,5 +20,6 @@ export default defineComponent({
 .appMain {
   height: 100%;
   padding: 20px;
+  padding-top: 40px;
 }
 </style>
