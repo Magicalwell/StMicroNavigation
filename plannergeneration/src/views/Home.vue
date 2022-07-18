@@ -18,7 +18,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .generation-container {
-  height: 100vh;
+  height: calc(100vh - 50px);
 }
 .generation-head {
   position: relative;
