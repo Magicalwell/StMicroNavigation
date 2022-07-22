@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import { defineComponent, computed, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
 import SwitchBtn from '../switchBtn/index.vue'
 export default defineComponent({
   components: {

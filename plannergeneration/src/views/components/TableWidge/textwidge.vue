@@ -154,6 +154,7 @@ import {
   HighlightOutlined,
   FontColorsOutlined
 } from '@ant-design/icons-vue'
+import { toRefs } from '@vueuse/shared'
 const CustomHighlight = Highlight.extend({
   addAttributes() {
     return {
@@ -205,6 +206,7 @@ export default defineComponent({
     this.editor.destroy()
   },
   setup(props, { emit, expose, attrs }) {
+    const { modelValue: prosValue } = toRefs(props)
     const { editorItem: selfData }: any = attrs
     const { widgetType }: any = attrs
     const store = useStore()
@@ -230,6 +232,21 @@ export default defineComponent({
           },
           ArrowUp: () => {
             store.commit('GET_PREWIDGETS_ID', selfData)
+            return false
+          },
+          Backspace: () => {
+            if (editor.isEmpty) {
+              store.commit('DESTORY_ITEM', selfData.id)
+            }
+            if (
+              editor.getText() &&
+              window.getSelection()?.getRangeAt(0).startOffset === 0
+            ) {
+              store.commit('ADD_ITEM_BYOTHERD', {
+                text: selfData.paragraph.rich_text,
+                id: selfData.id
+              })
+            }
             return false
           }
           // '/': () => {
@@ -284,6 +301,7 @@ export default defineComponent({
       ],
       autofocus: 'end',
       content: props.modelValue,
+      // 这里vuex里面的数据已经改了，但是页面没有变过来
       onUpdate: (...arg) => {
         // 使用commands 暂时注释掉监听的方法
         // if (

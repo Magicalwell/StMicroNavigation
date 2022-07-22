@@ -19,10 +19,6 @@
       <!-- <li>4.修改绑定字段，不一定每一个都是rich_text</li> -->
       <!-- <li>5.优化hover的方法(暂时通过css解决，后续该为js控制)</li> -->
       <!-- <li>8.拖拽会发生抖动</li> -->
-      <!-- <li>
-        10.表格宽度高度的拖拽，可以在里面放一横一竖两个div/notion的做法是给cell里面都放上一横一竖的div
-        然后通过hover来让所有列都hover   已完成
-      </li> -->
       <!-- <li>11.富文本输入框组件会出现包裹层级不正确，后续需要做修改/补充：mark标记添加字体颜色无效，有冲突/解决加粗、斜体等重复引用的问题</li> -->
       <!-- <li>12.所有组件可以考虑使用富文本的组件,即整个页面是一个editor实例，而不是每一个富文本输入框都是一个editor，这样可以做到方向键换行(暂时使用vuex+watch来控制)</li> -->
       <!-- <li>
@@ -46,6 +42,8 @@ export default defineComponent({
       store.commit('SET_DEFAULT_PAGE')
     }
     function generationNewInput() {
+      console.log(store.state.pageBox.children)
+
       // 检测最后一个元素是否为空，是则focus该元素。否则新增一个空的input放在后面并focus
       if (store.state.pageBox.children.length === 0 || checkLastElement()) {
         store.commit('ADD_NEW_DEFAULT_INPUT')
@@ -61,14 +59,6 @@ export default defineComponent({
         return false
       }
     }
-    function dragStartItem(e: any) {
-      e.preventDefault()
-    }
-    function dragOveritem(e: any) {
-      e.preventDefault()
-      // console.log('在拖拽中')
-      // console.log(e.target)
-    }
     function drogitem(e: any) {
       store.commit('ADD_NEW_DEFAULT_INPUT', store.state.dargActiveItem.id)
     }
@@ -77,8 +67,6 @@ export default defineComponent({
       generationNewInput, // 点击空白新增空列表
       checkLastElement, // 检测最后一个dom是否为空的
       hoverContainer, // 用于接收hover了哪个dom
-      dragStartItem, // h5拖拽事件，没用到
-      dragOveritem, // h5拖拽事件，没用到
       drogitem, // h5拖拽事件，没用到
       valueList: reactive(store.state.pageBox),
       userGlobalOptions: ref(store.state.userGlobalOptions),
