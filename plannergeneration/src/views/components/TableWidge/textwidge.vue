@@ -132,7 +132,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, nextTick } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import { useStore } from 'vuex'
 import Text from '@tiptap/extension-text'
@@ -154,7 +154,6 @@ import {
   HighlightOutlined,
   FontColorsOutlined
 } from '@ant-design/icons-vue'
-import { toRefs } from '@vueuse/shared'
 const CustomHighlight = Highlight.extend({
   addAttributes() {
     return {
@@ -205,8 +204,7 @@ export default defineComponent({
   beforeUnmount() {
     this.editor.destroy()
   },
-  setup(props, { emit, expose, attrs }) {
-    const { modelValue: prosValue } = toRefs(props)
+  setup(props, { emit, attrs }) {
     const { editorItem: selfData }: any = attrs
     const { widgetType }: any = attrs
     const store = useStore()
@@ -221,8 +219,6 @@ export default defineComponent({
       addKeyboardShortcuts() {
         return {
           'Control-Enter': () => {
-            console.log(attrs, 'dasfaewqdsagaeasdqewqdadweqw')
-
             store.commit('ADD_NEW_DEFAULT_INPUT')
             return this.editor.commands.blur()
           },
@@ -243,7 +239,7 @@ export default defineComponent({
               window.getSelection()?.getRangeAt(0).startOffset === 0
             ) {
               store.commit('ADD_ITEM_BYOTHERD', {
-                text: selfData.paragraph.rich_text,
+                text: editor.getText(),
                 id: selfData.id
               })
             }
@@ -328,12 +324,18 @@ export default defineComponent({
     //   editor.commands.toggleOrderedList()
     // }
     watch(
-      () => store.state.focusId,
+      () => [store.state.focusId, store.state.addData],
       (newValue, oldValue) => {
+        console.log(newValue, oldValue)
+
         if (
-          newValue === (typeof selfData === 'object' ? selfData.id : selfData)
+          newValue[0] ===
+          (typeof selfData === 'object' ? selfData.id : selfData)
         ) {
           editor.commands.focus()
+          if (newValue[1]) {
+            editor.commands.insertContent(newValue[1])
+          }
         }
       },
       { deep: true }

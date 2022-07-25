@@ -38,8 +38,6 @@ function preTreeForeach(tree, func) {
   let parentNode
   const list = [...tree]
   while ((node = list.shift())) {
-    console.log(preNode, node, list)
-
     if (func(node)) {
       // if (list.length > 0) {
       //   return preNode.id
@@ -312,7 +310,8 @@ export default createStore({
         }
       ]
     },
-    focusId: ''
+    focusId: '',
+    addData: ''
   },
   mutations: {
     ADD_NEW_DEFAULT_INPUT(state: any, data) {
@@ -380,21 +379,14 @@ export default createStore({
         state.pageBox.children,
         (item) => state.focusId === item.id
       )
-      // treeIterator(state.pageBox.children, data.id, (tree, node, index) => {
-      //   if (node.type === 'paragraph') {
-      //     node.paragraph.rich_text = node.paragraph.rich_text + data.text
-      //     tree.splice(index, 1)
-      //   }
-      // })
-      treeIterator(
-        state.pageBox.children,
-        state.focusId,
-        (tree, node, index) => {
-          if (node.type === 'paragraph') {
-            node.paragraph.rich_text = '<p>99999</p>'
-          }
+      treeIterator(state.pageBox.children, data.id, (tree, node, index) => {
+        console.log(tree, node, index)
+
+        if (node.type === 'paragraph') {
+          state.addData = data.text
+          tree.splice(index, 1)
         }
-      )
+      })
     }
   },
   getters: {
