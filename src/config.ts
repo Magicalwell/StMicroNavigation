@@ -8,7 +8,7 @@ const config: Record<string, string> = {
   heartofstone: 'http://localhost:4006',
   plannergeneration: 'http://localhost:4001',
   blogControl: 'http://localhost:8081',
-  vue3: 'http://localhost:3001'
+  lowCodeEpc: 'http://localhost:4002'
 }
 
 // 线上环境地址

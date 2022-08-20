@@ -31,6 +31,11 @@ export const RootRoute = {
       path: '/heartofstone/:*',
       name: 'heart-of-stone',
       component: () => import('../../views/jumpLink/toHeartOfStone.vue')
+    },
+    {
+      path: '/easePageCreator/:*',
+      name: 'ease-page-creator',
+      component: () => import('../../views/jumpLink/toEpc.vue')
     }
   ]
 }

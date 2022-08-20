@@ -76,9 +76,17 @@ const menuOptions = [
         key: 'danmuStudy'
       },
       {
-        label: '低代码',
         key: 'lowcode',
-        disabled: true
+        label: () =>
+          h(
+            RouterLink,
+            {
+              to: {
+                path: '/easePageCreator'
+              }
+            },
+            { default: () => '低代码' }
+          )
       },
       {
         label: () =>

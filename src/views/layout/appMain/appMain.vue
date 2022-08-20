@@ -1,10 +1,10 @@
 <template>
-  <div>
+
     <!-- <LayoutMultipleHeader /> -->
     <PageLayout />
     <div id="content" class="app-view-box"></div>
     <!-- 预留微前端挂载 -->
-  </div>
+
 </template>
 
 <script lang="ts">
