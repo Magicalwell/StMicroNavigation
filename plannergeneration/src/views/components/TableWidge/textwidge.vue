@@ -132,7 +132,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, nextTick } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import { Editor, EditorContent, BubbleMenu } from '@tiptap/vue-3'
 import { useStore } from 'vuex'
 import Text from '@tiptap/extension-text'
@@ -204,7 +204,7 @@ export default defineComponent({
   beforeUnmount() {
     this.editor.destroy()
   },
-  setup(props, { emit, expose, attrs }) {
+  setup(props, { emit, attrs }) {
     const { editorItem: selfData }: any = attrs
     const { widgetType }: any = attrs
     const store = useStore()
@@ -219,8 +219,6 @@ export default defineComponent({
       addKeyboardShortcuts() {
         return {
           'Control-Enter': () => {
-            console.log(attrs, 'dasfaewqdsagaeasdqewqdadweqw')
-
             store.commit('ADD_NEW_DEFAULT_INPUT')
             return this.editor.commands.blur()
           },
@@ -230,6 +228,21 @@ export default defineComponent({
           },
           ArrowUp: () => {
             store.commit('GET_PREWIDGETS_ID', selfData)
+            return false
+          },
+          Backspace: () => {
+            if (editor.isEmpty) {
+              store.commit('DESTORY_ITEM', selfData.id)
+            }
+            if (
+              editor.getText() &&
+              window.getSelection()?.getRangeAt(0).startOffset === 0
+            ) {
+              store.commit('ADD_ITEM_BYOTHERD', {
+                text: editor.getText(),
+                id: selfData.id
+              })
+            }
             return false
           }
           // '/': () => {
@@ -284,6 +297,7 @@ export default defineComponent({
       ],
       autofocus: 'end',
       content: props.modelValue,
+      // 这里vuex里面的数据已经改了，但是页面没有变过来
       onUpdate: (...arg) => {
         // 使用commands 暂时注释掉监听的方法
         // if (
@@ -310,12 +324,18 @@ export default defineComponent({
     //   editor.commands.toggleOrderedList()
     // }
     watch(
-      () => store.state.focusId,
+      () => [store.state.focusId, store.state.addData],
       (newValue, oldValue) => {
+        console.log(newValue, oldValue)
+
         if (
-          newValue === (typeof selfData === 'object' ? selfData.id : selfData)
+          newValue[0] ===
+          (typeof selfData === 'object' ? selfData.id : selfData)
         ) {
           editor.commands.focus()
+          if (newValue[1]) {
+            editor.commands.insertContent(newValue[1])
+          }
         }
       },
       { deep: true }

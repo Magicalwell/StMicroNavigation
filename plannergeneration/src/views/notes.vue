@@ -1,18 +1,22 @@
 <template>
   <div class="generation-body">
-    <SettingBar />
+    <div class="fake-div" :style="{ width: isMobile ? '0px' : '260px' }"></div>
     <tool-Box></tool-Box>
+    <app-Main>
+      <SettingBar />
+    </app-Main>
+    <div class="fake-div" :style="{ width: isMobile ? '0px' : '340px' }"></div>
     <setting-Box></setting-Box>
-    <app-Main></app-Main>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import appMain from './layout/components/appMain/appMain.vue'
 import toolBox from './layout/components/toolBox/toolBox.vue'
 import settingBox from './layout/components/settingBox/settingBox.vue'
 import SettingBar from './layout/components/settingBar/index.vue'
+import { useWindowSizeFn } from '../views/layout/components/switchBtn/useWindowSizeFn'
 export default defineComponent({
   name: 'Home',
   components: {
@@ -20,13 +24,29 @@ export default defineComponent({
     toolBox,
     settingBox,
     SettingBar
+  },
+  setup() {
+    const isMobile = ref(false)
+    const responsiveSwitch = () => {
+      const windowWidth = document.documentElement.clientWidth
+      if (windowWidth > 600) {
+        isMobile.value = false
+      } else {
+        isMobile.value = true
+      }
+    }
+    responsiveSwitch()
+    useWindowSizeFn(responsiveSwitch, 150, { immediate: true })
+    return {
+      isMobile
+    }
   }
 })
 </script>
 
 <style lang="scss" scoped>
 .generation-container {
-  height: 100vh;
+  height: 100%;
 }
 .generation-head {
   position: relative;
@@ -34,9 +54,8 @@ export default defineComponent({
 }
 .generation-body {
   position: relative;
-  width: 100%;
-  height: calc(100vh - 50px);
-  padding-left: 270px;
-  padding-right: 350px;
+  display: flex;
+  height: calc(100vh - 100px);
+  overflow-x: hidden;
 }
 </style>

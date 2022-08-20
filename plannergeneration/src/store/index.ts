@@ -6,8 +6,6 @@ function treeForeach(tree, func) {
   let node
   const list = [...tree]
   while ((node = list.shift())) {
-    console.log(node, '----------------')
-
     if (func(node)) {
       if (list.length > 0) {
         return node.children && node.children.length > 0
@@ -22,14 +20,24 @@ function treeForeach(tree, func) {
     node.children && list.unshift(...node.children)
   }
 }
+function treeIterator(tree, target, func, dash = []) {
+  tree.forEach((node, index) => {
+    if (Array.isArray(target)) {
+      console.log('ttt')
+    }
+    if (node.id === target) {
+      func(tree, node, index)
+      return
+    }
+    node.children && treeIterator(node.children, target, func, dash)
+  })
+}
 function preTreeForeach(tree, func) {
   let node
   let preNode
   let parentNode
   const list = [...tree]
   while ((node = list.shift())) {
-    console.log(preNode, node, list)
-
     if (func(node)) {
       // if (list.length > 0) {
       //   return preNode.id
@@ -302,7 +310,8 @@ export default createStore({
         }
       ]
     },
-    focusId: ''
+    focusId: '',
+    addData: ''
   },
   mutations: {
     ADD_NEW_DEFAULT_INPUT(state: any, data) {
@@ -340,25 +349,44 @@ export default createStore({
       state.pageBox = generatePage()
     },
     GET_NEXTWIDGETS_ID(state, { id }) {
-      console.log('treeForeach')
-
       state.focusId = id
       state.focusId = treeForeach(
         state.pageBox.children,
         (item) => state.focusId === item.id
       )
-      console.log(state.focusId)
     },
     GET_PREWIDGETS_ID(state, { id }) {
-      console.log(id)
-      console.log('preTreeForeach')
-
       state.focusId = id
       state.focusId = preTreeForeach(
         state.pageBox.children,
         (item) => state.focusId === item.id
       )
-      console.log(state.focusId)
+    },
+    DESTORY_ITEM(state, id) {
+      state.focusId = id
+      state.focusId = preTreeForeach(
+        state.pageBox.children,
+        (item) => state.focusId === item.id
+      )
+      treeIterator(state.pageBox.children, id, (tree, node, index) => {
+        tree.splice(index, 1)
+      })
+    },
+    // 当当前文本行有内容时，按删除将内容加到上面的尾部
+    ADD_ITEM_BYOTHERD(state, data) {
+      state.focusId = data.id
+      state.focusId = preTreeForeach(
+        state.pageBox.children,
+        (item) => state.focusId === item.id
+      )
+      treeIterator(state.pageBox.children, data.id, (tree, node, index) => {
+        console.log(tree, node, index)
+
+        if (node.type === 'paragraph') {
+          state.addData = data.text
+          tree.splice(index, 1)
+        }
+      })
     }
   },
   getters: {

@@ -1,38 +1,54 @@
 <template>
-  <div class="tool-box">
-    <draggable
-      v-model="defaultComponents"
-      v-bind="dragOptions"
-      item-key="id"
-      @end="addWidgetByDrag"
-      :clone="cloneWidget"
-      :options="{
-        group: { name: 'listComponentsGroup', pull: 'clone' },
-        sort: true
-      }"
-    >
-      <template #item="{ element }">
-        <div class="tool-item">
-          <span>{{ element.value }}</span>
-        </div>
-      </template>
-    </draggable>
+  <div
+    class="tool-box"
+    :class="{ 'bar-fold': barStatus, 'mode-mobile': isMobile }"
+  >
+    <div class="draggable-container">
+      <draggable
+        v-model="defaultComponents"
+        v-bind="dragOptions"
+        item-key="id"
+        @end="addWidgetByDrag"
+        :clone="cloneWidget"
+        :options="{
+          group: { name: 'listComponentsGroup', pull: 'clone' },
+          sort: true
+        }"
+      >
+        <template #item="{ element }">
+          <div class="tool-item">
+            <span>{{ element.value }}</span>
+          </div>
+        </template>
+      </draggable>
+    </div>
+
+    <SwitchBtn
+      v-model:status="barStatus"
+      @isMobile="changeMobileModel"
+    />
   </div>
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import draggable from 'vuedraggable'
 import blockItemMap from '../../../../utils/index'
 import { generateBlockType } from '../../../../utils/generateBlock'
+import SwitchBtn from '../switchBtn/index.vue'
 export default defineComponent({
   components: {
-    draggable
+    draggable,
+    SwitchBtn
   },
   setup() {
     const store = useStore()
-    console.log([...blockItemMap.entries()])
+    const barStatus = ref(false)
+    const isMobile = ref(false)
+    const changeMobileModel = (e) => {
+      isMobile.value = e
+    }
     const dragOptions = computed(() => {
       return {
         group: { name: 'listComponentsGroup', pull: 'clone' },
@@ -69,7 +85,10 @@ export default defineComponent({
       saveDragType,
       dragOptions,
       addWidgetByDrag,
-      cloneWidget
+      cloneWidget,
+      barStatus,
+      isMobile,
+      changeMobileModel
     }
   }
 })
@@ -78,11 +97,32 @@ export default defineComponent({
 <style lang="scss" scoped>
 .tool-box {
   position: absolute;
-  top: 0;
-  bottom: 0;
   background: #f5f5f5;
-  width: 260px;
+  width: fit-content;
+  transition: width 300ms ease;
+  z-index: 20;
+  height: 100%;
+  display: flex;
+  .draggable-container {
+    position: relative;
+    width: 260px;
+    transform: translateX(0);
+    height: 100%;
+    transition: transform 200ms ease-out;
+  }
+}
+.bar-fold {
+  .draggable-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateX(-480px);
+  }
+}
+.mode-mobile {
+  position: absolute !important;
   left: 0;
+  top: 0;
 }
 .tool-item {
   display: inline-block;

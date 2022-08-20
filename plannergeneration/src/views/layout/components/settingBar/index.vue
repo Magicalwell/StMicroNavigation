@@ -20,7 +20,7 @@ export default defineComponent({
   position: absolute;
   top: 0;
   height: 24px;
-  left: 278px;
+  left: 12px;
 }
 .btn-icon {
   cursor: pointer;

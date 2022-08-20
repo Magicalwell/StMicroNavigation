@@ -1,6 +1,7 @@
 <template>
   <div class="appMain">
     <!-- <component :is=""></component> -->
+    <slot></slot>
     <app-Editor></app-Editor>
   </div>
 </template>
@@ -18,8 +19,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .appMain {
+  position: relative;
   height: 100%;
   padding: 20px;
   padding-top: 40px;
+  flex: 1;
 }
 </style>
