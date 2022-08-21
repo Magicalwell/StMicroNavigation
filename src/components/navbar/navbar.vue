@@ -77,30 +77,37 @@ const menuOptions = [
       },
       {
         key: 'lowcode',
-        label: () =>
-          h(
-            RouterLink,
-            {
-              to: {
-                path: '/easePageCreator'
-              }
-            },
-            { default: () => '低代码' }
-          )
-      },
-      {
-        label: () =>
-          h(
-            RouterLink,
-            {
-              to: {
-                path: '/plannergeneration'
-              }
-            },
-            { default: () => '来点笔记或手账吧' }
-          ),
-        key: '/plannergeneration',
-        icon: renderIcon(WineIcon)
+        children: [
+          {
+            key: '/easePageCreator',
+            label: () =>
+              h(
+                RouterLink,
+                {
+                  to: {
+                    path: '/easePageCreator'
+                  }
+                },
+                { default: () => '页面生成器' }
+              ),
+            icon: renderIcon(WineIcon)
+          },
+          {
+            label: () =>
+              h(
+                RouterLink,
+                {
+                  to: {
+                    path: '/plannergeneration'
+                  }
+                },
+                { default: () => '可视化笔记' }
+              ),
+            key: '/plannergeneration',
+            icon: renderIcon(WineIcon)
+          }
+        ],
+        label: '低代码'
       },
       {
         label: () =>
@@ -111,7 +118,7 @@ const menuOptions = [
                 path: '/heartofstone'
               }
             },
-            { default: () => '石之心V1.0' }
+            { default: () => '石之心V1.0(开发中)' }
           ),
         key: 'heartofstone'
       }

@@ -14,7 +14,7 @@
         <n-grid-item span="2 m:1">
           <div class="grid-right layoutbox">
             <!-- <h1 style="font-size: 36px; margin-bottom: 0">你好，我是三石</h1> -->
-            <h1 style="font-size: 42px;text-indent:2em">
+            <h1 style="font-size: 42px; text-indent: 2em">
               认识世界的角度和感受世界的方式可能有千万种，就像每一条路每个选择其实都没有对错，它们都有其意义，而找到这个意义并为之付出时间和生命，那就是前进。
             </h1>
             <p>你好，我是三石，很高兴认识你。</p>
@@ -45,47 +45,50 @@
         responsive="screen"
       >
         <!-- 后面用v-for刷出来 -->
-        <n-grid-item span="3 m:1">
+        <n-grid-item span="3 m:1" @click="pageTo('blog-control')">
           <div style="background-color: #000" class="card-item control-system">
             <h2 class="title">网站后台管理系统</h2>
             <div style="padding: 0 24px 20px" class="content">
               这是用于管理整个个人网站的后台系统,主要使用了vue全家桶(vue2)，通过从后台根据角色动态获取路由、以及按钮权限来进行权限控制。
               <br />
-              做这个最初的想法是方便自己写博客或上传博客，然后对访问网站的用户进行一个权限的控制，打包上传自己的一些项目，另外就是对公司代码的理解做一些实践和运用。后来因为项目工作太忙且学习后端开发的成本又很高，就没有继续完善下去，只是实现了后台管理系统比较核心的一些东西。
-              <br />
-              不过我计划在后面会去优先完成它。
             </div>
           </div>
         </n-grid-item>
-        <n-grid-item span="3 m:1">
+        <n-grid-item span="3 m:1" @click="pageTo('planner-generation')">
           <div style="background-color: #000" class="card-item low-code-notes">
-            <h2 class="title">低代码笔记(lowcode-notes)</h2>
+            <h2 class="title">可视化笔记(仿notion)</h2>
             <div style="padding: 0 24px 20px" class="content">
               因为我有做笔记的习惯，而这个低代码笔记就是仿的一款我经常使用的软件——notion。做这个的原因一方面是好奇notion背后的实现逻辑，且对低代码比较好奇，另一方面则是担心notion是国外的，哪天万一被墙了或公司倒闭笔记会全部丢失0.0
               <br />
-              基本上实现了notion的部分主要功能，同样借鉴了jsonschema对数据格式进行规定，不同的是我新增了拖拽的功能，可以将想要的组件直接拖到任意的地方去，而不需要多几步操作。
-              <br />
-              而目前呢同样是因为后台代码支持不到位，数据暂时只能存在内存里面。等后续完善了后台代码，计划实现多人协作编辑和实时保存功能。
+              基本上实现了notion的部分主要功能，而目前呢同样是因为后台代码支持不到位，数据暂时只能存在内存里面。等后续完善了后台代码，计划实现多人协作编辑和实时保存功能。
             </div>
           </div>
         </n-grid-item>
-        <n-grid-item span="3 m:1">
+        <n-grid-item span="3 m:1" @click="pageTo('planner-generation')">
           <div style="background-color: #000" class="card-item picture-edit">
             <h2 class="title">图片编辑器</h2>
             <div style="padding: 0 24px 20px" class="content">
-              我把他和笔记放在了一起，方便对图片进行编辑或生成jpg格式的手账，然后打印出来。
+              最初的目标是实现一个在线版本的简易photoshop，但现在我想把它从可视化笔记中拆出来，做成稿定设计那样的。
               <br />
-              实现了canvas的图片编辑抠图，自由绘画，图层功能，以及导出jpg格式的图片
-              <br />
-              图片编辑器和低代码笔记两个项目是最近在开发的，只完成了基础的功能，很多地方还没有优化。同样的，它也没有后台代码支持。
+              实现了canvas的图片编辑抠图，自由绘画，图层功能，以及导出jpg格式的图片。只完成了基础的功能，很多地方还没有优化。同样的，它也没有后台代码支持。
             </div>
           </div>
         </n-grid-item>
-        <n-grid-item span="3 m:1">
+        <n-grid-item span="3 m:1" @click="pageTo('heart-of-stone')">
           <div style="background-color: #000" class="card-item heart-of-stone">
             <h2 class="title">RPG游戏——石之心</h2>
             <div style="padding: 0 24px 20px" class="content">
-              关于爱玩游戏的程序员，开发游戏的初尝试！
+              关于爱玩游戏的程序员，开发游戏的初尝试，不过目前只是demo版本。
+            </div>
+          </div>
+        </n-grid-item>
+        <n-grid-item span="3 m:1" @click="pageTo('ease-page-creator')">
+          <div style="background-color: #000" class="card-item">
+            <h2 class="title">低代码页面生成器</h2>
+            <div style="padding: 0 24px 20px" class="content">
+              (这个暂时没有截图哈)
+              <br />
+              实现了目前市面上比较常见的低代码平台功能，能够进行表单、普通页面、h5页面的设计、预览以及导出代码的功能。借鉴了百度爱速搭以及lowcode-engine，正在完善中，感谢巨人。
             </div>
           </div>
         </n-grid-item>
@@ -149,14 +152,20 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue'
 import { NGrid, NGridItem } from 'naive-ui'
-export default {
+export default defineComponent({
   components: {
     NGrid,
     NGridItem
     // NTag
+  },
+  methods: {
+    pageTo(item) {
+      this.$router.push({ name: item })
+    }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
@@ -204,6 +213,7 @@ export default {
   flex-direction: column;
   transition: all 0.3s ease;
   border-radius: 12px;
+  cursor: pointer;
   &.control-system {
     background: url('../assets/20220629215630.png');
   }
@@ -220,7 +230,7 @@ export default {
     background-size: 100%;
   }
   &:hover {
-    box-shadow: 1px 6px 12px rgba($color: #000000, $alpha: 0.2);
+    box-shadow: 1px 6px 12px rgba($color: #000000, $alpha: 0.3);
   }
   // &::before {
   //   content: '';
